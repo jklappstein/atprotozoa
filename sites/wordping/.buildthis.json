@@ -1,0 +1,9 @@
+{
+  "builtName": "wordping",
+  "requestedBy": "words.bsky.social",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net \n\ncreate a custom notification system that lets a bsky account create and view a list of words that is then pings their account when any of the users followers/following posts a word from that list\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@slothropsmap.bsky.social: I’ve always wanted one of these apps to let me create a custom notification system that pings when [anyone I follow] posts [this word I care about]. \n\nIt’s a bit of a power user feature but it would dramatically improve the quality of my experience.",
+  "note": "wordping: add words, load your follows (and/or followers), and a live firehose watcher pings you in-browser when any of them posts one. Tab must stay open — no server can ping your account without a backend.",
+  "mentionUri": "at://did:plc:plvxn2kpjuseoftweoo4xtag/app.bsky.feed.post/3mxmncykszs27",
+  "builtAt": "2026-10-11T18:36:43Z",
+  "builtBy": "@buildthis.bisks.net"
+}

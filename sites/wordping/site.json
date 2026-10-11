@@ -1,0 +1,11 @@
+{
+  "name": "wordping",
+  "url": "https://wordping.bisks.net/",
+  "title": "wordping",
+  "blurb": "keep a list of words you care about; it watches the live firehose and pings you when anyone you follow (or who follows you) posts one. requested by slothropsmap.bsky.social and words.bsky.social.",
+  "tag": "tool",
+  "type": "tool",
+  "by": "words.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

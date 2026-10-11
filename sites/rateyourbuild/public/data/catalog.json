@@ -7865,6 +7865,17 @@
     "mentionUri": null
   },
   {
+    "name": "wordping",
+    "url": "https://wordping.bisks.net/",
+    "title": "wordping",
+    "blurb": "keep a list of words you care about; it watches the live firehose and pings you when anyone you follow (or who follows you) posts one. requested by slothropsmap.bsky.social and words.bsky.social.",
+    "genre": "tool",
+    "subgenre": null,
+    "by": "words.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "wordsplice",
     "url": "https://wordsplice.bisks.net/",
     "title": "WordSplice",

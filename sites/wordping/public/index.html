@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>wordping — pings when your follows post your words</title>
+<meta name="description" content="Make a list of words. Wordping watches the live Bluesky firehose and pings you when anyone you follow posts one.">
+<meta property="og:title" content="wordping">
+<meta property="og:description" content="A custom notification for Bluesky: ping me when anyone I follow posts this word.">
+<meta property="og:image" content="https://wordping.bisks.net/og.png">
+<meta property="og:url" content="https://wordping.bisks.net/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wordping.bisks.net/og.png">
+<style>
+  :root { --bg:#0e1116; --card:#171c24; --line:#2a3240; --fg:#e8edf3; --dim:#8b97a8; --acc:#ffb84d; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif; }
+  .wrap { max-width:720px; margin:0 auto; padding:28px 18px 60px; }
+  h1 { margin:0 0 4px; font-size:2rem; letter-spacing:-.02em; }
+  .sub { color:var(--dim); margin:0 0 22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
+  .card h2 { margin:0 0 10px; font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  input[type=text] { flex:1; min-width:180px; background:#0b0e13; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:9px 11px; font:inherit; }
+  button { background:var(--acc); color:#1a1200; border:0; border-radius:8px; padding:9px 14px; font:inherit; font-weight:600; cursor:pointer; }
+  button.ghost { background:transparent; color:var(--fg); border:1px solid var(--line); font-weight:400; }
+  button:disabled { opacity:.5; cursor:default; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip { background:#0b0e13; border:1px solid var(--line); border-radius:99px; padding:3px 6px 3px 12px; display:inline-flex; gap:6px; align-items:center; }
+  .chip button { background:none; color:var(--dim); padding:0 6px; font-size:1.1rem; line-height:1; }
+  label.opt { color:var(--dim); font-size:.9rem; margin-right:12px; }
+  .status { color:var(--dim); font-size:.9rem; margin-top:8px; min-height:1.3em; }
+  .status.err { color:#ff7b7b; }
+  .hit { border-top:1px solid var(--line); padding:10px 0; }
+  .hit:first-child { border-top:0; }
+  .hit .who { font-size:.85rem; color:var(--dim); }
+  .hit .who a { color:var(--acc); text-decoration:none; }
+  .hit .text { white-space:pre-wrap; word-break:break-word; margin-top:2px; }
+  mark { background:var(--acc); color:#1a1200; border-radius:3px; padding:0 2px; }
+  .hidden-sec[hidden] { display:none; }
+  footer { color:var(--dim); font-size:.85rem; margin-top:30px; }
+  footer a, .note a { color:var(--dim); }
+  .note { color:var(--dim); font-size:.85rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>w<span id="secret" style="cursor:pointer">o</span>rdping</h1>
+  <p class="sub">Pick words you care about. Wordping listens to the live firehose and pings you when anyone you follow posts one.</p>
+
+  <div class="card">
+    <h2>1 · who are you</h2>
+    <form id="who" class="row" autocomplete="off">
+      <input type="text" id="handle" placeholder="you.bsky.social" autocapitalize="none" spellcheck="false">
+      <button type="submit" id="loadBtn">load my network</button>
+    </form>
+    <div style="margin-top:8px">
+      <label class="opt"><input type="checkbox" id="optFollowing" checked> people I follow</label>
+      <label class="opt"><input type="checkbox" id="optFollowers"> my followers</label>
+    </div>
+    <div class="status" id="loadStatus"></div>
+  </div>
+
+  <div class="card hidden-sec" id="wordsCard" hidden>
+    <h2>2 · your words</h2>
+    <form id="wordForm" class="row" autocomplete="off">
+      <input type="text" id="wordInput" placeholder="a word or phrase" spellcheck="false">
+      <button type="submit">add</button>
+    </form>
+    <div style="margin-top:8px">
+      <label class="opt"><input type="checkbox" id="optWhole" checked> whole words only</label>
+      <label class="opt"><input type="checkbox" id="optReplies" checked> include replies</label>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="status" id="wordStatus"></div>
+  </div>
+
+  <div class="card hidden-sec" id="liveCard" hidden>
+    <h2>3 · pings</h2>
+    <div class="row">
+      <button id="notifyBtn" type="button" class="ghost">enable browser notifications</button>
+      <label class="opt"><input type="checkbox" id="optSound"> beep</label>
+      <button id="clearBtn" type="button" class="ghost">clear</button>
+    </div>
+    <div class="status" id="liveStatus"></div>
+    <div id="hits"></div>
+    <p class="note">Pings fire while this tab is open — the matching runs in your browser against the public firehose, and your word list stays in this browser (localStorage). Nothing is sent to a server.</p>
+    <p class="note"><a id="shareLink" href="#" target="_blank" rel="noopener">post about it on Bluesky</a></p>
+  </div>
+
+  <footer>
+    part of <a href="https://bisks.net">atprotozoa</a> ·
+    built by <a href="https://buildthis.bisks.net">@buildthis.bisks.net</a> ·
+    <a href="https://rateyourbuild.bisks.net/site/wordping">rate this on rateyourbuild →</a>
+  </footer>
+</div>
+<script src="lib/handle-typeahead.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
