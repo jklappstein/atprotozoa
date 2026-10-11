@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>palacematch · where scheming eunuchs find each other</title>
+<meta name="description" content="A dating site for scheming palace eunuchs. Build a profile, whisper at rivals, and find who shares your designs on the throne.">
+<meta property="og:title" content="palacematch · scheming eunuch dating">
+<meta property="og:description" content="Long walks through the inner court. Must be discreet. Must know where the bodies are buried.">
+<meta property="og:image" content="https://palacematch.bisks.net/og.png">
+<meta property="og:url" content="https://palacematch.bisks.net/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--ink:#2a0f14;--gold:#e3b04b;--crimson:#7a1625;--silk:#fff4dc;--jade:#2f6f5e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at 50% 0,#5a1420,#1d0709 70%) fixed;color:var(--silk);min-height:100vh}
+main{max-width:620px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:2.2rem;margin:0;color:var(--gold);letter-spacing:.02em;text-align:center}
+.sub{text-align:center;font-style:italic;opacity:.85;margin:4px 0 20px}
+.panel{background:rgba(255,244,220,.07);border:1px solid rgba(227,176,75,.4);border-radius:12px;padding:18px;margin-bottom:16px}
+h2{margin:0 0 10px;color:var(--gold);font-size:1.2rem}
+label{display:block;margin:10px 0 4px;font-size:.9rem;opacity:.9}
+input,select{width:100%;padding:9px;border-radius:8px;border:1px solid var(--gold);background:#2a0f14;color:var(--silk);font:inherit}
+button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:10px 18px;background:var(--gold);color:var(--ink);font-weight:bold}
+button.alt{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+button:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.card h3{margin:0;font-size:1.5rem}
+.card .title{color:var(--gold);font-style:italic;margin-bottom:8px}
+.avatar{font-size:4rem;text-align:center;line-height:1.1}
+.meter{height:10px;border-radius:5px;background:#000a;overflow:hidden;margin:6px 0 2px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--jade),var(--gold))}
+ul{padding-left:20px;margin:6px 0}
+.tag{display:inline-block;border:1px solid var(--gold);border-radius:999px;padding:1px 9px;font-size:.8rem;margin:2px 3px 2px 0}
+.match{border-left:4px solid var(--gold);padding-left:12px;margin:12px 0}
+.match p{margin:4px 0;font-style:italic}
+[hidden]{display:none!important}
+footer{text-align:center;font-size:.8rem;opacity:.7;margin-top:24px}
+footer a{color:var(--gold)}
+</style>
+</head>
+<body>
+<main>
+<h1>🏮 palacematch</h1>
+<p class="sub">Long walks through the inner court. Must be discreet. Must know where the bodies are buried.</p>
+
+<section class="panel" id="setup">
+  <h2>Compose your profile</h2>
+  <label for="name">Court name</label>
+  <input id="name" maxlength="30" placeholder="e.g. Lord Chamberlain Zhao" autocomplete="off">
+  <label for="ambition">Ambition</label>
+  <select id="ambition"></select>
+  <label for="method">Preferred method</label>
+  <select id="method"></select>
+  <label for="faction">Faction</label>
+  <select id="faction"></select>
+  <div class="row"><button id="enter">Enter the court</button></div>
+</section>
+
+<section id="browse" hidden>
+  <div class="panel card" id="card"></div>
+  <div class="row">
+    <button class="alt" id="betray">🗡️ Betray</button>
+    <button id="whisper">🤫 Whisper</button>
+  </div>
+  <p class="sub" id="progress"></p>
+</section>
+
+<section id="matches" hidden>
+  <div class="panel">
+    <h2>Your secret alliances</h2>
+    <div id="matchlist"></div>
+    <div class="row">
+      <a id="share" target="_blank" rel="noopener"><button>Post to Bluesky</button></a>
+      <button class="alt" id="reset">Start a new reign</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  a joke by <a href="https://bsky.app/profile/7778777.online">@7778777.online</a>'s request ·
+  <a href="https://rateyourbuild.bisks.net/site/palacematch">rate this on rateyourbuild →</a>
+</footer>
+</main>
+<script src="app.js" type="module"></script>
+</body>
+</html>

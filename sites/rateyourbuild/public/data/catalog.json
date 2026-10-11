@@ -5192,6 +5192,17 @@
     "mentionUri": "at://did:plc:c2x5i7fneh7xbvpvw2r3omes/app.bsky.feed.post/3mrikebbm3s2j"
   },
   {
+    "name": "palacematch",
+    "url": "https://palacematch.bisks.net/",
+    "title": "palacematch",
+    "blurb": "a dating site for scheming palace eunuchs. build your profile, swipe on rivals and co-conspirators, and see who is compatible with your designs on the throne. asked for by 7778777.online.",
+    "genre": "joke",
+    "subgenre": null,
+    "by": "7778777.online",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "palindrone",
     "url": "https://palindrone.bisks.net/",
     "title": "palindrone",
