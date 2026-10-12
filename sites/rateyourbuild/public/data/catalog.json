@@ -6776,6 +6776,17 @@
     "mentionUri": null
   },
   {
+    "name": "spookyavatar",
+    "url": "https://spookyavatar.bisks.net/",
+    "title": "spookyavatar",
+    "blurb": "pick october / halloween emojis, drag them around your bluesky avatar, then sign in with oauth and it swaps the avatar for you. original kept in your browser for one-click restore. asked for by psingletary.com.",
+    "genre": "toy",
+    "subgenre": null,
+    "by": "psingletary.com",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "spoonerism",
     "url": "https://spoonerism.bisks.net/",
     "title": "spoonerism",

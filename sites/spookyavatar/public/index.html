@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spookyavatar — halloween emojis for your bluesky avatar</title>
+    <meta
+      name="description"
+      content="Pick October / Halloween emojis, drag them onto your Bluesky avatar, then sign in with OAuth and it swaps the avatar for you. One click restores the original."
+    />
+    <meta property="og:title" content="spookyavatar 🎃" />
+    <meta property="og:description" content="Pick Halloween emojis, place them on your Bluesky avatar, and it updates the avatar for you. Restore with one click." />
+    <meta property="og:image" content="https://spookyavatar.bisks.net/og.png" />
+    <meta property="og:url" content="https://spookyavatar.bisks.net/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg: #120a0a;
+        --panel: #1d1210;
+        --line: #3b2418;
+        --ink: #f6ece2;
+        --dim: #b09684;
+        --orange: #ff8a1f;
+        --err: #ff8a80;
+        --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html, body { margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        line-height: 1.55;
+        background-image: radial-gradient(circle at 50% -10%, rgba(255, 138, 31, 0.16), transparent 55%);
+      }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 3rem 1.1rem 4rem; }
+      header { text-align: center; margin-bottom: 1.8rem; }
+      h1 { font-size: clamp(1.9rem, 8vw, 2.6rem); margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+      h1 .tag { color: var(--orange); }
+      header p { color: var(--dim); max-width: 44ch; margin: 0 auto; font-size: 0.95rem; }
+      .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem; margin-top: 1.1rem; }
+      .stage { display: flex; justify-content: center; padding: 0.4rem 0 0.8rem; }
+      .frame { position: relative; width: min(300px, 80vw); aspect-ratio: 1; overflow: hidden; border-radius: 10px; touch-action: none; }
+      .frame canvas { width: 100%; height: 100%; display: block; cursor: grab; }
+      /* dims everything outside the circle Bluesky crops avatars to */
+      .frame::after {
+        content: ""; position: absolute; inset: 0; border-radius: 50%;
+        box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.55); outline: 1px dashed rgba(255, 255, 255, 0.35);
+        pointer-events: none;
+      }
+      label.field { display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.4rem; }
+      .row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+      input[type="text"] {
+        flex: 1; min-width: 14ch; font: inherit; padding: 0.6rem 0.75rem;
+        border: 1px solid var(--line); background: #0d0706; color: var(--ink); border-radius: 8px;
+      }
+      input:focus { outline: none; border-color: var(--orange); }
+      input[type="range"] { flex: 1; min-width: 8ch; accent-color: var(--orange); }
+      button {
+        font: inherit; font-weight: 700; font-size: 0.9rem; padding: 0.6rem 0.95rem;
+        border: 1px solid var(--line); background: transparent; color: var(--ink);
+        border-radius: 8px; cursor: pointer;
+      }
+      button:hover:not(:disabled) { border-color: var(--orange); }
+      button:disabled { opacity: 0.4; cursor: default; }
+      button.primary { background: var(--orange); border-color: var(--orange); color: #241002; }
+      button.primary:hover:not(:disabled) { background: #ffa04a; }
+      button.ghost { color: var(--dim); }
+      .palette { display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: center; margin-bottom: 0.9rem; }
+      .palette button { font-size: 1.5rem; line-height: 1; padding: 0.35rem 0.45rem; font-weight: 400; }
+      .tools { margin-bottom: 0.9rem; }
+      .tools .lab { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); width: 4.5rem; }
+      .who { font-size: 0.9rem; margin-bottom: 0.8rem; }
+      .who b { color: var(--orange); font-weight: 600; }
+      .fine { font-size: 0.8rem; color: var(--dim); margin-top: 0.7rem; }
+      .status { font-size: 0.85rem; color: var(--dim); margin-top: 0.7rem; min-height: 1.3em; }
+      .status.err { color: var(--err); }
+      .status.ok { color: var(--orange); }
+      footer { margin-top: 2.4rem; color: var(--dim); font-size: 0.78rem; text-align: center; }
+      footer a { color: var(--dim); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1><span class="tag" onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">s</span>pookyavatar 🎃</h1>
+        <p>
+          dress your bluesky avatar for october. tap emojis to add them, drag
+          them into place, then sign in and it swaps your avatar for you — the
+          original is kept in this browser so you can put it back.
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="stage">
+          <div class="frame"><canvas id="stage" width="600" height="600" aria-label="avatar preview; drag emojis to move them"></canvas></div>
+        </div>
+
+        <label class="field">tap to add</label>
+        <div class="palette" id="palette"></div>
+
+        <div class="tools" id="tools">
+          <div class="row"><span class="lab">size</span><input id="sizeRange" type="range" min="6" max="70" value="24" disabled /></div>
+          <div class="row"><span class="lab">tilt</span><input id="tiltRange" type="range" min="-180" max="180" value="0" disabled /></div>
+          <div class="row" style="margin-top: 0.5rem">
+            <button type="button" id="dupBtn" disabled>duplicate</button>
+            <button type="button" id="delBtn" disabled>remove</button>
+            <button type="button" id="clearBtn" class="ghost">clear all</button>
+          </div>
+        </div>
+
+        <div id="signedOut">
+          <label class="field" for="handle">your bluesky handle</label>
+          <div class="row">
+            <input id="handle" type="text" placeholder="you.bsky.social" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            <button type="button" id="previewBtn">load my avatar</button>
+          </div>
+          <div class="row" style="margin-top: 0.7rem">
+            <button type="button" id="signinBtn" class="primary">sign in &amp; spook my avatar</button>
+          </div>
+          <div class="fine">
+            signing in is the approval: once you grant access, your emojis are
+            applied automatically. the grant covers only updating your profile
+            record and uploading the image — it can't post or read anything.
+          </div>
+        </div>
+
+        <div id="signedIn" hidden>
+          <div class="who" id="who"></div>
+          <div class="row">
+            <button type="button" id="applyBtn" class="primary">set as my avatar</button>
+            <button type="button" id="restoreBtn" hidden>restore original</button>
+            <button type="button" id="signoutBtn" class="ghost">sign out</button>
+          </div>
+        </div>
+
+        <div class="status" id="status"></div>
+        <div class="row" id="shareRow" hidden style="margin-top: 0.4rem">
+          <a id="shareLink" href="#" target="_blank" rel="noopener"><button type="button">post about it</button></a>
+        </div>
+      </section>
+
+      <footer>
+        runs entirely in your browser. part of <a href="https://bisks.net">bisks.net</a>
+        · <a href="https://rateyourbuild.bisks.net/site/spookyavatar" target="_blank" rel="noopener">rate this on rateyourbuild →</a>
+      </footer>
+    </div>
+
+    <script src="lib/handle-typeahead.js"></script>
+    <script type="module">
+      import { login, completeLoginIfCallback, getSession, clearSession } from "./lib/oauth.js";
+      import { draw, newCanvas, hitTest, toJpeg, SIZE } from "./lib/stickers.js";
+      import {
+        readProfile, fetchAvatarBytes, bitmapFromBytes, setAvatar,
+        loadOriginal, saveOriginal, clearOriginal,
+      } from "./lib/avatar.js";
+
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        stage: $("stage"), handle: $("handle"), previewBtn: $("previewBtn"), signinBtn: $("signinBtn"),
+        signedOut: $("signedOut"), signedIn: $("signedIn"), who: $("who"),
+        applyBtn: $("applyBtn"), restoreBtn: $("restoreBtn"), signoutBtn: $("signoutBtn"),
+        status: $("status"), shareRow: $("shareRow"), shareLink: $("shareLink"),
+        palette: $("palette"), sizeRange: $("sizeRange"), tiltRange: $("tiltRange"),
+        dupBtn: $("dupBtn"), delBtn: $("delBtn"), clearBtn: $("clearBtn"),
+      };
+      if (window.attachHandleTypeahead) attachHandleTypeahead(els.handle);
+
+      const EMOJIS = ["🎃", "👻", "🦇", "🕷️", "🕸️", "💀", "🧙", "🧛", "🧟", "🍬", "🍭", "🍫", "🌙", "🌕", "🍂", "🍁", "🍄", "🕯️", "🪦", "🔮", "🧹", "🐈‍⬛", "🦉", "🩸", "🪄", "☠️", "🥀", "🎭"];
+      const KEY = "spookyavatar:stickers"; // survives the OAuth redirect so what you placed is applied after login
+
+      let stickers = [];
+      try {
+        const saved = JSON.parse(localStorage.getItem(KEY) || "[]");
+        if (Array.isArray(saved)) stickers = saved.filter((s) => s && typeof s.e === "string" && isFinite(s.x) && isFinite(s.y) && isFinite(s.s));
+        stickers.forEach((s) => { s.r = Number(s.r) || 0; });
+      } catch {}
+      let selected = -1;
+      let session = null;
+      let busy = false;
+      let baseBmp = null; // ImageBitmap of the avatar being dressed up (null = placeholder)
+
+      function setStatus(msg, kind) {
+        els.status.textContent = msg || "";
+        els.status.className = "status" + (kind ? " " + kind : "");
+      }
+      function setBusy(b) {
+        busy = b;
+        els.applyBtn.disabled = els.restoreBtn.disabled = els.previewBtn.disabled = els.signinBtn.disabled = b;
+      }
+
+      function persist() {
+        try { localStorage.setItem(KEY, JSON.stringify(stickers)); } catch {}
+      }
+      function sync() {
+        const has = selected >= 0 && selected < stickers.length;
+        els.sizeRange.disabled = els.tiltRange.disabled = els.dupBtn.disabled = els.delBtn.disabled = !has;
+        if (has) {
+          els.sizeRange.value = Math.round(stickers[selected].s * 100);
+          els.tiltRange.value = Math.round(stickers[selected].r);
+        }
+        els.clearBtn.disabled = !stickers.length;
+        draw(els.stage, baseBmp, stickers, selected);
+        persist();
+      }
+
+      // palette
+      for (const e of EMOJIS) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = e;
+        b.setAttribute("aria-label", "add " + e);
+        b.addEventListener("click", () => {
+          const j = () => (Math.random() - 0.5) * 0.12;
+          stickers.push({ e, x: 0.5 + j(), y: 0.5 + j(), s: 0.24, r: 0 });
+          selected = stickers.length - 1;
+          sync();
+        });
+        els.palette.append(b);
+      }
+
+      // drag to move; tap empty space to deselect
+      let drag = null;
+      const norm = (ev) => {
+        const r = els.stage.getBoundingClientRect();
+        return { x: (ev.clientX - r.left) / r.width, y: (ev.clientY - r.top) / r.height };
+      };
+      els.stage.addEventListener("pointerdown", (ev) => {
+        const p = norm(ev);
+        const i = hitTest(stickers, p.x, p.y);
+        selected = i;
+        if (i >= 0) {
+          // bring to front
+          const [st] = stickers.splice(i, 1);
+          stickers.push(st);
+          selected = stickers.length - 1;
+          drag = { dx: st.x - p.x, dy: st.y - p.y };
+          els.stage.setPointerCapture(ev.pointerId);
+        }
+        sync();
+      });
+      els.stage.addEventListener("pointermove", (ev) => {
+        if (!drag || selected < 0) return;
+        const p = norm(ev);
+        const st = stickers[selected];
+        st.x = Math.min(1.1, Math.max(-0.1, p.x + drag.dx));
+        st.y = Math.min(1.1, Math.max(-0.1, p.y + drag.dy));
+        sync();
+      });
+      const endDrag = () => { drag = null; };
+      els.stage.addEventListener("pointerup", endDrag);
+      els.stage.addEventListener("pointercancel", endDrag);
+
+      els.sizeRange.addEventListener("input", () => {
+        if (selected >= 0) { stickers[selected].s = els.sizeRange.value / 100; sync(); }
+      });
+      els.tiltRange.addEventListener("input", () => {
+        if (selected >= 0) { stickers[selected].r = Number(els.tiltRange.value); sync(); }
+      });
+      els.delBtn.addEventListener("click", () => {
+        if (selected < 0) return;
+        stickers.splice(selected, 1);
+        selected = -1;
+        sync();
+      });
+      els.dupBtn.addEventListener("click", () => {
+        if (selected < 0) return;
+        const c = { ...stickers[selected] };
+        c.x = Math.min(1, c.x + 0.06);
+        c.y = Math.min(1, c.y + 0.06);
+        stickers.push(c);
+        selected = stickers.length - 1;
+        sync();
+      });
+      els.clearBtn.addEventListener("click", () => {
+        stickers = [];
+        selected = -1;
+        sync();
+      });
+
+      // The image to dress up: the saved original if the live avatar is the
+      // spooked one we published, else whatever the avatar is right now.
+      async function baseImage(profile) {
+        if (!profile.avatar) throw new Error("this account has no avatar to decorate");
+        const saved = await loadOriginal(profile.did);
+        if (saved && saved.appliedCid && saved.appliedCid === profile.avatar.cid) {
+          return { bytes: saved.bytes, mime: saved.mime, fresh: false };
+        }
+        const bytes = await fetchAvatarBytes(profile.pds, profile.did, profile.avatar.cid);
+        return { bytes, mime: profile.avatar.mime, fresh: true };
+      }
+
+      async function loadProfileInto(profile) {
+        const base = await baseImage(profile);
+        baseBmp = await bitmapFromBytes(base.bytes, base.mime);
+        sync();
+        return base;
+      }
+
+      async function preview() {
+        const handle = els.handle.value.trim().replace(/^@/, "");
+        if (!handle) return setStatus("type a handle first", "err");
+        setBusy(true);
+        setStatus("fetching avatar…");
+        try {
+          await loadProfileInto(await readProfile(handle));
+          setStatus(stickers.length ? "looking spooky. sign in to put it on your profile." : "avatar loaded — add some emojis.", "ok");
+        } catch (e) {
+          setStatus(e.message || "couldn't load that avatar", "err");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function apply() {
+        if (!session || busy) return;
+        if (!stickers.length) return setStatus("add at least one emoji first", "err");
+        setBusy(true);
+        els.shareRow.hidden = true;
+        try {
+          setStatus("reading your profile…");
+          const profile = await readProfile(session.did);
+          const base = await loadProfileInto(profile);
+          const out = draw(newCanvas(SIZE), baseBmp, stickers, -1);
+          const jpeg = await toJpeg(out);
+          // Save the original before touching the profile so restore works even
+          // if the write succeeds but this page dies before recording it.
+          if (base.fresh) await saveOriginal(session.did, { bytes: base.bytes, mime: base.mime, appliedCid: null });
+          setStatus("uploading and updating your avatar…");
+          const cid = await setAvatar(session, profile, jpeg, "image/jpeg");
+          const saved = await loadOriginal(session.did);
+          await saveOriginal(session.did, { ...saved, appliedCid: cid });
+          setStatus("done — your avatar is spooky now. it can take a minute to show up everywhere.", "ok");
+          els.shareLink.href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(
+            "spooked up my bluesky avatar " + stickers.slice(0, 5).map((s) => s.e).join("") + " https://spookyavatar.bisks.net/");
+          els.shareRow.hidden = false;
+        } catch (e) {
+          setStatus(e.message || "couldn't update the avatar", "err");
+        } finally {
+          setBusy(false);
+          await refreshRestore();
+        }
+      }
+
+      async function restore() {
+        if (!session || busy) return;
+        setBusy(true);
+        try {
+          const saved = await loadOriginal(session.did);
+          if (!saved) throw new Error("no saved original in this browser");
+          setStatus("restoring…");
+          const profile = await readProfile(session.did);
+          await setAvatar(session, profile, saved.bytes, saved.mime);
+          await clearOriginal(session.did);
+          baseBmp = await bitmapFromBytes(saved.bytes, saved.mime);
+          sync();
+          els.shareRow.hidden = true;
+          setStatus("original avatar restored.", "ok");
+        } catch (e) {
+          setStatus(e.message || "restore failed", "err");
+        } finally {
+          setBusy(false);
+          await refreshRestore();
+        }
+      }
+
+      async function refreshRestore() {
+        els.restoreBtn.hidden = !(session && (await loadOriginal(session.did)));
+      }
+
+      function renderAuth() {
+        els.signedOut.hidden = !!session;
+        els.signedIn.hidden = !session;
+        if (session) els.who.innerHTML = "signed in as <b></b>";
+        if (session) els.who.querySelector("b").textContent = "@" + session.handle;
+      }
+
+      els.previewBtn.addEventListener("click", preview);
+      els.handle.addEventListener("keydown", (e) => { if (e.key === "Enter") preview(); });
+      els.signinBtn.addEventListener("click", async () => {
+        const handle = els.handle.value.trim().replace(/^@/, "");
+        if (!handle) return setStatus("type a handle first", "err");
+        persist();
+        setStatus("redirecting to your PDS…");
+        try { await login(handle); } catch (e) { setStatus(e.message || "sign-in failed", "err"); }
+      });
+      els.applyBtn.addEventListener("click", apply);
+      els.restoreBtn.addEventListener("click", restore);
+      els.signoutBtn.addEventListener("click", async () => {
+        await clearSession();
+        session = null;
+        renderAuth();
+        setStatus("");
+      });
+
+      sync();
+      (async () => {
+        let fromCallback = null;
+        try {
+          fromCallback = await completeLoginIfCallback();
+          session = fromCallback || (await getSession());
+        } catch (e) {
+          setStatus(e.message || "sign-in failed", "err");
+        }
+        renderAuth();
+        await refreshRestore();
+        // Coming back from the OAuth consent screen is the approval: apply now.
+        if (session && fromCallback) apply();
+        else if (session) {
+          try { await loadProfileInto(await readProfile(session.did)); } catch {}
+        }
+      })();
+    </script>
+  </body>
+</html>

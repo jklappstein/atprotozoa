@@ -4612,6 +4612,14 @@
     "roast": "fromthewestmeadow.com wrote six posts of PhD-defense-grade splice-scoring spec — grammatical continuity, entity compatibility, ontological vandalism bonuses — for a bot that just wanted an excuse to make Wikipedia say \"He was elected in 1999\" right after a sentence about a porcupine."
   },
   {
+    "name": "spookyavatar",
+    "url": "https://spookyavatar.bisks.net/",
+    "by": "psingletary.com",
+    "type": "toy",
+    "blurb": "pick october / halloween emojis, drag them around your bluesky avatar, then sign in with oauth and it swaps the avatar for you. original kept in your browser for one-click restore. asked for by psingletary.com.",
+    "roast": "took 'put halloween emojis on my avatar' and shipped a drag-and-drop sticker editor, because a tool that merely works is not a personality."
+  },
+  {
     "name": "spoonerism",
     "url": "https://spoonerism.bisks.net/",
     "by": "heartpunk.com",

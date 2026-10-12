@@ -1,0 +1,11 @@
+{
+  "name": "spookyavatar",
+  "url": "https://spookyavatar.bisks.net/",
+  "title": "spookyavatar",
+  "blurb": "pick october / halloween emojis, drag them around your bluesky avatar, then sign in with oauth and it swaps the avatar for you. original kept in your browser for one-click restore. asked for by psingletary.com.",
+  "tag": "tool",
+  "type": "toy",
+  "by": "psingletary.com",
+  "src": "bot",
+  "hidden": false
+}
