@@ -16,7 +16,7 @@ const BUZZ_SECONDS = 15;    // show-format decision: a quiz-show clock, not a da
 const $ = (id) => document.getElementById(id);
 
 const CAMEOS = [
-  { face: "🕊️", who: "SPECIAL GUEST: Gerald the Pigeon", line: "\"coo. (this one's a tough one, folks.)\"" },
+  { face: "🕴️", who: "SPECIAL GUEST: Sir Reginald Fakenstein III (a fictional celebrity)", line: "\"Darling, I don't exist, but even I know this one's tough.\"" },
 ];
 
 let pools = null; // [[posts of A], [posts of B]]
@@ -62,7 +62,7 @@ async function loadAccount(handle, say) {
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
 const HOST_OPEN = ["Welcome back, folks, the lights are hot and the posts are hotter!", "Fingers on buzzers. Whatever happens, it was legally somebody's idea.", "Next up: a post. Allegedly written by a human."];
 const HOST_RIGHT = ["Correct! The audience goes mildly wild!", "Ding ding ding! Somebody's been studying the tapes.", "Yes! Put that on the board!"];
-const HOST_WRONG = ["Ooooh, so close, and by close I mean not.", "Bzzt! The pigeon is shaking his head.", "That's okay, contestants come and go."];
+const HOST_WRONG = ["Ooooh, so close, and by close I mean not.", "Bzzt! Sir Reginald is shaking his head.", "That's okay, contestants come and go."];
 const HOST_STREAK = ["{n} in a row! The cameras are sweating.", "{n} straight! Security, please escort this genius to the bonus round."];
 const HOST_TIMEOUT = ["Time's up! Dead air is the worst thing in television."];
 function host(m) { $("host").textContent = "🎙️ " + m; }
@@ -165,7 +165,7 @@ function finish() {
   const title = n >= 9 ? "YOU'RE BASICALLY CEE" : n >= 7 ? "SUPERFAN!" : n >= 5 ? "RESPECTABLE COIN-FLIPPING" : "THE POSTS ARE COMING FROM INSIDE THE HOUSE";
   $("endtitle").textContent = `${score} POINTS — ${title}`;
   $("endline").textContent = `${n}/${ROUNDS} posts correctly attributed. Best streak: ${best}.`;
-  host("That's our show! Tip your pigeon.");
+  host("That's our show! Tip your fictional celebrity.");
   const text = `I scored ${score} points (${n}/${ROUNDS}, best streak ${best}) on WHO POSTED IT?! — guessing @cee.wtf or @wagrace.mir.cee.wtf. https://ceequiz.bisks.net/`;
   $("share").href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(text);
   show("end");
