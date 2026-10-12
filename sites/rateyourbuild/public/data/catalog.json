@@ -7744,6 +7744,17 @@
     "mentionUri": null
   },
   {
+    "name": "watchorder",
+    "url": "https://watchorder.bisks.net/",
+    "title": "watchorder",
+    "blurb": "paste in every youtube video you want to watch, rank them with head-to-head duels until there's a single true order, then watch them in that order. asked for by @norvid-studies.bsky.social.",
+    "genre": "tool",
+    "subgenre": null,
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "wattcore",
     "url": "https://wattcore.bisks.net/",
     "title": "wattcore",

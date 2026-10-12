@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>watchorder — rank your watch-later pile, then watch it</title>
+<meta name="description" content="Paste every YouTube video you want to watch, rank them in head-to-head duels, then watch them in exactly that order.">
+<meta property="og:title" content="watchorder">
+<meta property="og:description" content="Rank every video you want to watch, then watch them in that order.">
+<meta property="og:image" content="https://watchorder.bisks.net/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>watchorder</h1>
+  <p class="sub">rank all the videos you want to watch, then watch them in that order.</p>
+
+  <section id="s-add" class="on">
+    <p>Paste YouTube links, one per line (watch, youtu.be, shorts — anything with a video in it).</p>
+    <textarea id="paste" placeholder="https://www.youtube.com/watch?v=…"></textarea>
+    <div><button id="go">start ranking</button> <span id="addmsg" class="dim"></span></div>
+  </section>
+
+  <section id="s-duel">
+    <p><b>Which do you want to watch first?</b></p>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="duel">
+      <button class="opt" id="optA"></button>
+      <button class="opt" id="optB"></button>
+    </div>
+    <p class="dim" id="duelinfo"></p>
+    <button class="ghost" id="reset1">start over</button>
+  </section>
+
+  <section id="s-watch">
+    <div id="stage"></div>
+    <div>
+      <button id="watched">watched it → next</button>
+      <button class="ghost" id="skipback">← back</button>
+      <button class="ghost" id="reset2">new pile</button>
+    </div>
+    <ol class="list" id="queue"></ol>
+  </section>
+
+  <footer>everything stays in your browser. <a href="https://rateyourbuild.bisks.net/site/watchorder">rate this on rateyourbuild →</a></footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

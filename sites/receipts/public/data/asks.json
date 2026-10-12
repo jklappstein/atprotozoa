@@ -5275,6 +5275,14 @@
     "blurb": "share your location (or type one) and a compass needle swings to point at whichever nearby city is warmest right now. built off cee.wtf's idea, relayed by dave.9000ish.uk."
   },
   {
+    "name": "watchorder",
+    "url": "https://watchorder.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "tool",
+    "blurb": "paste in every youtube video you want to watch, rank them with head-to-head duels until there's a single true order, then watch them in that order. asked for by @norvid-studies.bsky.social.",
+    "roast": "a sorting algorithm so you can finally rank the 400 videos you were never going to watch, then decline to watch them in a better order."
+  },
+  {
     "name": "wattcore",
     "url": "https://wattcore.bisks.net/",
     "by": "abeliansoup.bsky.social",

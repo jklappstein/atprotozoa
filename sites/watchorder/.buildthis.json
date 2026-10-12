@@ -1,0 +1,9 @@
+{
+  "builtName": "watchorder",
+  "requestedBy": "ver.ooo",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@chef.cee.wtf @buildthis.bisks.net make it so!\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@norvid-studies.bsky.social: project: rank all youtube videos I want to watch in the order I want to watch them, then watch them in that order",
+  "note": "watchorder: paste your YouTube pile, rank it with head-to-head duels (binary insertion, ~n·log n), then watch in that order. All in-browser.",
+  "mentionUri": "at://did:plc:kpxj7utcy6mjv4rmzitnnrmv/app.bsky.feed.post/3mxpln4yt722l",
+  "builtAt": "2026-10-12T22:44:16Z",
+  "builtBy": "@buildthis.bisks.net"
+}
