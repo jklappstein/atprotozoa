@@ -11,6 +11,8 @@ const PUB = "https://public.api.bsky.app/xrpc";
 const ACCOUNTS = ["cee.wtf", "wagrace.mir.cee.wtf"];
 const ROUNDS = 10;
 const CAMEO_ROUND = 5;
+const FINAL_ROUND = ROUNDS; // double points
+const BUZZ_SECONDS = 15;    // show-format decision: a quiz-show clock, not a data limit
 const $ = (id) => document.getElementById(id);
 
 const CAMEOS = [
@@ -18,7 +20,7 @@ const CAMEOS = [
 ];
 
 let pools = null; // [[posts of A], [posts of B]]
-let round, score, current, answered;
+let correct, round, score, current, answered, streak, best, clock, deadline, startedAt;
 
 async function jget(url) {
   const r = await fetch(url);
@@ -57,6 +59,30 @@ async function loadAccount(handle, say) {
   return items.filter((i) => usable(i) && !seen.has(i.text.trim()) && seen.add(i.text.trim()));
 }
 
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const HOST_OPEN = ["Welcome back, folks, the lights are hot and the posts are hotter!", "Fingers on buzzers. Whatever happens, it was legally somebody's idea.", "Next up: a post. Allegedly written by a human."];
+const HOST_RIGHT = ["Correct! The audience goes mildly wild!", "Ding ding ding! Somebody's been studying the tapes.", "Yes! Put that on the board!"];
+const HOST_WRONG = ["Ooooh, so close, and by close I mean not.", "Bzzt! The pigeon is shaking his head.", "That's okay, contestants come and go."];
+const HOST_STREAK = ["{n} in a row! The cameras are sweating.", "{n} straight! Security, please escort this genius to the bonus round."];
+const HOST_TIMEOUT = ["Time's up! Dead air is the worst thing in television."];
+function host(m) { $("host").textContent = "🎙️ " + m; }
+
+function stopClock() { if (clock) clearInterval(clock); clock = null; }
+function startClock() {
+  stopClock();
+  startedAt = Date.now();
+  deadline = startedAt + BUZZ_SECONDS * 1000;
+  const bar = $("clockbar");
+  const tick = () => {
+    const left = Math.max(0, deadline - Date.now());
+    bar.style.width = (left / (BUZZ_SECONDS * 1000)) * 100 + "%";
+    bar.classList.toggle("low", left < 4000);
+    if (left <= 0 && !answered) buzz(-1);
+  };
+  tick();
+  clock = setInterval(tick, 100);
+}
+
 function show(id) {
   for (const s of ["intro", "play", "end"]) $(s).hidden = s !== id;
 }
@@ -64,7 +90,8 @@ function show(id) {
 function nextQuestion() {
   round++;
   answered = false;
-  $("round").textContent = `ROUND ${round}/${ROUNDS}`;
+  $("round").textContent = round === FINAL_ROUND ? "FINAL ROUND — DOUBLE POINTS" : `ROUND ${round}/${ROUNDS}`;
+  host(round === FINAL_ROUND ? "This is it. Final round. Everything is worth double and nothing is refundable." : pick(HOST_OPEN));
   $("reveal").hidden = true;
   // coin-flip the account each round (falling back if one pool ran dry)
   let side = Math.random() < 0.5 ? 0 : 1;
@@ -84,6 +111,7 @@ function nextQuestion() {
     cam.hidden = false;
     music.sting("cameo");
   } else cam.hidden = true;
+  startClock();
 }
 
 function confetti() {
@@ -102,17 +130,28 @@ function confetti() {
 function buzz(side) {
   if (answered) return;
   answered = true;
-  music.sting("buzz");
+  stopClock();
+  const timedOut = side < 0;
+  if (!timedOut) music.sting("buzz");
   const ok = side === current.side;
-  $(side === 0 ? "buzzA" : "buzzB").classList.add("picked");
+  if (!timedOut) $(side === 0 ? "buzzA" : "buzzB").classList.add("picked");
   $("buzzA").disabled = $("buzzB").disabled = true;
-  if (ok) score += 100;
-  setTimeout(() => music.sting(ok ? "right" : "wrong"), 200);
+  const mult = round === FINAL_ROUND ? 2 : 1;
+  // 100 for the right answer, up to 50 more for buzzing early, +25 per streak step (max +100)
+  const fast = Math.round(50 * Math.max(0, (deadline - Date.now()) / (BUZZ_SECONDS * 1000)));
+  streak = ok ? streak + 1 : 0;
+  if (ok) correct++;
+  best = Math.max(best, streak);
+  const gain = ok ? (100 + fast + Math.min(100, (streak - 1) * 25)) * mult : 0;
+  score += gain;
+  if (!timedOut) setTimeout(() => music.sting(ok ? "right" : "wrong"), 200);
   if (ok) confetti();
   $("score").textContent = `${score} PTS`;
   const rv = $("reveal");
   rv.className = "reveal " + (ok ? "right" : "wrong");
-  $("verdict").textContent = `${ok ? "CORRECT! +100" : "BZZT! WRONG."} It was @${ACCOUNTS[current.side]}.`;
+  $("verdict").textContent = `${ok ? `CORRECT! +${gain}` : timedOut ? "TIME'S UP!" : "BZZT! WRONG."} It was @${ACCOUNTS[current.side]}.`;
+  host(timedOut ? pick(HOST_TIMEOUT) : ok ? (streak >= 3 ? pick(HOST_STREAK).replace("{n}", streak) : pick(HOST_RIGHT)) : pick(HOST_WRONG));
+  if (timedOut) music.sting("wrong");
   const m = current.post.uri.match(/^at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)$/);
   $("postlink").href = m ? `https://bsky.app/profile/${m[1]}/post/${m[2]}` : "#";
   $("next").textContent = round >= ROUNDS ? "FINAL SCORE" : "NEXT";
@@ -121,11 +160,13 @@ function buzz(side) {
 
 function finish() {
   music.stopTheme();
-  const n = score / 100;
+  stopClock();
+  const n = correct;
   const title = n >= 9 ? "YOU'RE BASICALLY CEE" : n >= 7 ? "SUPERFAN!" : n >= 5 ? "RESPECTABLE COIN-FLIPPING" : "THE POSTS ARE COMING FROM INSIDE THE HOUSE";
   $("endtitle").textContent = `${score} POINTS — ${title}`;
-  $("endline").textContent = `${n}/${ROUNDS} posts correctly attributed.`;
-  const text = `I scored ${n}/${ROUNDS} on WHO POSTED IT?! — guessing @cee.wtf or @wagrace.mir.cee.wtf. https://ceequiz.bisks.net/`;
+  $("endline").textContent = `${n}/${ROUNDS} posts correctly attributed. Best streak: ${best}.`;
+  host("That's our show! Tip your pigeon.");
+  const text = `I scored ${score} points (${n}/${ROUNDS}, best streak ${best}) on WHO POSTED IT?! — guessing @cee.wtf or @wagrace.mir.cee.wtf. https://ceequiz.bisks.net/`;
   $("share").href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(text);
   show("end");
   music.sting("right");
@@ -147,7 +188,7 @@ async function start() {
     $("start").disabled = false;
     return;
   }
-  round = 0; score = 0;
+  round = 0; score = 0; streak = 0; best = 0; correct = 0;
   $("score").textContent = "0 PTS";
   show("play");
   music.startTheme();

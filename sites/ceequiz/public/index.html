@@ -27,7 +27,7 @@
   <p class="sub">the <b>@cee.wtf</b> or <b>@wagrace.mir.cee.wtf</b> quiz</p>
 
   <section id="intro" class="stage">
-    <p>Ten real posts. Two contestants. One buzzer each. Trust your gut.</p>
+    <p>Ten real posts. Two contestants. One buzzer each. Fifteen seconds a round, bonus points for speed, streaks and a double-points final. Trust your gut.</p>
     <button id="start" class="big">START THE SHOW</button>
     <p id="loadmsg" class="dim" aria-live="polite"></p>
     <label class="dim"><input type="checkbox" id="mute" /> mute the theme song</label>
@@ -35,6 +35,8 @@
 
   <section id="play" class="stage" hidden>
     <div class="hud"><span id="round">ROUND 1/10</span><span id="score">0 PTS</span></div>
+    <p id="host" class="host" aria-live="polite"></p>
+    <div class="clock" aria-hidden="true"><div id="clockbar"></div></div>
     <div id="cameo" class="cameo" hidden></div>
     <blockquote id="post" class="card"></blockquote>
     <div class="buzzers">

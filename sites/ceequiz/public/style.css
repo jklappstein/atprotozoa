@@ -39,3 +39,7 @@ button,.big{font:inherit;cursor:pointer}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 footer{position:relative;padding:20px;font-size:.85rem;opacity:.8}
 footer a{color:var(--cyan)}
+.host{margin:.6em 0 .2em;font-style:italic;color:var(--gold);min-height:1.4em}
+.clock{height:10px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;margin:6px 0}
+#clockbar{height:100%;width:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));transition:width .1s linear}
+#clockbar.low{background:#ff4040}
