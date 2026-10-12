@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WHO POSTED IT?! — the cee.wtf quiz</title>
+<meta name="description" content="A gameshow quiz: a real post appears, and you buzz in on whether @cee.wtf or @wagrace.mir.cee.wtf wrote it." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="WHO POSTED IT?! — cee.wtf or wagrace?" />
+<meta property="og:description" content="Gameshow quiz: guess whether @cee.wtf or @wagrace.mir.cee.wtf wrote the post." />
+<meta property="og:url" content="https://ceequiz.bisks.net/" />
+<meta property="og:image" content="https://ceequiz.bisks.net/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="WHO POSTED IT?! gameshow logo with two buzzers, cee and wagrace." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="WHO POSTED IT?! — cee.wtf or wagrace?" />
+<meta name="twitter:description" content="Gameshow quiz: guess whether @cee.wtf or @wagrace.mir.cee.wtf wrote the post." />
+<meta name="twitter:image" content="https://ceequiz.bisks.net/og.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="rays" aria-hidden="true"></div>
+<div class="bulbs top" aria-hidden="true"></div>
+<main>
+  <h1 class="logo"><span>WHO</span> <span>POSTED</span> <span>IT?!</span></h1>
+  <p class="sub">the <b>@cee.wtf</b> or <b>@wagrace.mir.cee.wtf</b> quiz</p>
+
+  <section id="intro" class="stage">
+    <p>Ten real posts. Two contestants. One buzzer each. Trust your gut.</p>
+    <button id="start" class="big">START THE SHOW</button>
+    <p id="loadmsg" class="dim" aria-live="polite"></p>
+    <label class="dim"><input type="checkbox" id="mute" /> mute the theme song</label>
+  </section>
+
+  <section id="play" class="stage" hidden>
+    <div class="hud"><span id="round">ROUND 1/10</span><span id="score">0 PTS</span></div>
+    <div id="cameo" class="cameo" hidden></div>
+    <blockquote id="post" class="card"></blockquote>
+    <div class="buzzers">
+      <button id="buzzA" class="buzz a"><i></i>@cee.wtf</button>
+      <button id="buzzB" class="buzz b"><i></i>@wagrace.mir.cee.wtf</button>
+    </div>
+    <div id="reveal" class="reveal" hidden aria-live="polite">
+      <p id="verdict"></p>
+      <a id="postlink" target="_blank" rel="noopener">see the original post →</a>
+      <button id="next" class="big small">NEXT</button>
+    </div>
+  </section>
+
+  <section id="end" class="stage" hidden>
+    <h2 id="endtitle"></h2>
+    <p id="endline"></p>
+    <div class="buttons">
+      <a id="share" class="big small" target="_blank" rel="noopener">post my score</a>
+      <button id="again" class="big small">PLAY AGAIN</button>
+    </div>
+  </section>
+</main>
+<footer>
+  <a href="https://rateyourbuild.bisks.net/site/ceequiz">rate this on rateyourbuild →</a>
+</footer>
+<script type="module" src="lib/quiz.js"></script>
+<script src="lib/visits.js" data-site="ceequiz" data-into="footer"></script>
+</body>
+</html>

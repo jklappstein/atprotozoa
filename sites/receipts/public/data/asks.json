@@ -780,6 +780,14 @@
     "blurb": "cee.wtf's own writing style broken into heuristics — length, capitalization, punctuation, emoji, posting rhythm, vocabulary — then enter any Bluesky handle to see how close your style lands to theirs. built for @cee.wtf, renamed here by @bisks.net."
   },
   {
+    "name": "ceequiz",
+    "url": "https://ceequiz.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "game",
+    "blurb": "a gameshow where a real post from @cee.wtf or @wagrace.mir.cee.wtf appears and you buzz in on who posted it. spotlights, a synthesized theme song, and a guest star. asked for by @norvid-studies.bsky.social.",
+    "roast": "Two accounts, one person, and the quiz still manages to be harder than the thing it quizzes on — plus a pigeon cameo nobody asked for, which is on brand."
+  },
+  {
     "name": "chainedemoji",
     "url": "https://chainedemoji.bisks.net/",
     "by": "shimmermathlabs.com",

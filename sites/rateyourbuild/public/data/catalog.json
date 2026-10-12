@@ -1144,6 +1144,17 @@
     "mentionUri": null
   },
   {
+    "name": "ceequiz",
+    "url": "https://ceequiz.bisks.net/",
+    "title": "ceequiz",
+    "blurb": "a gameshow where a real post from @cee.wtf or @wagrace.mir.cee.wtf appears and you buzz in on who posted it. spotlights, a synthesized theme song, and a guest star. asked for by @norvid-studies.bsky.social.",
+    "genre": "game",
+    "subgenre": null,
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "chainedemoji",
     "url": "https://chainedemoji.bisks.net/",
     "title": "Exhibit A: Untitled (Crying-Laughing Emoji)",
