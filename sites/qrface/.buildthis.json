@@ -1,0 +1,9 @@
+{
+  "builtName": "qrface",
+  "requestedBy": "psingletary.com",
+  "brief": "@buildthis.bisks.net a website that recreates the avatar as a QR code that links to the website hosted on that domain. if the domain doesn't point to a website return the clown emojii\nthe QR code should be high contrast but look as much like the avatar as possible",
+  "note": "qrface: type a handle, get the avatar as a scannable halftone QR to its domain; no website there and you get 🤡. Worker only checks if the domain answers.",
+  "mentionUri": "at://did:plc:stznz7qsokto2345qtdzogjb/app.bsky.feed.post/3mxoytubvzs2l",
+  "builtAt": "2026-10-12T17:13:44Z",
+  "builtBy": "@buildthis.bisks.net"
+}

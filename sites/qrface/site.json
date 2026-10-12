@@ -1,0 +1,11 @@
+{
+  "name": "qrface",
+  "url": "https://qrface.bisks.net/",
+  "title": "qrface",
+  "blurb": "turns a bluesky avatar into a high-contrast qr code that still looks like the avatar and links to the website on the handle's domain. no website there? you get a clown. asked for by psingletary.com.",
+  "tag": "tool",
+  "type": "toy",
+  "by": "psingletary.com",
+  "src": "bot",
+  "hidden": false
+}

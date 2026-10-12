@@ -5753,6 +5753,17 @@
     "mentionUri": "at://did:plc:p2cp5gopk7mgjegy6wadk3ep/app.bsky.feed.post/3mrp2nrmiak2u"
   },
   {
+    "name": "qrface",
+    "url": "https://qrface.bisks.net/",
+    "title": "qrface",
+    "blurb": "turns a bluesky avatar into a high-contrast qr code that still looks like the avatar and links to the website on the handle's domain. no website there? you get a clown. asked for by psingletary.com.",
+    "genre": "toy",
+    "subgenre": null,
+    "by": "psingletary.com",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "quadrants",
     "url": "https://quadrants.bisks.net/",
     "title": "quadrants",

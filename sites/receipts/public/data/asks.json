@@ -3916,6 +3916,14 @@
     "blurb": "a P vs NP breakthrough machine. pick a side — P = NP or P ≠ NP — and hit \"attempt a proof\" for an absurd mad-libs argument and an instant referee report: sometimes citing one of the three real barriers to a proof (relativization, natural proofs, algebrization), sometimes just an ordinary crank flaw. there's even a \"claim the $1,000,000\" button, which never quite works. @samuel.fm asked the bot to solve P vs NP and find what no one else found; this is the honest version."
   },
   {
+    "name": "qrface",
+    "url": "https://qrface.bisks.net/",
+    "by": "psingletary.com",
+    "type": "toy",
+    "blurb": "turns a bluesky avatar into a high-contrast qr code that still looks like the avatar and links to the website on the handle's domain. no website there? you get a clown. asked for by psingletary.com.",
+    "roast": "Asked for a QR code that looks like your face, which is a very high-effort way to send people to a website that, per the clown clause, may not exist."
+  },
+  {
     "name": "quadrants",
     "url": "https://quadrants.bisks.net/",
     "by": "antiali.as",

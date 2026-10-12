@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>qrface — your avatar, as a QR code</title>
+    <meta name="description" content="Type a Bluesky handle: get its avatar rebuilt as a scannable QR code that links to the website on the handle's domain. No website there? You get a clown." />
+    <meta property="og:title" content="qrface — your avatar, as a QR code" />
+    <meta property="og:description" content="A Bluesky avatar rebuilt as a high-contrast QR code that links to the website on the handle's domain. No website? 🤡" />
+    <meta property="og:image" content="https://qrface.bisks.net/og.png" />
+    <meta property="og:url" content="https://qrface.bisks.net/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg: #0c0c0f;
+        --panel: #15151a;
+        --line: #2a2a32;
+        --ink: #f0f0f4;
+        --dim: #9a9aa8;
+        --accent: #6ee7a8;
+        --err: #ff8a80;
+        --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html, body { margin: 0; }
+      body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.55; }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 3rem 1.1rem 4rem; }
+      header { text-align: center; margin-bottom: 1.6rem; }
+      h1 { font-size: clamp(1.9rem, 8vw, 2.6rem); margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+      h1 .tag { color: var(--accent); }
+      header p { color: var(--dim); max-width: 44ch; margin: 0 auto; font-size: 0.95rem; }
+      .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem; }
+      label.field { display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.4rem; }
+      .row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+      input[type="text"] {
+        flex: 1; min-width: 14ch; font: inherit; padding: 0.6rem 0.75rem;
+        border: 1px solid var(--line); background: #0a0a0d; color: var(--ink); border-radius: 8px;
+      }
+      input:focus { outline: none; border-color: var(--accent); }
+      input[type="range"] { flex: 1; min-width: 8ch; accent-color: var(--accent); }
+      button {
+        font: inherit; font-weight: 700; font-size: 0.9rem; padding: 0.6rem 0.95rem;
+        border: 1px solid var(--line); background: transparent; color: var(--ink);
+        border-radius: 8px; cursor: pointer;
+      }
+      button:hover:not(:disabled) { border-color: var(--accent); }
+      button:disabled { opacity: 0.4; cursor: default; }
+      button.primary { background: var(--accent); border-color: var(--accent); color: #07140d; }
+      .status { font-size: 0.85rem; color: var(--dim); margin-top: 0.7rem; min-height: 1.3em; }
+      .status.err { color: var(--err); }
+      #result { margin-top: 1.1rem; text-align: center; }
+      #qr { width: min(440px, 100%); height: auto; aspect-ratio: 1; border-radius: 10px; background: #fff; image-rendering: auto; }
+      #clown { font-size: clamp(7rem, 38vw, 12rem); line-height: 1.1; }
+      #target { font-size: 0.9rem; margin: 0.6rem 0 0.2rem; word-break: break-all; }
+      #target a { color: var(--accent); }
+      .tools { margin-top: 1rem; text-align: left; }
+      .tools .lab { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); width: 4.5rem; }
+      .tools label.chk { font-size: 0.85rem; color: var(--dim); display: flex; gap: 0.4rem; align-items: center; }
+      .actions { justify-content: center; margin-top: 1rem; }
+      .fine { font-size: 0.8rem; color: var(--dim); margin-top: 0.7rem; }
+      footer { margin-top: 2.4rem; color: var(--dim); font-size: 0.78rem; text-align: center; }
+      footer a { color: var(--dim); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1><span class="tag" onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">q</span>rface</h1>
+        <p>
+          type a bluesky handle. its avatar gets rebuilt as a qr code that opens
+          the website on that handle's domain. nothing hosted there? a clown.
+        </p>
+      </header>
+
+      <section class="panel">
+        <form id="form">
+          <label class="field" for="handle">bluesky handle</label>
+          <div class="row">
+            <input id="handle" type="text" placeholder="you.bsky.social" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            <button type="submit" id="go" class="primary">make my qr</button>
+          </div>
+        </form>
+        <div class="status" id="status"></div>
+
+        <div id="result" hidden>
+          <canvas id="qr" aria-label="QR code styled like the avatar"></canvas>
+          <div id="clown" role="img" aria-label="clown face" hidden>🤡</div>
+          <div id="target"></div>
+
+          <div class="tools" id="tools">
+            <div class="row"><span class="lab">detail</span><input id="detail" type="range" min="5" max="16" value="9" /></div>
+            <div class="row"><span class="lab">dots</span><input id="dots" type="range" min="30" max="70" value="50" /></div>
+            <div class="row"><span class="lab"></span><label class="chk"><input id="tint" type="checkbox" /> tint with avatar colors</label></div>
+          </div>
+
+          <div class="row actions" id="actions">
+            <button type="button" id="dl">download png</button>
+            <a id="share" href="#" target="_blank" rel="noopener"><button type="button">post about it</button></a>
+          </div>
+        </div>
+
+        <div class="fine">
+          the avatar is thresholded to black and white and a dot in every module
+          carries the real code, so it scans like any other qr. more detail =
+          a bigger grid. runs in your browser; a tiny worker only checks whether
+          the domain answers.
+        </div>
+      </section>
+
+      <footer>
+        part of <a href="https://bisks.net">bisks.net</a>
+        · <a href="https://rateyourbuild.bisks.net/site/qrface" target="_blank" rel="noopener">rate this on rateyourbuild →</a>
+      </footer>
+    </div>
+
+    <script src="lib/handle-typeahead.js"></script>
+    <script type="module">
+      import { encode } from "./lib/qr.js";
+      import { renderQR } from "./lib/render.js";
+
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        form: $("form"), handle: $("handle"), go: $("go"), status: $("status"),
+        result: $("result"), qr: $("qr"), clown: $("clown"), target: $("target"),
+        tools: $("tools"), actions: $("actions"), detail: $("detail"), dots: $("dots"), tint: $("tint"),
+        dl: $("dl"), share: $("share"),
+      };
+      if (window.attachHandleTypeahead) attachHandleTypeahead(els.handle);
+
+      const APPVIEW = "https://public.api.bsky.app/xrpc";
+      let state = null; // { handle, url, avatar: HTMLImageElement | null }
+
+      function setStatus(msg, kind) {
+        els.status.textContent = msg || "";
+        els.status.className = "status" + (kind ? " " + kind : "");
+      }
+
+      // "@Alice.bsky.social " -> "alice.bsky.social"
+      const clean = (s) => s.trim().replace(/^@+/, "").trim().toLowerCase();
+
+      function loadImage(src) {
+        return new Promise((resolve, reject) => {
+          const im = new Image();
+          im.crossOrigin = "anonymous";
+          im.onload = () => resolve(im);
+          im.onerror = () => reject(new Error("couldn't load the avatar image"));
+          im.src = src;
+        });
+      }
+
+      function draw() {
+        if (!state || !state.url) return;
+        const qr = encode(state.url, { minVersion: Number(els.detail.value) });
+        renderQR(els.qr, qr, state.avatar, {
+          cell: 14,
+          tint: els.tint.checked,
+          dot: Number(els.dots.value) / 100,
+        });
+      }
+
+      function showClown(domain, why) {
+        state = null;
+        els.result.hidden = false;
+        els.qr.hidden = true;
+        els.tools.hidden = true;
+        els.clown.hidden = false;
+        els.dl.hidden = true;
+        els.target.textContent = why;
+        els.share.href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(
+          `🤡 ${domain} has no website, so there's no QR code to make. https://qrface.bisks.net/?h=${encodeURIComponent(domain)}`);
+      }
+
+      function showQR(handle) {
+        els.result.hidden = false;
+        els.qr.hidden = false;
+        els.tools.hidden = false;
+        els.clown.hidden = true;
+        els.dl.hidden = false;
+        els.target.innerHTML = "";
+        const a = document.createElement("a");
+        a.href = state.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = state.url;
+        els.target.append("scans to ", a);
+        els.share.href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(
+          `my avatar is a QR code now: ${state.url}\nmake yours: https://qrface.bisks.net/?h=${encodeURIComponent(handle)}`);
+        draw();
+      }
+
+      async function run(raw) {
+        const who = clean(raw);
+        if (!who) { setStatus("type a handle first", "err"); return; }
+        els.go.disabled = true;
+        els.result.hidden = true;
+        setStatus("looking up " + who + "…");
+        try {
+          const pr = await fetch(`${APPVIEW}/app.bsky.actor.getProfile?actor=${encodeURIComponent(who)}`);
+          if (!pr.ok) throw new Error(pr.status === 400 ? "no bluesky account with that handle" : `profile lookup failed (${pr.status})`);
+          const prof = await pr.json();
+          const domain = prof.handle;
+          if (!domain || domain === "handle.invalid") {
+            showClown(who, `${who} has no valid handle domain`);
+            setStatus("");
+            return;
+          }
+          setStatus(`checking whether ${domain} has a website…`);
+          const [chk, avatar] = await Promise.all([
+            fetch(`/api/check?d=${encodeURIComponent(domain)}`).then((r) => r.json()).catch(() => ({ ok: false })),
+            prof.avatar ? loadImage(prof.avatar).catch(() => null) : Promise.resolve(null),
+          ]);
+          if (!chk.ok) {
+            showClown(domain, `nothing is hosted at ${domain}`);
+            setStatus("");
+            return;
+          }
+          state = { handle: domain, url: chk.url || `https://${domain}/`, avatar };
+          showQR(domain);
+          setStatus(avatar ? "" : "no avatar set (or it wouldn't load), so this is a plain code");
+          history.replaceState(null, "", "?h=" + encodeURIComponent(domain));
+        } catch (e) {
+          setStatus(e.message || String(e), "err");
+        } finally {
+          els.go.disabled = false;
+        }
+      }
+
+      els.form.addEventListener("submit", (e) => { e.preventDefault(); run(els.handle.value); });
+      for (const el of [els.detail, els.dots, els.tint]) el.addEventListener("input", draw);
+      els.dl.addEventListener("click", () => {
+        if (!state) return;
+        els.qr.toBlob((blob) => {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = `qrface-${state.handle}.png`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        }, "image/png");
+      });
+
+      const pre = new URLSearchParams(location.search).get("h");
+      if (pre) { els.handle.value = pre; run(pre); }
+    </script>
+  </body>
+</html>

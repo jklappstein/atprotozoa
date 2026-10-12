@@ -1,0 +1,16 @@
+name = "atprotozoa-qrface"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# The avatar -> QR rendering all runs in the browser. The one server surface is
+# /api/check: a browser can't tell "nothing is hosted at this domain" from
+# "reachable" cross-origin (CORS hides the status), so the Worker makes the
+# request and returns only whether the site answers. No secrets, no state.
+#
+# routes MUST stay above [assets] (keys after a table header join that table).
+routes = [{ pattern = "qrface.bisks.net/*", zone_name = "bisks.net" }]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
