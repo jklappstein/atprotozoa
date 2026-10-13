@@ -1,0 +1,11 @@
+{
+  "name": "threadtiles",
+  "url": "https://threadtiles.bisks.net/",
+  "title": "threadtiles",
+  "blurb": "paste a bluesky thread link and get every image posted anywhere in it as one tiled grid you can download or share. asked for by norvid-studies.bsky.social.",
+  "tag": "tool",
+  "type": "tool",
+  "by": "norvid-studies.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

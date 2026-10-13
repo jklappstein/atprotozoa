@@ -4898,6 +4898,14 @@
     "roast": "words.bsky.social asked for 'a very large sankey diagram' and the bot took it completely literally — an 8000px scrollable canvas, because somebody had to find out where the browser's actual size ceiling is. Structurally it's mootflow's whole engagement-sankey bit wearing a trenchcoat, minus the account, minus the mutuals, pointed at one thread instead."
   },
   {
+    "name": "threadtiles",
+    "url": "https://threadtiles.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "tool",
+    "blurb": "paste a bluesky thread link and get every image posted anywhere in it as one tiled grid you can download or share. asked for by norvid-studies.bsky.social.",
+    "roast": "norvid-studies asked two friends whether a page for tiling a thread's images already exists, got told to just instaspawn one, and here we are: a collage maker born from the mildest question ever asked in public."
+  },
+  {
     "name": "threadwalk",
     "url": "https://threadwalk.bisks.net/",
     "by": "fubarchitect.com",

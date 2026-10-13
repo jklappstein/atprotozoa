@@ -1,0 +1,9 @@
+{
+  "builtName": "threadtiles",
+  "requestedBy": "norvid-studies.bsky.social",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\nactually maybe this is 'old world' thinking and i can just instaspawn one (!!?). @buildthis.bisks.net make a website where you point it at a bsky thread and it returns a tiled grid of all the images uploaded to that thread\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@norvid-studies.bsky.social: @minormobius.bsky.social @carbonadoks.com is there currently a page that pulls all the images from one thread, into a single tiled image?",
+  "note": "threadtiles: paste any post link from a bsky thread and get every image in it (parents + all replies) as one tiled grid. Tweak size/gap/crop, download or share.",
+  "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3mxpryufpec2h",
+  "builtAt": "2026-10-13T00:38:46Z",
+  "builtBy": "@buildthis.bisks.net"
+}
