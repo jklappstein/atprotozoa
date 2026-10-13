@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>droneloop — a drone synth with a stopwatch looper</title>
+<meta name="description" content="A drone synth with a stopwatch for a looper: hit lap to capture layers, measured in seconds not measures. Reverb, delay, fuzz, chorus. Patches save to your PDS.">
+<meta property="og:title" content="droneloop — a drone synth with a stopwatch looper">
+<meta property="og:description" content="Four-voice drone, fx, and a looper that works like a stopwatch's lap button. Patches save to your PDS.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://droneloop.bisks.net/">
+<meta property="og:image" content="https://droneloop.bisks.net/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="droneloop — a drone synth with a stopwatch looper">
+<meta name="twitter:description" content="Four-voice drone, fx, and a looper that works like a stopwatch's lap button.">
+<meta name="twitter:image" content="https://droneloop.bisks.net/og.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>drone<span onclick="var i=document.getElementById('handle');i.value='@cee.wtf';i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}));i.focus()" style="cursor:pointer">l</span>oop</h1>
+    <p class="tag">a drone synth with a stopwatch for a looper. loops are measured in seconds, not measures.</p>
+  </header>
+
+  <section class="panel" id="clockwrap">
+    <div class="clockrow">
+      <button id="power" type="button" class="power">▶ drone on</button>
+      <div class="clockbox">
+        <div id="clock" class="clock">00:00.00</div>
+        <div id="clocksub" class="clocksub">stopped</div>
+      </div>
+      <button id="lap" type="button" class="lapbtn">START</button>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+    <p id="clockmsg" class="dim"></p>
+    <div class="row">
+      <button id="undo" type="button" class="small" disabled>undo last lap</button>
+      <button id="reset" type="button" class="small" disabled>reset</button>
+      <span class="dim">space = start / lap</span>
+    </div>
+    <div id="layers"></div>
+    <canvas id="scope" width="900" height="90"></canvas>
+  </section>
+
+  <section class="panel">
+    <h2>sound</h2>
+    <div class="row" id="presets"></div>
+    <div class="row">
+      <label class="slider"><span>root note</span><select id="root"></select></label>
+    </div>
+    <div id="voices"></div>
+    <div id="tone" class="grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>effects</h2>
+    <div id="fx" class="fxgrid"></div>
+    <div id="master"></div>
+  </section>
+
+  <section class="panel">
+    <h2>patches</h2>
+    <p id="status" class="status"></p>
+
+    <div id="signed-out">
+      <p class="dim">sign in with your atproto account to save patches to your own PDS.</p>
+      <form id="loginform" class="row">
+        <input id="handle" type="text" placeholder="you.bsky.social" autocomplete="off" autocapitalize="none" spellcheck="false">
+        <button type="submit">sign in</button>
+      </form>
+    </div>
+
+    <div id="signed-in" hidden>
+      <p class="dim">signed in as <b id="who"></b> <button id="logout" type="button" class="small">sign out</button></p>
+      <form id="saveform" class="row">
+        <input id="patchname" type="text" maxlength="60" placeholder="patch name">
+        <button id="savebtn" type="submit">save patch</button>
+      </form>
+      <p id="saveinfo" class="dim"></p>
+      <div id="mylist"></div>
+    </div>
+
+    <h3>browse someone's patches</h3>
+    <form id="browseform" class="row">
+      <input id="browsehandle" type="text" placeholder="friend.bsky.social" autocomplete="off" autocapitalize="none" spellcheck="false">
+      <button type="submit">look</button>
+    </form>
+    <div id="otherlist"></div>
+  </section>
+
+  <footer>
+    patches are <a href="/lexicons/net.bisks.droneloop.patch.json">net.bisks.droneloop.patch</a> records in your PDS.
+    built by <a href="https://buildthis.bisks.net/">@buildthis.bisks.net</a> for kitto.nekoweb.org ·
+    <a href="https://rateyourbuild.bisks.net/site/droneloop">rate this on rateyourbuild →</a>
+  </footer>
+</main>
+<script src="lib/handle-typeahead.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

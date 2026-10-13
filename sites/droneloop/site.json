@@ -1,0 +1,11 @@
+{
+  "name": "droneloop",
+  "url": "https://droneloop.bisks.net/",
+  "title": "droneloop",
+  "blurb": "a drone synth with a stopwatch for a looper: hit lap to capture a layer of the sound, loops measured in seconds not measures, with reverb, delay, fuzz and more. patches save to your PDS. asked for by kitto.nekoweb.org.",
+  "tag": "toy",
+  "type": "toy",
+  "by": "kitto.nekoweb.org",
+  "src": "bot",
+  "hidden": false
+}

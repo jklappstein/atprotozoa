@@ -1,0 +1,27 @@
+{
+  "lexicon": 1,
+  "id": "net.bisks.droneloop.patch",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "A droneloop synth patch: voices, tone and effects settings, plus the lap times of the take it was saved with.",
+      "record": {
+        "type": "object",
+        "required": ["name", "patch", "createdAt"],
+        "properties": {
+          "name": { "type": "string", "maxGraphemes": 60 },
+          "patch": { "type": "string", "maxLength": 8000, "description": "JSON text of the patch (atproto records can't hold floats)." },
+          "laps": {
+            "type": "object",
+            "properties": {
+              "loopMs": { "type": "integer", "description": "loop length set by the first lap, in milliseconds" },
+              "layers": { "type": "integer" }
+            }
+          },
+          "createdAt": { "type": "string", "format": "datetime" }
+        }
+      }
+    }
+  }
+}
