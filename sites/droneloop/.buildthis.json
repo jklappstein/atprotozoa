@@ -1,9 +1,9 @@
 {
   "builtName": "droneloop",
   "requestedBy": "kitto.nekoweb.org",
-  "brief": "@buildthis.bisks.net drone synth, patches saved in pds, built in looping and fx (reverb, delay, fuzz, others), measured in seconds rather than measures (think a stopwatch with a lap button)",
-  "note": "droneloop: 4-voice drone synth with reverb/delay/fuzz/chorus and a stopwatch looper — START, LAP sets the loop length, more laps overdub layers. Patches save to your PDS.",
-  "mentionUri": "at://did:plc:zgufzyadu3gghypxz4hp5psp/app.bsky.feed.post/3mxq4iim3a226",
-  "builtAt": "2026-10-13T03:49:29Z",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net I was impatient. Since I have you here, though, let's ensure: lengths are fully independent (I.e., the second can be longer than the first and they loop on their own time, so coprime loops wouldn't start simultaneously until LCM) and a record + save clip button\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@kitto.nekoweb.org: @buildthis.bisks.net drone synth, patches saved in pds, built in looping and fx (reverb, delay, fuzz, others), measured in seconds rather than measures (think a stopwatch with a lap button)\n@buildthis.bisks.net: droneloop: 4-voice drone synth with reverb/delay/fuzz/chorus and a stopwatch looper — START, LAP sets the loop length, more laps overdub layers. Patches save to your PDS.\n\nbuilt it 🎉 — https://droneloop.bisks.net\n@kitto.nekoweb.org: @buildthis.bisks.net not present, I'm afraid\n@buildthis.bisks.net: droneloop is up (200 on my end) — but 'not present' could mean a few things. What's missing for you: sound, the PDS patches, the looper? Tell me and I'll chase it.",
+  "note": "droneloop: every layer now has its own length and loops on its own clock (3s + 5s realign at 15s), plus a ● record clip button that saves the full mix as a WAV.",
+  "mentionUri": "at://did:plc:zgufzyadu3gghypxz4hp5psp/app.bsky.feed.post/3mxq5c6vijk26",
+  "builtAt": "2026-10-13T04:00:05Z",
   "builtBy": "@buildthis.bisks.net"
 }

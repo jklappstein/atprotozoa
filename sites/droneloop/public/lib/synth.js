@@ -188,7 +188,7 @@ export class Engine {
     this._reverbSize = null;
     this._fuzzDrive = null;
     this.layers = [];
-    this.looper = { state: "idle", t0: 0, N: 0, recording: null };
+    this.looper = { state: "idle", recording: null };
     this.onChange = () => {};
   }
 
@@ -315,6 +315,20 @@ export class Engine {
       channelCountMode: "explicit",
     });
     this.fxOut.connect(this.rec);
+    this.clip = null;
+    this.clipNode = new AudioWorkletNode(ctx, "droneloop-rec", {
+      numberOfInputs: 1,
+      numberOfOutputs: 0,
+      channelCount: 2,
+      channelCountMode: "explicit",
+    });
+    this.comp.connect(this.clipNode);
+    this.clipNode.port.onmessage = (e) => {
+      if (!this.clip) return;
+      this.clip.l.push(e.data.l);
+      this.clip.r.push(e.data.r);
+      this.clip.frames += e.data.l.length;
+    };
     this.rec.port.onmessage = (e) => {
       const r = this.looper.recording;
       if (r) {
@@ -392,11 +406,12 @@ export class Engine {
   }
 
   // ----- looper -----------------------------------------------------------
-  // Stopwatch semantics. START begins the clock and records the drone. The
-  // first LAP stops the clock: that elapsed time is the loop length, and the
-  // take starts looping. Every later LAP records one fresh layer over the
-  // running loop (phase-aligned, so it lands where you played it); pressing
-  // LAP again mid-layer closes it early, leaving the rest of that layer silent.
+  // Stopwatch semantics. START begins the clock and records the drone; the
+  // first LAP stops it, and that take starts looping. Every later LAP pair
+  // (LAP to start a layer, LAP to close it) records one more layer. Each
+  // layer's length is exactly how long you held it open, and each loops on its
+  // own clock from the moment it was closed, so a 3s and a 5s layer only line
+  // up again every 15s.
 
   now() {
     return this.ctx ? this.ctx.currentTime : 0;
@@ -406,18 +421,26 @@ export class Engine {
     return this.looper.state;
   }
 
+  // length of the first layer; the main clock follows it
   get loopSeconds() {
-    return this.looper.N ? this.looper.N / this.ctx.sampleRate : 0;
+    return this.layers.length ? this.layers[0].len : 0;
+  }
+
+  _layerPhase(l) {
+    return (((this.now() - l.t0) % l.len) + l.len) % l.len;
   }
 
   phase() {
-    const L = this.loopSeconds;
-    if (!L || this.looper.state !== "looping") return 0;
-    return (((this.now() - this.looper.t0) % L) + L) % L;
+    return this.layers.length && this.looper.state === "looping" ? this._layerPhase(this.layers[0]) : 0;
   }
 
-  _beginRecording(startPhase) {
-    this.looper.recording = { l: [], r: [], frames: 0, startPhase, startTime: this.now() };
+  layerPhase(i) {
+    const l = this.layers[i];
+    return l ? this._layerPhase(l) : 0;
+  }
+
+  _beginRecording() {
+    this.looper.recording = { l: [], r: [], frames: 0, startTime: this.now() };
     this.rec.port.postMessage(true);
   }
 
@@ -443,85 +466,57 @@ export class Engine {
     const lp = this.looper;
     if (lp.state === "idle") {
       lp.state = "timing";
-      this._beginRecording(0);
+      this._beginRecording();
       this.onChange();
       return { type: "start" };
     }
     if (lp.state === "timing") {
-      const seconds = this.elapsedRecording();
       const rec = this._takeRecording();
-      lp.N = Math.max(1, Math.round(seconds * this.ctx.sampleRate));
       lp.state = "looping";
-      lp.t0 = this.now();
-      this._addLayer(rec, 0, 0);
+      this._addLayer(rec);
       this.onChange();
       return { type: "loop", seconds: this.loopSeconds };
     }
-    // looping
     if (lp.recording) {
-      const startPhase = lp.recording.startPhase;
       const rec = this._takeRecording();
-      this._addLayer(rec, startPhase, this.layers.length);
+      const l = this._addLayer(rec);
       this.onChange();
-      return { type: "layer", at: startPhase, closedEarly: true };
+      return { type: "layer", seconds: l ? l.len : 0 };
     }
-    this._beginRecording(this.phase());
+    this._beginRecording();
     this.onChange();
-    return { type: "arm", at: this.phase() };
+    return { type: "arm" };
   }
 
-  // Called each animation frame: closes a layer once it has covered a full
-  // loop's worth of audio.
-  tick() {
-    const lp = this.looper;
-    const r = lp.recording;
-    if (lp.state === "looping" && r && r.frames >= lp.N) {
-      const startPhase = r.startPhase;
-      const rec = this._takeRecording();
-      this._addLayer(rec, startPhase, this.layers.length);
-      this.onChange();
-    }
-  }
+  // Layers have no fixed length to fill, so there is nothing to do per frame.
+  tick() {}
 
-  _addLayer(rec, startPhase, index) {
+  _addLayer(rec) {
     const sr = this.ctx.sampleRate;
-    const N = this.looper.N;
+    const N = rec.frames;
+    if (N < 1) {
+      if (!this.layers.length) this.looper.state = "idle";
+      return null;
+    }
     const buf = this.ctx.createBuffer(2, N, sr);
     const L = buf.getChannelData(0);
     const R = buf.getChannelData(1);
-    const offset = Math.round(startPhase * sr);
     let w = 0;
-    outer: for (let c = 0; c < rec.l.length; c++) {
-      const cl = rec.l[c];
-      const cr = rec.r[c];
-      for (let i = 0; i < cl.length; i++) {
-        if (w >= N) break outer;
-        const idx = (offset + w) % N;
-        L[idx] = cl[i];
-        R[idx] = cr[i];
-        w++;
-      }
+    for (let c = 0; c < rec.l.length; c++) {
+      L.set(rec.l[c], w);
+      R.set(rec.r[c], w);
+      w += rec.l[c].length;
     }
-    const first = this.layers.length === 0;
     const gain = this.ctx.createGain();
     gain.connect(this.mix);
-    const layer = { buf, gain, src: null, muted: false, level: 1, startPhase, index: this.layers.length, recordedFrames: w, first };
-    this.layers.push(layer);
-    this._playLayer(layer);
-  }
-
-  _playLayer(layer) {
-    if (layer.src) {
-      try { layer.src.stop(); } catch {}
-      layer.src.disconnect();
-    }
     const src = this.ctx.createBufferSource();
-    src.buffer = layer.buf;
+    src.buffer = buf;
     src.loop = true;
-    src.connect(layer.gain);
-    // start mid-buffer at the loop's current phase so every layer stays aligned
-    src.start(0, this.phase() % layer.buf.duration);
-    layer.src = src;
+    src.connect(gain);
+    src.start();
+    const layer = { buf, gain, src, muted: false, level: 1, len: N / sr, t0: this.now() };
+    this.layers.push(layer);
+    return layer;
   }
 
   setLayerMuted(i, muted) {
@@ -538,28 +533,86 @@ export class Engine {
     if (!l.muted) l.gain.gain.setTargetAtTime(level, this.now(), 0.02);
   }
 
-  // Drop the newest layer. Dropping the last one resets the stopwatch.
+  _dropLayer(l) {
+    try { l.src.stop(); } catch {}
+    l.src.disconnect();
+    l.gain.disconnect();
+  }
+
+  // Drop the newest layer (or cancel a take in progress). Dropping the last
+  // one resets the stopwatch.
   undoLayer() {
-    if (this.looper.recording) this._takeRecording();
-    const l = this.layers.pop();
-    if (l) {
-      try { l.src.stop(); } catch {}
-      l.src.disconnect();
-      l.gain.disconnect();
+    if (this.looper.recording) {
+      this._takeRecording();
+      if (this.looper.state === "timing") this.looper.state = "idle";
+    } else {
+      const l = this.layers.pop();
+      if (l) this._dropLayer(l);
     }
-    if (!this.layers.length) this.looper = { state: "idle", t0: 0, N: 0, recording: null };
+    if (!this.layers.length) this.looper = { state: "idle", recording: null };
     this.onChange();
   }
 
   reset() {
     if (this.looper.recording && this.ctx) this._takeRecording();
-    for (const l of this.layers) {
-      try { l.src.stop(); } catch {}
-      l.src.disconnect();
-      l.gain.disconnect();
-    }
+    for (const l of this.layers) this._dropLayer(l);
     this.layers = [];
-    this.looper = { state: "idle", t0: 0, N: 0, recording: null };
+    this.looper = { state: "idle", recording: null };
     this.onChange();
   }
+
+  // ----- clip recorder ----------------------------------------------------
+  // Captures exactly what the speakers get (drone + fx + every loop layer) as
+  // a stereo 16-bit WAV. Independent of the looper.
+
+  get clipRecording() {
+    return !!this.clip;
+  }
+
+  clipSeconds() {
+    return this.clip ? this.now() - this.clip.startTime : 0;
+  }
+
+  startClip() {
+    if (!this.ctx || this.clip) return;
+    this.clip = { l: [], r: [], frames: 0, startTime: this.now() };
+    this.clipNode.port.postMessage(true);
+  }
+
+  stopClip() {
+    if (!this.clip) return null;
+    this.clipNode.port.postMessage(false);
+    const c = this.clip;
+    this.clip = null;
+    if (!c.frames) return null;
+    return encodeWav(c, this.ctx.sampleRate);
+  }
+}
+
+function encodeWav(c, sr) {
+  const n = c.frames;
+  const out = new DataView(new ArrayBuffer(44 + n * 4));
+  const str = (o, t) => [...t].forEach((ch, k) => out.setUint8(o + k, ch.charCodeAt(0)));
+  str(0, "RIFF");
+  out.setUint32(4, 36 + n * 4, true);
+  str(8, "WAVEfmt ");
+  out.setUint32(16, 16, true);
+  out.setUint16(20, 1, true);
+  out.setUint16(22, 2, true);
+  out.setUint32(24, sr, true);
+  out.setUint32(28, sr * 4, true);
+  out.setUint16(32, 4, true);
+  out.setUint16(34, 16, true);
+  str(36, "data");
+  out.setUint32(40, n * 4, true);
+  let o = 44;
+  const s16 = (v) => Math.round(Math.max(-1, Math.min(1, v)) * 32767);
+  for (let k = 0; k < c.l.length; k++) {
+    for (let i = 0; i < c.l[k].length; i++) {
+      out.setInt16(o, s16(c.l[k][i]), true);
+      out.setInt16(o + 2, s16(c.r[k][i]), true);
+      o += 4;
+    }
+  }
+  return new Blob([out], { type: "audio/wav" });
 }

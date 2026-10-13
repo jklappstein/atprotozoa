@@ -13,8 +13,6 @@ const engine = new Engine();
 let patch = defaultPatch();
 let session = null;
 let currentName = "";
-// lap log for the current take: what was pressed, and where in the loop
-let lapLog = [];
 
 // ---------- helpers ----------
 const getPath = (o, path) => path.split(".").reduce((a, k) => a[k], o);
@@ -206,25 +204,16 @@ async function doLap() {
   }
   const r = await engine.lap();
   if (!r) return;
-  if (r.type === "start") lapLog = [];
-  if (r.type === "loop") lapLog.push({ n: 1, at: 0, len: r.seconds, kind: "loop" });
-  if (r.type === "arm") lapLog.push({ n: lapLog.length + 1, at: r.at, len: engine.loopSeconds, kind: "layer" });
-  if (r.type === "layer") {
-    const last = lapLog[lapLog.length - 1];
-    if (last) last.early = true;
-  }
   renderLooper();
 }
 lapBtn.addEventListener("click", doLap);
 $("#undo").addEventListener("click", () => {
   if (engine.state === "idle") return;
   engine.undoLayer();
-  lapLog.pop();
   renderLooper();
 });
 $("#reset").addEventListener("click", () => {
   engine.reset();
-  lapLog = [];
   renderLooper();
 });
 
@@ -240,10 +229,10 @@ function renderLooper() {
     st === "idle"
       ? "hit START, play with the knobs, hit LAP: that stretch of time becomes the loop"
       : st === "timing"
-        ? "recording… LAP sets the loop length"
+        ? "recording… LAP sets the first loop's length"
         : rec
-          ? "recording a layer over the loop"
-          : "looping — LAP to record another layer";
+          ? "recording a layer — LAP again when it's as long as you want; it loops on its own clock"
+          : "looping — LAP to start another layer, LAP to close it. layers can be any length";
 
   const box = $("#layers");
   box.replaceChildren();
@@ -255,21 +244,55 @@ function renderLooper() {
     });
     const vol = el("input", { type: "range", min: 0, max: 1, step: 0.01, value: l.level });
     vol.addEventListener("input", () => engine.setLayerLevel(i, +vol.value));
-    const info = lapLog[i];
-    const label = i === 0 ? `lap 1 · loop ${engine.loopSeconds.toFixed(2)}s` : `lap ${i + 1} · from ${(l.startPhase).toFixed(2)}s${info?.early ? " (closed early)" : ""}`;
-    box.append(el("div", { className: "layer" + (l.muted ? " muted" : "") }, el("span", { textContent: label }), vol, mute));
+    const label = `layer ${i + 1} · ${l.len.toFixed(2)}s`;
+    const pbar = el("i");
+    box.append(el("div", { className: "layer" + (l.muted ? " muted" : "") }, el("span", { textContent: label }), el("div", { className: "lprog" }, pbar), vol, mute));
   });
   renderSaveInfo();
 }
 
 function currentLaps() {
-  return engine.state === "looping" ? { loopSeconds: +engine.loopSeconds.toFixed(3), layers: engine.layers.length } : null;
+  return engine.state === "looping" && engine.layers.length ? { loopSeconds: +engine.loopSeconds.toFixed(3), layers: engine.layers.length } : null;
 }
 function renderSaveInfo() {
   const laps = currentLaps();
   $("#saveinfo").textContent = laps
-    ? `saves the sound plus its lap times (${laps.loopSeconds}s loop, ${laps.layers} layer${laps.layers === 1 ? "" : "s"}). the recorded audio itself stays in this tab.`
+    ? `saves the sound plus its lap times (${laps.loopSeconds}s first loop, ${laps.layers} layer${laps.layers === 1 ? "" : "s"}). the recorded audio itself stays in this tab.`
     : "saves the sound settings (voices, tone, effects).";
+}
+
+// ---------- clip recorder ----------
+const clipBtn = $("#clip");
+let clipUrl = null;
+clipBtn.addEventListener("click", async () => {
+  if (!engine.running) {
+    await togglePower();
+    if (!engine.running) return;
+  }
+  if (!engine.clipRecording) {
+    engine.startClip();
+    renderClip();
+    return;
+  }
+  const blob = engine.stopClip();
+  renderClip();
+  if (!blob) {
+    $("#clipmsg").textContent = "nothing captured";
+    return;
+  }
+  if (clipUrl) URL.revokeObjectURL(clipUrl);
+  clipUrl = URL.createObjectURL(blob);
+  const name = `droneloop-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}.wav`;
+  const a = el("a", { href: clipUrl, download: name, textContent: `save ${name} (${(blob.size / 1048576).toFixed(1)} MB)` });
+  $("#clipmsg").replaceChildren(a, " ", el("audio", { controls: true, src: clipUrl }));
+  a.click();
+});
+function renderClip() {
+  const on = engine.clipRecording;
+  clipBtn.textContent = on ? "■ stop & save clip" : "● record clip";
+  clipBtn.classList.toggle("on", on);
+  clipBtn.classList.toggle("rec", on);
+  if (on) $("#clipmsg").textContent = "";
 }
 
 // clock + scope animation
@@ -283,15 +306,20 @@ function frame() {
   let prog = 0;
   if (st === "timing") t = engine.elapsedRecording();
   else if (st === "looping") {
-    t = engine.phase();
-    prog = t / engine.loopSeconds;
+    // while a layer is being captured the clock is that layer's stopwatch
+    t = engine.recording ? engine.elapsedRecording() : engine.phase();
+    prog = engine.phase() / engine.loopSeconds;
   }
   $("#clock").textContent = fmtTime(t);
+  if (engine.clipRecording) $("#clipmsg").textContent = `recording clip ${fmtTime(engine.clipSeconds())}`;
   $("#bar").style.width = (st === "looping" ? prog * 100 : st === "timing" ? 100 : 0) + "%";
   if (st === "looping") {
-    $("#clocksub").textContent = `of ${fmtTime(engine.loopSeconds)}`;
+    $("#clocksub").textContent = engine.recording ? "new layer" : `of ${fmtTime(engine.loopSeconds)}`;
     const recNow = engine.recording;
     if (recNow !== lapBtn.classList.contains("rec")) renderLooper();
+    document.querySelectorAll("#layers .lprog i").forEach((bar, i) => {
+      bar.style.width = ((engine.layerPhase(i) / engine.layers[i].len) * 100).toFixed(1) + "%";
+    });
   } else {
     $("#clocksub").textContent = st === "timing" ? "elapsed" : "stopped";
   }
