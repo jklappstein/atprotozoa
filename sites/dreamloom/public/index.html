@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dreamloom — weave a new dream from someone's old ones</title>
+<meta name="description" content="Pull someone's last 10 posts mentioning a term, x out the duds, and have your own LLM write a new entry in the same voice — text or image.">
+<meta property="og:title" content="dreamloom — weave a new dream from someone's old ones">
+<meta property="og:description" content="Last 10 dream posts in, one new dream out. Bring your own LLM key.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dreamloom.bisks.net/">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>dr<span onclick="var i=document.getElementById('handle');i.value='@cee.wtf';i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}));i.focus()" style="cursor:pointer">e</span>amloom</h1>
+  <p class="tag">pick a poster and a word, keep the examples you like, and your own LLM writes the next one.</p>
+
+  <section class="panel">
+    <h2>1 · examples</h2>
+    <form id="fetchform" class="row">
+      <label>bluesky handle <input id="handle" type="text" placeholder="you.bsky.social" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+      <label>term <input id="term" type="text" value="dream"></label>
+      <button type="submit" id="fetchbtn">fetch last 10</button>
+    </form>
+    <p id="fetchmsg" class="dim"></p>
+    <ul id="examples"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>2 · your llm</h2>
+    <div class="row">
+      <label>base URL <input id="baseurl" type="text" value="https://api.openai.com/v1/" spellcheck="false"></label>
+      <label>api key <input id="apikey" type="password" autocomplete="off" spellcheck="false"></label>
+    </div>
+    <div class="row">
+      <label>output
+        <select id="output"><option value="text">text</option><option value="image">image</option></select>
+      </label>
+      <label id="modelwrap">model <input id="model" type="text" value="gpt-4o-mini" spellcheck="false"></label>
+    </div>
+    <label>system prompt <textarea id="sys"></textarea></label>
+    <p class="dim">The key stays in this browser (localStorage) and goes only to the base URL above, via <a href="https://xsai.js.org" style="color:inherit">xsai</a>. The endpoint must be OpenAI-compatible and allow browser (CORS) requests.</p>
+    <div class="row"><button id="go" class="go" type="button">go — generate a new entry</button></div>
+  </section>
+
+  <section class="panel" id="outpanel" hidden>
+    <h2>3 · new entry</h2>
+    <div id="out" class="entry"></div>
+    <div class="row"><a id="share" href="#" target="_blank" rel="noopener" hidden>post to bluesky →</a></div>
+  </section>
+
+  <footer><a href="https://rateyourbuild.bisks.net/site/dreamloom">rate this on rateyourbuild →</a></footer>
+</main>
+<script src="lib/handle-typeahead.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

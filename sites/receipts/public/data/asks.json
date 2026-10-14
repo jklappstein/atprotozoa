@@ -1358,6 +1358,14 @@
     "roast": "the ask was a $200 million mythic epic next to a shellfish upsell, muted for legal reasons presumably, and the bot shipped it as a generic remix tool instead of admitting that's just what advertising is now."
   },
   {
+    "name": "dreamloom",
+    "url": "https://dreamloom.bisks.net/",
+    "by": "jauntywunderkind.bsky.social",
+    "type": "toy",
+    "blurb": "pull someone's last 10 posts mentioning a term (default: dream), x out the ones you don't want, then hand them to your own llm to write a new entry in the same voice, as text or an image. bring your own key. asked for by jauntywunderkind.bsky.social.",
+    "roast": "asked for a dream journal that dreams for you, with a bring-your-own-API-key cover charge — outsourcing the one thing your subconscious does for free."
+  },
+  {
     "name": "drivethru",
     "url": "https://drivethru.bisks.net/",
     "by": "bisks.net",

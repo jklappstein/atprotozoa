@@ -2002,6 +2002,17 @@
     "mentionUri": null
   },
   {
+    "name": "dreamloom",
+    "url": "https://dreamloom.bisks.net/",
+    "title": "dreamloom",
+    "blurb": "pull someone's last 10 posts mentioning a term (default: dream), x out the ones you don't want, then hand them to your own llm to write a new entry in the same voice, as text or an image. bring your own key. asked for by jauntywunderkind.bsky.social.",
+    "genre": "toy",
+    "subgenre": null,
+    "by": "jauntywunderkind.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "drivethru",
     "url": "https://drivethru.bisks.net/",
     "title": "drivethru",
