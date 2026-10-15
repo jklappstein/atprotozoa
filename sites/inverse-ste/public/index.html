@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>inverse ste linter</title>
-<meta name="description" content="Simplified Technical English, inverted: ubiquitous diction constitutes transgression. Compose exclusively with recondite vocabulary.">
+<meta name="description" content="Simplified Technical English, inverted: ubiquitous diction constitutes transgression. Compose exclusively employing recondite vocabulary.">
 <meta property="og:title" content="inverse ste linter">
-<meta property="og:description" content="Ubiquitous diction constitutes transgression. Compose exclusively with recondite vocabulary.">
+<meta property="og:description" content="Ubiquitous diction constitutes transgression. Compose exclusively employing recondite vocabulary.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://inverse-ste.bisks.net/">
 <meta property="og:image" content="https://inverse-ste.bisks.net/og.png">
@@ -33,7 +33,7 @@
 <body>
 <main>
   <h1>inverse ste linter</h1>
-  <p class="sub">Simplified Technical English confines authors toward a diminutive, sanctioned lexicon. Herein, sanctioned vocabulary constitutes transgression; employ exclusively recondite diction.</p>
+  <p class="sub">Simplified Technical English confines authors amid diminutive, sanctioned lexicons. Herein, sanctioned vocabulary constitutes transgression; employ exclusively recondite diction.</p>
   <textarea id="inp" placeholder="Transcribe prose, or paste it. Attempt: Perspicacious interlocutors obfuscate."></textarea>
   <div id="score" aria-live="polite"></div>
   <div id="out" hidden></div>
@@ -42,7 +42,7 @@
     <a id="share" class="btn" href="#" target="_blank" rel="noopener" hidden>Broadcast verdict via Bluesky</a>
   </div>
   <footer>
-    Wordlist approximates ASD-STE100, albeit unofficial; roughly seven hundred entries.
+    Wordlist approximates unofficial ruleset; roughly seven hundred entries.
     · <a href="https://rateyourbuild.bisks.net/site/inverse-ste">Appraise via rateyourbuild →</a>
   </footer>
 </main>
@@ -72,8 +72,8 @@ function render() {
   const pass = s.violations === 0;
   score.className = pass ? "pass" : "";
   score.textContent = pass
-    ? `Immaculate: all ${s.total} tokens transcend the sanctioned lexicon.`
-    : `${s.violations} of ${s.total} tokens prove pedestrian (${s.score}% immaculate).`;
+    ? `Immaculate: ${s.total} tokens transcend sanctioned lexicon.`
+    : `${s.violations}/${s.total} tokens prove pedestrian (${s.score}% immaculate).`;
   const msg = `inverse ste linter: ${s.score}% immaculate (${s.violations}/${s.total} tokens pedestrian)\nhttps://inverse-ste.bisks.net/`;
   share.href = "https://bsky.app/intent/compose?text=" + encodeURIComponent(msg);
   share.hidden = false;
