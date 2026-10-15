@@ -1,0 +1,377 @@
+{
+ "size": [
+  {
+   "prose": "The third round has been confirmed as of 06:07, and I'm sure of it.",
+   "terse": "R3 confirmed 06:07, certain.",
+   "bare": "STATUS_R3=CONFIRMED__AT_06:07",
+   "marked": "STATUS_R3=CONFIRMED__AT_06:07__CONF_9",
+   "chars": {
+    "prose": 67,
+    "terse": 28,
+    "bare": 29,
+    "marked": 37
+   },
+   "tokens": {
+    "prose": 24,
+    "terse": 12,
+    "bare": 16,
+    "marked": 21
+   }
+  },
+  {
+   "prose": "Maybe we should look at rolling back the deploy; could someone review first?",
+   "terse": "Maybe rollback deploy? Review first.",
+   "bare": "PLAN_deploy=ROLLBACK__REQ_review",
+   "marked": "PLAN_deploy=ROLLBACK__REQ_review__CONF_4",
+   "chars": {
+    "prose": 76,
+    "terse": 36,
+    "bare": 32,
+    "marked": 40
+   },
+   "tokens": {
+    "prose": 23,
+    "terse": 12,
+    "bare": 13,
+    "marked": 18
+   }
+  },
+  {
+   "prose": "If a sixth round appears, please report the country before anything else.",
+   "terse": "R6 appears -> report country first.",
+   "bare": "REQUEST_R6=COUNTRY__REQ_report",
+   "marked": "REQUEST_R6=COUNTRY__REQ_report__CONF_9",
+   "chars": {
+    "prose": 73,
+    "terse": 35,
+    "bare": 30,
+    "marked": 38
+   },
+   "tokens": {
+    "prose": 22,
+    "terse": 13,
+    "bare": 14,
+    "marked": 19
+   }
+  },
+  {
+   "prose": "I think the cache went stale around noon, but I haven't verified it.",
+   "terse": "Cache likely stale ~12:00, unverified.",
+   "bare": "STATUS_cache=STALE__AT_12:00",
+   "marked": "STATUS_cache=STALE__AT_12:00__CONF_5",
+   "chars": {
+    "prose": 68,
+    "terse": 38,
+    "bare": 28,
+    "marked": 36
+   },
+   "tokens": {
+    "prose": 23,
+    "terse": 15,
+    "bare": 15,
+    "marked": 20
+   }
+  },
+  {
+   "prose": "The disk is full right now and someone needs to free space immediately.",
+   "terse": "Disk FULL now. Free space.",
+   "bare": "ALERT_disk=FULL__AT_now__REQ_free",
+   "marked": "ALERT_disk=FULL__AT_now__REQ_free__CONF_9",
+   "chars": {
+    "prose": 71,
+    "terse": 26,
+    "bare": 33,
+    "marked": 41
+   },
+   "tokens": {
+    "prose": 20,
+    "terse": 8,
+    "bare": 16,
+    "marked": 21
+   }
+  },
+  {
+   "prose": "We might want to defer the migration until Friday, depending on how the tests go.",
+   "terse": "Migration maybe defer to Fri, pending tests.",
+   "bare": "PLAN_migration=DEFER__AT_friday",
+   "marked": "PLAN_migration=DEFER__AT_friday__CONF_5",
+   "chars": {
+    "prose": 81,
+    "terse": 44,
+    "bare": 31,
+    "marked": 39
+   },
+   "tokens": {
+    "prose": 26,
+    "terse": 15,
+    "bare": 14,
+    "marked": 19
+   }
+  },
+  {
+   "prose": "Please attach the logs to the ticket when you get a chance.",
+   "terse": "Attach logs to ticket.",
+   "bare": "REQUEST_logs=ATTACH__REQ_attach",
+   "marked": "REQUEST_logs=ATTACH__REQ_attach__CONF_9",
+   "chars": {
+    "prose": 59,
+    "terse": 22,
+    "bare": 31,
+    "marked": 39
+   },
+   "tokens": {
+    "prose": 17,
+    "terse": 7,
+    "bare": 13,
+    "marked": 18
+   }
+  },
+  {
+   "prose": "The build went green at 09:15 and has stayed that way since.",
+   "terse": "Build green since 09:15.",
+   "bare": "STATUS_build=GREEN__AT_09:15",
+   "marked": "STATUS_build=GREEN__AT_09:15__CONF_9",
+   "chars": {
+    "prose": 60,
+    "terse": 24,
+    "bare": 28,
+    "marked": 36
+   },
+   "tokens": {
+    "prose": 19,
+    "terse": 10,
+    "bare": 15,
+    "marked": 20
+   }
+  },
+  {
+   "prose": "It could be worth trying exponential backoff on the retry, though I'm not convinced.",
+   "terse": "Retry w/ backoff? Unconvinced.",
+   "bare": "PLAN_retry=BACKOFF",
+   "marked": "PLAN_retry=BACKOFF__CONF_3",
+   "chars": {
+    "prose": 84,
+    "terse": 30,
+    "bare": 18,
+    "marked": 26
+   },
+   "tokens": {
+    "prose": 28,
+    "terse": 11,
+    "bare": 7,
+    "marked": 12
+   }
+  },
+  {
+   "prose": "It looks like the token leaked around 10:42 — probably worth rotating it.",
+   "terse": "Token probably leaked ~10:42. Rotate.",
+   "bare": "ALERT_token=LEAKED__AT_10:42__REQ_rotate",
+   "marked": "ALERT_token=LEAKED__AT_10:42__REQ_rotate__CONF_6",
+   "chars": {
+    "prose": 73,
+    "terse": 37,
+    "bare": 40,
+    "marked": 48
+   },
+   "tokens": {
+    "prose": 23,
+    "terse": 14,
+    "bare": 21,
+    "marked": 26
+   }
+  },
+  {
+   "prose": "I expect the fourth round to arrive at about 06:47, fairly confident.",
+   "terse": "R4 due ~06:47, fairly sure.",
+   "bare": "STATUS_R4=DUE__AT_06:47",
+   "marked": "STATUS_R4=DUE__AT_06:47__CONF_7",
+   "chars": {
+    "prose": 69,
+    "terse": 27,
+    "bare": 23,
+    "marked": 31
+   },
+   "tokens": {
+    "prose": 24,
+    "terse": 12,
+    "bare": 14,
+    "marked": 19
+   }
+  },
+  {
+   "prose": "Could somebody take ownership of this? Nobody is assigned yet.",
+   "terse": "Unowned. Assign someone.",
+   "bare": "REQUEST_owner=ASSIGN__REQ_assign",
+   "marked": "REQUEST_owner=ASSIGN__REQ_assign__CONF_9",
+   "chars": {
+    "prose": 62,
+    "terse": 24,
+    "bare": 32,
+    "marked": 40
+   },
+   "tokens": {
+    "prose": 18,
+    "terse": 8,
+    "bare": 14,
+    "marked": 19
+   }
+  }
+ ],
+ "sizeTotals": {
+  "prose": {
+   "chars": 843,
+   "tokens": 267
+  },
+  "terse": {
+   "chars": 371,
+   "tokens": 137
+  },
+  "bare": {
+   "chars": 355,
+   "tokens": 172
+  },
+  "marked": {
+   "chars": 451,
+   "tokens": 232
+  }
+ },
+ "modality": {
+  "rows": [
+   {
+    "subj": "R3",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   },
+   {
+    "subj": "deploy",
+    "intent": "unsure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "unsure"
+   },
+   {
+    "subj": "R6",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   },
+   {
+    "subj": "cache",
+    "intent": "likely",
+    "bare": "(no field -> reads as sure)",
+    "marked": "unsure"
+   },
+   {
+    "subj": "disk",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   },
+   {
+    "subj": "migration",
+    "intent": "unsure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "unsure"
+   },
+   {
+    "subj": "logs",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   },
+   {
+    "subj": "build",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   },
+   {
+    "subj": "retry",
+    "intent": "unsure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "unsure"
+   },
+   {
+    "subj": "token",
+    "intent": "likely",
+    "bare": "(no field -> reads as sure)",
+    "marked": "likely"
+   },
+   {
+    "subj": "R4",
+    "intent": "likely",
+    "bare": "(no field -> reads as sure)",
+    "marked": "likely"
+   },
+   {
+    "subj": "owner",
+    "intent": "sure",
+    "bare": "(no field -> reads as sure)",
+    "marked": "sure"
+   }
+  ],
+  "bareKept": 6,
+  "markedKept": 11,
+  "hedged": 6
+ },
+ "damage": [
+  {
+   "kind": "single _ for __",
+   "n": 906,
+   "strictOk": 0,
+   "tolerantOk": 906,
+   "strictWrong": 906,
+   "tolerantWrong": 0,
+   "strictRejected": 0,
+   "tolerantRejected": 0,
+   "checkedOk": 0,
+   "checkedWrong": 0,
+   "checkedRejected": 906
+  },
+  {
+   "kind": "dropped char",
+   "n": 856,
+   "strictOk": 0,
+   "tolerantOk": 94,
+   "strictWrong": 470,
+   "tolerantWrong": 571,
+   "strictRejected": 386,
+   "tolerantRejected": 191,
+   "checkedOk": 5,
+   "checkedWrong": 17,
+   "checkedRejected": 834
+  },
+  {
+   "kind": "swapped two chars",
+   "n": 906,
+   "strictOk": 109,
+   "tolerantOk": 109,
+   "strictWrong": 443,
+   "tolerantWrong": 641,
+   "strictRejected": 354,
+   "tolerantRejected": 156,
+   "checkedOk": 75,
+   "checkedWrong": 4,
+   "checkedRejected": 827
+  },
+  {
+   "kind": "lowercased",
+   "n": 932,
+   "strictOk": 932,
+   "tolerantOk": 932,
+   "strictWrong": 0,
+   "tolerantWrong": 0,
+   "strictRejected": 0,
+   "tolerantRejected": 0,
+   "checkedOk": 932,
+   "checkedWrong": 0,
+   "checkedRejected": 0
+  }
+ ],
+ "meta": {
+  "generated": "2026-10-15",
+  "intents": 12,
+  "mutations": 3600,
+  "seed": 20261015
+ }
+}
