@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>foresight — fiction that called it, and fiction that missed</title>
+<meta name="description" content="A field guide to notable fiction that predicted something right, got it wrong, or landed in between.">
+<meta property="og:title" content="foresight">
+<meta property="og:description" content="Fiction that called the future, and fiction that whiffed it.">
+<meta property="og:image" content="https://foresight.bisks.net/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>foresight</h1>
+  <p class="sub">fiction explores ideas. sometimes it guesses well. it isn't prophecy.</p>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="search title, author, idea…" aria-label="search">
+    <div class="tabs" id="tabs">
+      <button data-v="all" class="on">all</button>
+      <button data-v="hit">called it</button>
+      <button data-v="mixed">half right</button>
+      <button data-v="miss">missed</button>
+    </div>
+  </div>
+  <p id="tally" class="dim"></p>
+  <ol id="list"></ol>
+
+  <p class="share"><a id="share" target="_blank" rel="noopener">post this to bluesky</a></p>
+</main>
+<footer>
+  <a href="https://rateyourbuild.bisks.net/site/foresight">rate this on rateyourbuild →</a>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
