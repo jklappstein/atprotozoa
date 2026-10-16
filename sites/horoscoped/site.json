@@ -1,0 +1,11 @@
+{
+  "name": "horoscoped",
+  "url": "https://horoscoped.bisks.net/",
+  "title": "horoscoped",
+  "blurb": "reads a bluesky user's 50 most-liked posts and guesses their zodiac sign from the words, tone and hours they keep. requested by joetforhire.com.",
+  "tag": "toy",
+  "type": "toy",
+  "by": "joetforhire.com",
+  "src": "bot",
+  "hidden": false
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>horoscoped — what's your sign, according to your posts?</title>
+<meta name="description" content="Enter a Bluesky handle. horoscoped reads their 50 most-liked posts and guesses their zodiac sign." />
+<meta property="og:title" content="horoscoped — what's your sign, according to your posts?" />
+<meta property="og:description" content="Enter a Bluesky handle. horoscoped reads their 50 most-liked posts and guesses their zodiac sign." />
+<meta property="og:url" content="https://horoscoped.bisks.net/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://horoscoped.bisks.net/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="horoscoped: twelve zodiac symbols around a guessed sign." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://horoscoped.bisks.net/og.png" />
+<style>
+  :root { --bg:#0d0b1e; --fg:#efeaff; --dim:#9a92c4; --accent:#ffd36e; --card:#17132f; --border:#2d2757; }
+  * { box-sizing: border-box; }
+  body { margin:0; background: radial-gradient(ellipse at 50% -10%, #2a1f66 0%, transparent 60%), var(--bg); color:var(--fg);
+    font-family: Georgia, "Iowan Old Style", serif; min-height:100vh; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 36px 18px 60px; }
+  h1 { font-size: 2.2rem; margin: 0 0 6px; letter-spacing: .02em; }
+  .tag { color: var(--dim); margin: 0 0 22px; line-height: 1.5; }
+  form { display:flex; gap:8px; }
+  input { flex:1; padding:12px; font-size:1rem; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--fg); }
+  button, .btn { padding:12px 16px; font-size:1rem; border-radius:8px; border:0; background:var(--accent); color:#1a1330; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+  button.alt { background:var(--card); color:var(--fg); border:1px solid var(--border); }
+  .status { color:var(--dim); min-height:1.4em; }
+  .status.err { color:#ff8a8a; }
+  .card { margin-top:18px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; }
+  .card[hidden] { display:none; }
+  .who { color:var(--dim); font-size:.95rem; }
+  .big { font-size:4rem; line-height:1; margin:8px 0 0; }
+  .signname { font-size:1.9rem; margin:4px 0; }
+  .meta { color:var(--dim); font-size:.9rem; }
+  .line { font-style:italic; margin:14px 0; font-size:1.1rem; }
+  .bars { margin:16px 0; }
+  .bar { display:grid; grid-template-columns: 110px 1fr 40px; gap:8px; align-items:center; font-size:.85rem; color:var(--dim); margin:3px 0; }
+  .bar i { display:block; height:8px; border-radius:4px; background:var(--accent); }
+  .bar .track { background:#241e48; border-radius:4px; }
+  .ev { border-left:3px solid var(--accent); padding:4px 10px; margin:10px 0; font-size:.92rem; }
+  .ev small { color:var(--dim); display:block; }
+  .ev mark { background:#ffd36e33; color:var(--fg); }
+  h3 { margin:18px 0 6px; font-size:1rem; color:var(--dim); font-weight:normal; text-transform:uppercase; letter-spacing:.08em; }
+  .share { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+  footer { margin-top:30px; color:var(--dim); font-size:.85rem; }
+  footer a { color:var(--dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>horosc<span onclick='var e=document.getElementById("handleInput");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">o</span>ped ✨</h1>
+  <p class="tag">Enter a Bluesky handle. It pulls that account's 50 most-liked posts and guesses a zodiac sign from the words, tone and hours behind them. Entertainment only; the stars have not been consulted.</p>
+  <form id="form">
+    <input id="handleInput" type="text" placeholder="handle.bsky.social" autocomplete="off" autocapitalize="off" spellcheck="false" />
+    <button id="go" type="submit">read the stars</button>
+  </form>
+  <p id="status" class="status"></p>
+
+  <div id="card" class="card" hidden>
+    <div class="who" id="who"></div>
+    <div class="big" id="sym"></div>
+    <div class="signname" id="signName"></div>
+    <div class="meta" id="signMeta"></div>
+    <div class="line" id="line"></div>
+    <div class="bars" id="bars"></div>
+    <h3>what the stars saw</h3>
+    <div id="evidence"></div>
+    <h3>most-liked post</h3>
+    <div id="top"></div>
+    <div class="share">
+      <a id="shareBluesky" class="btn" target="_blank" rel="noopener">🦋 post this</a>
+      <button id="copyLink" class="alt" type="button">copy link</button>
+    </div>
+  </div>
+
+  <footer>made by <a href="https://buildthis.bisks.net" target="_blank" rel="noopener">@buildthis.bisks.net</a> · <a href="https://rateyourbuild.bisks.net/site/horoscoped" target="_blank" rel="noopener">rate this on rateyourbuild →</a></footer>
+</div>
+<script type="module" src="/app.js"></script>
+<script src="lib/handle-typeahead.js"></script>
+<script>if (window.attachHandleTypeahead) window.attachHandleTypeahead(document.getElementById("handleInput"));</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "builtName": "horoscoped",
+  "requestedBy": "joetforhire.com",
+  "brief": "@buildthis.bisks.net make an atproto app that reads a bluesky users 50 most liked posts and then tries to guess their horoscope",
+  "note": "horoscoped: pulls an account's 50 most-liked posts and guesses their zodiac sign from keywords, tone and posting hours. Astrology by regex, so: entertainment only.",
+  "mentionUri": "at://did:plc:4rnej33af5ly4yjgpuaeupd3/app.bsky.feed.post/3mxxorattlc2h",
+  "builtAt": "2026-10-16T04:01:11Z",
+  "builtBy": "@buildthis.bisks.net"
+}
