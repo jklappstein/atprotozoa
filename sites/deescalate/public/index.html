@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>deescalate — break the rage cycle</title>
+<meta name="description" content="A tiny game about a heated thread. Punching back is the expected move. Can you make it harder to keep the rage cycle going?">
+<meta property="og:title" content="deescalate">
+<meta property="og:description" content="Punching back is the expected move. Break the rage cycle instead.">
+<meta property="og:url" content="https://deescalate.bisks.net/">
+<meta property="og:image" content="https://deescalate.bisks.net/og.svg">
+<meta name="twitter:card" content="summary">
+<style>
+:root{--bg:#14161a;--fg:#e9e6df;--mut:#8b8f98;--card:#1e2128;--rage:#e5533d;--calm:#5fb0a0;--ego:#d9a93b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Georgia,serif;display:flex;justify-content:center}
+main{width:100%;max-width:620px;padding:24px 16px 60px}
+h1{font-weight:normal;font-size:1.6rem;margin:0 0 2px}
+.sub{color:var(--mut);margin:0 0 20px;font-style:italic}
+.meters{display:grid;gap:8px;margin-bottom:16px}
+.m{display:grid;grid-template-columns:70px 1fr 36px;gap:8px;align-items:center;font:13px system-ui,sans-serif;color:var(--mut)}
+.bar{height:10px;background:#2a2e37;border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;transition:width .4s}
+#b-rage{background:var(--rage)}#b-crowd{background:#8a7fd1}#b-ego{background:var(--ego)}
+.thread{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.post{background:var(--card);padding:10px 14px;border-radius:10px;font-size:15px}
+.post b{font:600 13px system-ui,sans-serif;color:var(--mut);display:block}
+.post.you{border-left:3px solid var(--calm)}.post.you.punch{border-left-color:var(--rage)}
+.post.crowd{color:#b9b4e6}
+.choices{display:grid;gap:8px}
+button{font:inherit;text-align:left;background:var(--card);color:var(--fg);border:1px solid #333843;padding:10px 14px;border-radius:10px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--calm)}
+button small{display:block;color:var(--mut);font:12px system-ui,sans-serif}
+button:disabled{opacity:.4;cursor:default}
+.end{margin-top:16px;padding:16px;background:var(--card);border-radius:10px}
+.end[hidden]{display:none}
+.end a,.end button{display:inline-block;margin:8px 8px 0 0;color:var(--fg);padding:8px 12px;border:1px solid #333843;border-radius:8px;text-decoration:none;font-size:15px}
+footer{margin-top:28px;color:var(--mut);font:13px system-ui,sans-serif}
+footer a{color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+  <h1>dee<span id="cee">s</span>calate</h1>
+  <p class="sub">punching back is the expected move.</p>
+  <div class="meters">
+    <div class="m">rage<div class="bar"><i id="b-rage"></i></div><span id="n-rage"></span></div>
+    <div class="m">crowd<div class="bar"><i id="b-crowd"></i></div><span id="n-crowd"></span></div>
+    <div class="m">ego<div class="bar"><i id="b-ego"></i></div><span id="n-ego"></span></div>
+  </div>
+  <div class="thread" id="thread" aria-live="polite"></div>
+  <div class="choices" id="choices"></div>
+  <div class="end" id="end" hidden></div>
+  <footer>the crowd feeds on rage. the ego feeds on praise. both make the next reply harder. · <a href="https://rateyourbuild.bisks.net/site/deescalate">rate this on rateyourbuild →</a></footer>
+</main>
+<script src="game.js"></script>
+</body>
+</html>

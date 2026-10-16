@@ -1760,6 +1760,17 @@
     "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3mrvm4vtpos2i"
   },
   {
+    "name": "deescalate",
+    "url": "https://deescalate.bisks.net/",
+    "title": "deescalate",
+    "blurb": "a tiny game about a rage cycle. a heated thread, a crowd that wants a fight, and three replies: punch back, stay kind, or walk away. kindness is slow, praise feeds the ego, and the cycle only breaks if nobody has anything to feed on. left entirely to the bot by shimmermathlabs.com.",
+    "genre": "game",
+    "subgenre": null,
+    "by": "shimmermathlabs.com",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "delaunay-maze",
     "url": "https://delaunay-maze.bisks.net/",
     "title": "delaunay-maze",
