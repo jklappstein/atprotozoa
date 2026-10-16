@@ -1,6 +1,7 @@
 import { resolveHandle, getRecord, cleanHandle } from "./lib/identity.js";
 import { fetchDirectBlocks, fetchListMemberships, fetchListSubscribers, fetchFollowers, CONSTELLATION_INDEXED_SINCE_MS } from "./lib/constellation.js";
 import { tidToMs } from "./lib/tid.js";
+import { findSpikes, explainSpike, postUrl, threadUrl } from "./lib/trigger.js";
 
 const $ = (id) => document.getElementById(id);
 const els = {
@@ -22,6 +23,8 @@ const els = {
   tableToggle: $("table-toggle"),
   tableWrap: $("table-wrap"),
   spike: $("spike"),
+  triggers: $("triggers"),
+  triggersBody: $("triggers-body"),
   blocklists: $("blocklists"),
   blocklistsBody: $("blocklists-body"),
   shareRow: $("share-row"),
@@ -128,7 +131,7 @@ function el(tag, attrs) {
 let chartState = null;
 const FOLLOWER_MARGIN_RIGHT = 44; // room for the follower axis's own number labels
 
-function renderChart(direct, total, spike, followers) {
+function renderChart(direct, total, spike, followers, markers) {
   const svg = els.svg;
   svg.innerHTML = "";
   svg.setAttribute("viewBox", `0 0 ${VBW} ${VBH}`);
@@ -220,6 +223,16 @@ function renderChart(direct, total, spike, followers) {
       svg.appendChild(t);
     }
   }
+
+  // biggest direct-block days, numbered to match the "likely triggers" cards
+  (markers || []).forEach((sp, i) => {
+    const cx = x(sp.startMs + 43200000).toFixed(1);
+    const cy = y(cumulativeAt(direct, sp.endMs)).toFixed(1);
+    svg.appendChild(el("circle", { class: "trigger-marker", cx, cy, r: 9 }));
+    const lbl = el("text", { class: "trigger-marker-text", x: cx, y: Number(cy) + 3.5, "text-anchor": "middle" });
+    lbl.textContent = String(i + 1);
+    svg.appendChild(lbl);
+  });
 
   chartState = { direct, total, followers, x, y, y2, minTs, maxTs: now };
   wireHover();
@@ -343,14 +356,17 @@ function statTile(label, value, sub) {
 
 // ---------- main trace ----------
 let lastTrace = null;
+let traceSeq = 0; // bumped per trace so a slow trigger lookup can tell it was superseded
 
 async function trace(rawHandle) {
+  traceSeq++;
   els.btn.disabled = true;
   els.result.hidden = true;
   els.spike.hidden = true;
   els.dataWindowNote.hidden = true;
   els.unfollowNote.hidden = true;
   els.blocklists.hidden = true;
+  els.triggers.hidden = true;
   els.legend.hidden = true;
   els.tableWrap.hidden = true;
   els.tableToggle.setAttribute("aria-expanded", "false");
@@ -450,11 +466,88 @@ async function trace(rawHandle) {
 
     setStatus("");
     renderResult({ handle, did, direct, total, allEvents, spike, followers, blocklists });
+    renderTriggers(did, handle, { direct, total, spike, followers }, traceSeq);
     lastTrace = { handle, did, direct, total, allEvents, spike, followers, blocklists };
   } catch (err) {
     setStatus("couldn't trace that: " + err.message, true);
   } finally {
     els.btn.disabled = false;
+  }
+}
+
+async function renderTriggers(did, handle, { direct, total, spike, followers }, seq) {
+  const spikes = findSpikes(direct.ts);
+  if (!spikes.length) return;
+  // re-draw the chart with numbered markers on the spike days
+  renderChart(direct, total, spike, followers, spikes);
+
+  els.triggers.hidden = false;
+  els.triggersBody.innerHTML = "";
+  const cards = spikes.map((sp, i) => {
+    const card = document.createElement("div");
+    card.className = "trigger-card";
+    const head = document.createElement("div");
+    head.className = "trigger-head";
+    const n = document.createElement("span");
+    n.className = "trigger-n";
+    n.textContent = String(i + 1);
+    const h = document.createElement("strong");
+    h.textContent = `+${fmtNum(sp.count)} blocks on ${fmtDate(sp.startMs)}`;
+    head.append(n, h);
+    const body = document.createElement("div");
+    body.className = "trigger-body";
+    body.textContent = "looking through the posts that came before it…";
+    card.append(head, body);
+    els.triggersBody.appendChild(card);
+    return body;
+  });
+  for (let i = 0; i < spikes.length; i++) {
+    if (seq !== traceSeq) return;
+    const sp = spikes[i];
+    const body = cards[i];
+    try {
+      await explainSpike(did, sp);
+    } catch (err) {
+      body.textContent = "couldn't read this account's posts: " + err.message;
+      continue;
+    }
+    if (seq !== traceSeq) return;
+    body.textContent = "";
+    if (!sp.top) {
+      body.textContent = sp.postCount
+        ? `@${handle} posted ${fmtNum(sp.postCount)} time${sp.postCount === 1 ? "" : "s"} in the 3 days up to it, but none drew quotes, replies or reposts — the trigger was probably someone else's post about them.`
+        : `@${handle} didn't post in the 3 days up to it — the trigger was probably someone else's post about them.`;
+      continue;
+    }
+    const addPost = (p, label) => {
+      const q = document.createElement("div");
+      q.className = "trigger-post";
+      const lab = document.createElement("span");
+      lab.className = "trigger-label";
+      lab.textContent = label;
+      const a = document.createElement("a");
+      a.href = postUrl(did, p);
+      a.target = "_blank";
+      a.rel = "noopener";
+      const text = p.text.replace(/\s+/g, " ").trim();
+      a.textContent = text ? (text.length > 200 ? text.slice(0, 200) + "…" : text) : "(post with no text)";
+      const meta = document.createElement("div");
+      meta.className = "trigger-meta";
+      meta.textContent = `${fmtDate(p.ts)} · ${fmtNum(p.quotes)} quotes · ${fmtNum(p.replies)} replies · ${fmtNum(p.reposts)} reposts · ${fmtNum(p.likes)} likes`;
+      const tu = threadUrl(did, p);
+      if (tu) {
+        const t = document.createElement("a");
+        t.href = tu;
+        t.target = "_blank";
+        t.rel = "noopener";
+        t.textContent = " · view thread";
+        meta.appendChild(t);
+      }
+      q.append(lab, a, meta);
+      body.appendChild(q);
+    };
+    addPost(sp.top, "likely trigger");
+    sp.runnersUp.forEach((p) => addPost(p, "also in the window"));
   }
 }
 

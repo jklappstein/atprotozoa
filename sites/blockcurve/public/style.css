@@ -259,3 +259,18 @@ body {
   .lookup { flex-direction: column; }
   .head h1 { font-size: 1.7rem; }
 }
+
+/* biggest jumps → likely trigger posts */
+#chart .trigger-marker { fill: var(--surface-0); stroke: var(--series-1); stroke-width: 2; }
+#chart .trigger-marker-text { fill: var(--series-1); font-size: 10px; font-weight: 700; font-family: var(--font-mono); }
+.triggers { margin-top: 20px; }
+.triggers h2 { font-size: 1rem; margin: 0 0 4px; }
+.trigger-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
+.trigger-head { display: flex; align-items: center; gap: 8px; }
+.trigger-n { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--series-1); color: var(--series-1); font-size: 0.7rem; font-weight: 700; }
+.trigger-body { margin-top: 6px; font-size: 0.85rem; color: var(--text-muted); }
+.trigger-post { margin-top: 6px; }
+.trigger-label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+.trigger-post > a { color: inherit; word-break: break-word; }
+.trigger-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.trigger-meta a { color: var(--series-1); }
