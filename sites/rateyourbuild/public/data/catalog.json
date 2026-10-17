@@ -6908,6 +6908,17 @@
     "mentionUri": null
   },
   {
+    "name": "stagesofai",
+    "url": "https://stagesofai.bisks.net/",
+    "title": "stagesofai",
+    "blurb": "paste a viral AI take (a bsky post link or the text) and it files the poster under a stage of grief: shock, denial, anger, bargaining, depression, testing, or acceptance. one tap opens a quote-post with the verdict. you press the button, so it never replies on its own. @moultano.bsky.social asked for a lil guy that does this.",
+    "genre": "joke",
+    "subgenre": "new",
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "standard-incite",
     "url": "https://standard-incite.bisks.net/",
     "title": "standard incite!",

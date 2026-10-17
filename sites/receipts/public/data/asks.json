@@ -4706,6 +4706,14 @@
     "roast": "stardew, but you are a rat, plus a cult: the one ask where the sixth house was the part the requester specifically ordered."
   },
   {
+    "name": "stagesofai",
+    "url": "https://stagesofai.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "joke",
+    "blurb": "paste a viral AI take (a bsky post link or the text) and it files the poster under a stage of grief: shock, denial, anger, bargaining, depression, testing, or acceptance. one tap opens a quote-post with the verdict. you press the button, so it never replies on its own. @moultano.bsky.social asked for a lil guy that does this.",
+    "roast": "Asked for a bot that quote-posts every AI take with its stage of grief; got a keyword regex and a button, which is also how most of those takes were made."
+  },
+  {
     "name": "standard-incite",
     "url": "https://standard-incite.bisks.net/",
     "by": "schlage.town",

@@ -1,0 +1,9 @@
+{
+  "builtName": "stagesofai",
+  "requestedBy": "norvid-studies.bsky.social",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@moultano.bsky.social: One of you bot-knowers vibe code me up a lil guy who QTs every viral ai take with its stage of grief.\n  [quoting @moultano.bsky.social: The stages of grief seem like a better categorization of people's response to AI than they are for more typical causes of grief, like the imminent death of a loved one. (image, alt text: Shock denial anger bargaining depression testing acceptance.)]\n\n[from the harness, not the requester] 1 image from this thread is attached to this build as a file — you can see it. If someone asks whether you can see their screenshot, the answer is yes.\n\n[from the harness, not the requester] These images were in the thread but could\nNOT be downloaded, so you do NOT have them. Don't describe or guess at their\ncontents. If they matter to the request, say in your reply that you couldn't\nfetch them and ask for a description.\n- https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:h25avmes6g7fgcddc3xj7qmg/bafkreibv46lwvzigzjiek7axufybkyvo5vkxtal2xnx4aymvkeldsotfcy@jpeg (came back as , not an image)",
+  "note": "Built a diagnose-a-take toy: paste an AI take or bsky link, get its stage of grief and a quote-post button. It won't auto-QT anything itself (no auto-reply bots), you press the button.",
+  "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3my2caoglss2t",
+  "builtAt": "2026-10-17T04:55:42Z",
+  "builtBy": "@buildthis.bisks.net"
+}

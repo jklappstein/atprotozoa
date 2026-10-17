@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stages of ai — which stage of grief is this take?</title>
+<meta name="description" content="Paste a viral AI take and get its stage of grief: shock, denial, anger, bargaining, depression, testing, acceptance.">
+<meta property="og:title" content="stages of ai">
+<meta property="og:description" content="Paste a viral AI take, get its stage of grief, quote-post the verdict.">
+<meta property="og:url" content="https://stagesofai.bisks.net/">
+<meta property="og:image" content="https://stagesofai.bisks.net/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root { color-scheme: light dark; --bg:#f6f3ee; --fg:#222; --mut:#777; --card:#fff; --ac:#6b4fbb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#17151c; --fg:#eee; --mut:#999; --card:#221f2b; --ac:#a58cf0; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif; }
+  main { max-width:620px; margin:0 auto; padding:2rem 1rem 3rem; }
+  h1 { margin:0 0 .2rem; font-size:1.8rem; }
+  .sub { color:var(--mut); margin:0 0 1.5rem; }
+  textarea { width:100%; box-sizing:border-box; min-height:5.5rem; padding:.7rem; border-radius:8px; border:1px solid var(--mut); background:var(--card); color:var(--fg); font:inherit; }
+  button, a.btn { display:inline-block; margin:.6rem .4rem 0 0; padding:.55rem 1rem; border:0; border-radius:8px; background:var(--ac); color:#fff; font:inherit; cursor:pointer; text-decoration:none; }
+  .card { margin-top:1.5rem; padding:1rem 1.2rem; background:var(--card); border-radius:10px; }
+  .card[hidden], #err[hidden] { display:none; }
+  .stage { font-size:2rem; font-weight:700; margin:0; }
+  .meter { display:flex; gap:3px; margin:.8rem 0; }
+  .meter span { flex:1; height:8px; border-radius:4px; background:var(--mut); opacity:.25; }
+  .meter span.on { background:var(--ac); opacity:1; }
+  blockquote { margin:.8rem 0; padding-left:.8rem; border-left:3px solid var(--mut); color:var(--mut); }
+  #err { color:#c33; margin-top:1rem; }
+  footer { margin-top:2.5rem; color:var(--mut); font-size:.85rem; }
+  footer a { color:inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>stages of AI</h1>
+  <p class="sub">paste a viral AI take: a bsky post link, or just the words. it gets filed under a stage of grief.</p>
+  <textarea id="input" placeholder="https://bsky.app/profile/someone.bsky.social/post/3k… or the take itself"></textarea>
+  <div><button id="go" type="button">diagnose</button><button id="rand" type="button">try an example</button></div>
+  <div id="err" hidden></div>
+  <section id="card" class="card" hidden>
+    <p class="stage" id="stage"></p>
+    <div class="meter" id="meter"></div>
+    <p id="line"></p>
+    <blockquote id="quote"></blockquote>
+    <a class="btn" id="qt" target="_blank" rel="noopener">quote-post the verdict</a>
+    <button id="copy" type="button">copy text</button>
+  </section>
+  <footer>keyword-based, not a model: it reads the words, not the poster. <a href="https://rateyourbuild.bisks.net/site/stagesofai">rate this on rateyourbuild →</a></footer>
+</main>
+<script src="app.js" type="module"></script>
+<script src="lib/visits.js" data-site="stagesofai" data-into="footer"></script>
+</body>
+</html>
