@@ -133,6 +133,7 @@ async function toggleTilt() {
   toast("tilt on - lean to steer (T to stop)");
   setTimeout(() => { if (tilt.on && !tilt.raw) { tilt.on = false; removeEventListener("deviceorientation", onOrient); toast("no tilt sensor here"); } }, 2500);
 }
+$("colorbtn").addEventListener("click", (e) => { e.stopPropagation(); act("c"); });
 $("tiltbtn").addEventListener("click", (e) => { e.stopPropagation(); toggleTilt(); });
 if (typeof DeviceOrientationEvent !== "undefined" && matchMedia("(pointer: coarse)").matches) $("tiltbtn").hidden = false;
 
