@@ -1,0 +1,22 @@
+:root{--bg:#f6efe6;--ink:#2d2420;--pink:#d98a7a;--line:#b9a899}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Georgia,serif}
+header{padding:2.5rem 1rem 1rem;text-align:center;background:linear-gradient(135deg,#f3c9bb,#f6efe6 60%,#cfe3dc)}
+h1{margin:0;font-size:3rem;letter-spacing:.04em}
+.sub{margin:.4rem auto 0;max-width:34rem}
+main{max-width:46rem;margin:0 auto;padding:0 1rem}
+h2{border-bottom:2px solid var(--pink);padding-bottom:.2rem;margin-top:2.2rem}
+code{background:#ece1d4;padding:0 .3rem;border-radius:3px}
+.lab{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+#tri{width:100%;max-width:380px;touch-action:none;cursor:crosshair}
+#frame{fill:#fff8f0;stroke:var(--ink);stroke-width:2}
+#grid line{stroke:var(--line);stroke-width:1}
+#grid line.reg{stroke:#a47f6c;stroke-dasharray:4 3}
+#tri text{font:bold 16px sans-serif;fill:var(--ink)}
+#dot{fill:var(--pink);stroke:var(--ink);stroke-width:2;pointer-events:none}
+#out{flex:1;min-width:15rem}
+#name{font-size:1.6rem;font-weight:bold}
+#mix{font:14px monospace;margin:.2rem 0 .6rem}
+button{font:inherit;background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:.5rem .9rem;cursor:pointer}
+footer{text-align:center;padding:2rem 1rem;font-size:.9rem}
+a{color:#8a3b2a}

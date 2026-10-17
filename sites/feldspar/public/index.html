@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>feldspar</title>
+<meta name="description" content="a small field guide to feldspar, the most common mineral group in the earth's crust, with a clickable ternary diagram.">
+<meta property="og:title" content="feldspar">
+<meta property="og:description" content="about 60% of the earth's crust. a field guide with a clickable ternary diagram.">
+<meta property="og:image" content="https://feldspar.bisks.net/og.png">
+<meta property="og:url" content="https://feldspar.bisks.net/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://feldspar.bisks.net/og.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>feldspar</h1>
+  <p class="sub">the most common mineral group in the earth's crust: roughly 60% of it. you are probably standing on some.</p>
+</header>
+<main>
+  <section>
+    <h2>the family</h2>
+    <p>Feldspars are framework silicates of aluminium with potassium, sodium or calcium. Nearly all of them are a mix of three end-members:</p>
+    <ul class="ends">
+      <li><b>orthoclase</b> <code>KAlSi₃O₈</code> — potassium. pink, salmon, cream. (microcline and sanidine are the same chemistry in different crystal structures.)</li>
+      <li><b>albite</b> <code>NaAlSi₃O₈</code> — sodium. white, often tiny tabular crystals.</li>
+      <li><b>anorthite</b> <code>CaAl₂Si₂O₈</code> — calcium. grey to white; the moon's bright highlands are mostly this.</li>
+    </ul>
+    <p>Albite and anorthite mix freely as the <i>plagioclase</i> series; orthoclase and albite mix as the <i>alkali</i> series at high temperature. Potassium and calcium refuse to mix much at all.</p>
+  </section>
+
+  <section>
+    <h2>name any feldspar</h2>
+    <p>Click the triangle (or drag) to choose a composition.</p>
+    <div class="lab">
+      <svg id="tri" viewBox="0 0 400 360" role="img" aria-label="ternary diagram of feldspar composition">
+        <polygon id="frame" points="200,20 20,332 380,332"/>
+        <g id="grid"></g>
+        <text x="200" y="14" text-anchor="middle">Or</text>
+        <text x="10" y="350" text-anchor="middle">Ab</text>
+        <text x="390" y="350" text-anchor="middle">An</text>
+        <circle id="dot" r="7" cx="110" cy="176"/>
+      </svg>
+      <div id="out">
+        <div id="name"></div>
+        <div id="mix"></div>
+        <p id="desc"></p>
+        <button id="share" type="button">share this feldspar on bluesky</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>field facts</h2>
+    <ul class="facts">
+      <li><b>hardness:</b> 6 on the Mohs scale. a steel knife just fails to scratch it, and it is the reference mineral for 6.</li>
+      <li><b>cleavage:</b> two good planes meeting at about 90°. the name comes from Swedish <i>fältspat</i>, "field spar," for the stones cleared from fields.</li>
+      <li><b>twinning:</b> plagioclase shows fine parallel stripes (polysynthetic twins) on its cleavage faces; microcline shows a tartan grid. a quick way to tell them from quartz, which has neither.</li>
+      <li><b>perthite:</b> a potassium feldspar that cooled slowly and unmixed into sodium-rich threads inside it.</li>
+      <li><b>moonstone and labradorite:</b> the shimmer is light scattering off microscopic layers formed as the crystal unmixed.</li>
+      <li><b>amazonite:</b> blue-green microcline, coloured by traces of lead and water.</li>
+      <li><b>weathering:</b> feldspar rots into clay. kaolin, the stuff of porcelain, is weathered feldspar.</li>
+      <li><b>uses:</b> ceramics and glass fluxes, enamel, tile glazes, and the white in a lot of toothpaste-adjacent powders.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>where it is</h2>
+    <p>Granite is mostly feldspar and quartz. Basalt is mostly plagioclase and pyroxene. Anorthosite, a rock that is nearly all plagioclase, forms much of the lunar highlands. Sand beaches are quartz because feldspar weathers away first; a feldspar-rich "arkose" sandstone means the rock was buried before it could rot.</p>
+  </section>
+</main>
+<footer>
+  <a href="https://rateyourbuild.bisks.net/site/feldspar">rate this on rateyourbuild →</a>
+</footer>
+<script src="feldspar.js"></script>
+</body>
+</html>
