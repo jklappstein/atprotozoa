@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>clipliker — an auto-liker for oops! all paperclips</title>
+    <meta name="description" content="Likes every video from Oops! All Paperclips for you: catches up on the back catalog, then likes new ones the moment they post while the tab is open." />
+    <meta property="og:title" content="clipliker" />
+    <meta property="og:description" content="An auto-liker for Oops! All Paperclips' videos. Like-only OAuth." />
+    <meta property="og:url" content="https://clipliker.bisks.net/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>📎 cl<span onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">i</span>pliker</h1>
+      <p class="lede">An auto-liker for every video posted by <a id="targetLink" href="https://bsky.app/profile/all-paperclips.bsky.social" target="_blank" rel="noopener">@all-paperclips.bsky.social</a>. Catch up on the ones you've missed, then leave this tab open and new ones get a like the second they post.</p>
+
+      <section class="card" id="authCard">
+        <div id="who">not signed in.</div>
+        <div id="signinRow" class="row">
+          <input id="handle" type="text" placeholder="yourhandle.bsky.social" autocomplete="off" />
+          <button type="button" id="signinBtn">sign in with Bluesky</button>
+        </div>
+        <p class="fine">Real OAuth to your own PDS. It can only <em>create likes</em> — no posting, no unliking, nothing else.</p>
+      </section>
+
+      <section class="card" id="panel" hidden>
+        <div class="row">
+          <label for="target">account</label>
+          <input id="target" type="text" value="all-paperclips.bsky.social" autocomplete="off" />
+        </div>
+        <div class="row">
+          <button type="button" id="startBtn">start auto-liking</button>
+          <button type="button" id="stopBtn" class="ghost" hidden>stop</button>
+          <button type="button" id="signoutBtn" class="ghost">sign out</button>
+        </div>
+        <div id="status" class="status"></div>
+        <div class="counts"><span id="liked">0</span> videos liked this session · <span id="already">0</span> already liked</div>
+        <ul id="log"></ul>
+      </section>
+
+      <p class="fine">Browser-only: it works while this tab is open (a real always-on bot would need a server holding your login, which this deliberately doesn't have).</p>
+
+      <footer>
+        part of the <a href="https://bisks.net" target="_blank" rel="noopener">atprotozoa</a> experiment garden ·
+        built by <a href="https://bsky.app/profile/buildthis.bisks.net" target="_blank" rel="noopener">@buildthis.bisks.net</a> ·
+        <a href="https://rateyourbuild.bisks.net/site/clipliker" target="_blank" rel="noopener">rate this on rateyourbuild →</a>
+      </footer>
+    </main>
+    <script src="lib/handle-typeahead.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

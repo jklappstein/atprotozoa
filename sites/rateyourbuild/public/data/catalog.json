@@ -1331,6 +1331,17 @@
     "mentionUri": "at://did:plc:i33364e67bhzgnemuyi6y4vk/app.bsky.feed.post/3mrjssokcvs2b"
   },
   {
+    "name": "clipliker",
+    "url": "https://clipliker.bisks.net/",
+    "title": "clipliker",
+    "blurb": "an auto-liker for oops! all paperclips' videos: sign in, catch up on every video you haven't liked, then leave the tab open and each new one gets a like the moment it posts. like-only OAuth. asked for by @tbabb.bsky.social, built off @norvid-studies.bsky.social's tag.",
+    "genre": "tool",
+    "subgenre": null,
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "cloudchamber",
     "url": "https://cloudchamber.bisks.net/",
     "title": "cloud chamber",

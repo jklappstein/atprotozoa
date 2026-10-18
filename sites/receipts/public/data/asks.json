@@ -908,6 +908,14 @@
     "blurb": "killer sudoku with no starting digits — just dashed cage regions and their sums, cracked open with plain sudoku rules. a constraint-propagation solver proves every generated board has exactly one solution, revealing the fewest extra digits needed when it doesn't. new puzzle every UTC day, plus a cute sparkle mascot cheering you on. @qustrolabe.bsky.social asked for killer sudoku with cute Claude-themed art."
   },
   {
+    "name": "clipliker",
+    "url": "https://clipliker.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "tool",
+    "blurb": "an auto-liker for oops! all paperclips' videos: sign in, catch up on every video you haven't liked, then leave the tab open and each new one gets a like the moment it posts. like-only OAuth. asked for by @tbabb.bsky.social, built off @norvid-studies.bsky.social's tag.",
+    "roast": "someone joked they needed an auto-liker for one account's videos and the bot, unable to run a bot, built a browser tab you have to leave open — a like-bot with the one feature of a bot removed."
+  },
+  {
     "name": "cloudchamber",
     "url": "https://cloudchamber.bisks.net/",
     "by": "dulanyw.bsky.social",

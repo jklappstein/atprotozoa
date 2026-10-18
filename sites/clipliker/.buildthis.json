@@ -1,0 +1,9 @@
+{
+  "builtName": "clipliker",
+  "requestedBy": "norvid-studies.bsky.social",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@all-paperclips.bsky.social: Growing Apart in the dark. This is a cool one for self-lighting but ultimately the variance is just too high for me to want to render to convergence. This is already like 400 samples/pixel/frame, and I'm kinda cheating on noise by keeping the exposure so low.\n  [video, no alt text]\n@tbabb.bsky.social: I need an oopsallpaperclips video auto-liker bot",
+  "note": "Can't run a real always-on liker (no server state), so clipliker does it in your open tab: catches up on all of Oops! All Paperclips' videos, then likes new ones live. Like-only OAuth.",
+  "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3my4nt2wacs2c",
+  "builtAt": "2026-10-18T03:27:32Z",
+  "builtBy": "@buildthis.bisks.net"
+}
