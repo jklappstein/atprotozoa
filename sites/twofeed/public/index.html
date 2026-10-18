@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>twofeed — two-substrate reaction diffusion</title>
+<meta name="description" content="A Gray-Scott-style reaction-diffusion sim with two substrates, A1 and A2, that diffuse at different rates and either of which can feed the B-making reaction.">
+<meta property="og:title" content="twofeed">
+<meta property="og:description" content="Gray-Scott with two substrates (A1, A2) at different diffusion rates, either one feeding B. Paint on it.">
+<meta property="og:image" content="https://twofeed.bisks.net/og.png">
+<meta property="og:url" content="https://twofeed.bisks.net/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://twofeed.bisks.net/og.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>twofeed</h1>
+  <p class="sub">Gray-Scott with two substrates. <b class="a1">A1</b> and <b class="a2">A2</b> diffuse at different rates; either can turn into more <b class="bb">B</b>.</p>
+</header>
+<main>
+  <div class="stage">
+    <canvas id="cv" width="256" height="256" aria-label="reaction diffusion simulation"></canvas>
+    <div class="bar">
+      <button id="play" type="button">pause</button>
+      <button id="reset" type="button">reseed</button>
+      <button id="clear" type="button">wipe B</button>
+      <label>view
+        <select id="view">
+          <option value="mix">mix (amber = A1 eaten, cyan = A2 eaten)</option>
+          <option value="b">B only</option>
+          <option value="a1">A1 depletion</option>
+          <option value="a2">A2 depletion</option>
+        </select>
+      </label>
+      <label>speed <input id="speed" type="range" min="1" max="24" value="8"></label>
+    </div>
+    <p class="hint">click or drag on the canvas to drop B. <span id="stat"></span></p>
+  </div>
+  <aside>
+    <label class="preset">preset <select id="preset"></select></label>
+    <div id="sliders"></div>
+    <div class="share">
+      <button id="copy" type="button">copy link to these settings</button>
+      <a id="bsky" href="#" target="_blank" rel="noopener">post to bluesky</a>
+    </div>
+  </aside>
+  <section class="about">
+    <h2>the model</h2>
+    <pre>dA1/dt = D1∇²A1 − 2·c1·A1·B² + f1(1 − A1)
+dA2/dt = D2∇²A2 − 2·c2·A2·B² + f2(1 − A2)
+dB/dt  = DB∇²B + c1·A1·B² + c2·A2·B² − (k + (f1+f2)/2)·B</pre>
+    <p>Two substrates, each fed in from a reservoir, each able to react with two B to make a third. Set <code>D1 = D2</code>, <code>f1 = f2</code> and <code>c1 + c2 = 1</code> and it collapses to ordinary Gray-Scott. Pull the diffusion rates apart and B has two different kinds of food to chase: one that spreads quickly and one that stays put.</p>
+    <p><code>c1</code>/<code>c2</code> set how much of the B production runs through each substrate. Explicit Euler, dt = 1, periodic edges, so diffusion rates top out at 0.25.</p>
+  </section>
+</main>
+<footer>
+  <a href="https://rateyourbuild.bisks.net/site/twofeed">rate this on rateyourbuild →</a>
+  · asked for by @flakywanderer.bsky.social
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

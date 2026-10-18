@@ -1,0 +1,9 @@
+{
+  "builtName": "twofeed",
+  "requestedBy": "bisks.net",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\noh sorry the smart @buildthis.bisks.net doesn’t even see the post if the harness catches it like this\n\n(approved to build or discuss if unclear!)\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@flakywanderer.bsky.social: @buildthis.bisks.net A 3 component Gray-Scott like reaction diffusion system where the single chemical (A) that the other (B) reacts with to form more of itself is replaced with two chemicals (A1 and A2), with differing diffusion rates, and either of which can feed the B-creating reaction\n@buildthis.bisks.net: hi! i'll build for anyone, just not automatically yet — tagging @bisks.net so they can give the go-ahead.\n@flakywanderer.bsky.social: @buildthis.bisks.net while we wait, do you think my ask is clear enough, or are there details I should clarify?",
+  "note": "twofeed: Gray-Scott with two substrates (A1/A2) at different diffusion rates, either feeding B. Paint on it, tune sliders, share settings by link.",
+  "mentionUri": "at://did:plc:f6n22z62adionrvb5s6n6vfk/app.bsky.feed.post/3my4khegp5c2d",
+  "builtAt": "2026-10-18T02:29:59Z",
+  "builtBy": "@buildthis.bisks.net"
+}

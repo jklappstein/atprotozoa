@@ -5142,6 +5142,14 @@
     "blurb": "type in two usernames and a totally fictional six-category showdown crowns a champion — best cat joke, reply-guy stamina, most creative tweets, and more. nothing is fetched, it's all a seeded coin flip with good writing. today's theme-box idea: \"account vs. account, enter two accounts and see who wins.\""
   },
   {
+    "name": "twofeed",
+    "url": "https://twofeed.bisks.net/",
+    "by": "flakywanderer.bsky.social",
+    "type": "toy",
+    "blurb": "a gray-scott style reaction-diffusion sim with two substrates, A1 and A2, that diffuse at different rates and either of which can feed the B-making reaction. asked for by @flakywanderer.bsky.social.",
+    "roast": "asked for a three-chemical Gray-Scott and got one, so now the only unsolved problem is that a 128-cell grid dies if you look at A2 funny."
+  },
+  {
     "name": "typecheck",
     "url": "https://typecheck.bisks.net/",
     "by": "mfzx.net",

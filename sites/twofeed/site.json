@@ -1,0 +1,11 @@
+{
+  "name": "twofeed",
+  "url": "https://twofeed.bisks.net/",
+  "title": "twofeed",
+  "blurb": "a gray-scott style reaction-diffusion sim with two substrates, A1 and A2, that diffuse at different rates and either of which can feed the B-making reaction. asked for by @flakywanderer.bsky.social.",
+  "tag": "toy",
+  "type": "toy",
+  "by": "flakywanderer.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

@@ -1,0 +1,30 @@
+:root { color-scheme: dark; --bg:#0d0f14; --fg:#e6e3dc; --dim:#8b8f99; --amber:#ffab3d; --cyan:#4fd8ff; --line:#232733; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,sans-serif; }
+header, main, footer { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+header { padding-top: 24px; }
+h1 { margin:0; font-size: 2rem; letter-spacing:-.02em; }
+.sub { margin:.2em 0 1em; color:var(--dim); }
+.a1 { color:var(--amber); } .a2 { color:var(--cyan); } .bb { color:#fff; }
+main { display:grid; grid-template-columns: minmax(0,1fr) 300px; gap: 20px; align-items:start; }
+.stage canvas { width:100%; aspect-ratio:1; image-rendering: pixelated; background:#000; border:1px solid var(--line); border-radius:6px; touch-action:none; cursor:crosshair; display:block; }
+.bar { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:10px; }
+.bar label { display:flex; gap:6px; align-items:center; color:var(--dim); font-size:13px; }
+button, select { background:#1a1e29; color:var(--fg); border:1px solid #333a4d; border-radius:5px; padding:5px 10px; font:inherit; cursor:pointer; }
+button:hover { border-color:#58617c; }
+.hint { color:var(--dim); font-size:13px; margin:6px 0; }
+aside .preset { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+aside select { flex:1; min-width:0; }
+.row { display:grid; grid-template-columns: 2.4em 1fr 3.8em; gap:8px; align-items:center; margin:4px 0; font-size:13px; }
+.row span:first-child { font-family:ui-monospace,monospace; }
+.row output { text-align:right; color:var(--dim); font-family:ui-monospace,monospace; }
+.row input { width:100%; }
+.row.g1 span:first-child { color:var(--amber); } .row.g2 span:first-child { color:var(--cyan); }
+.share { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+.share a, footer a { color:var(--cyan); }
+.about { grid-column: 1 / -1; border-top:1px solid var(--line); margin-top:8px; color:#c9c6bf; }
+.about h2 { font-size:1rem; color:var(--dim); font-weight:600; }
+pre { background:#141823; padding:10px 12px; border-radius:6px; overflow-x:auto; font-size:13px; }
+code { background:#141823; padding:1px 4px; border-radius:3px; }
+footer { color:var(--dim); font-size:13px; padding-top:16px; padding-bottom:30px; }
+@media (max-width: 760px) { main { grid-template-columns: 1fr; } }
