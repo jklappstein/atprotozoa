@@ -2700,6 +2700,14 @@
     "roast": "dame.is wanted a blockenheimer clone; got one that stops short of the actual block button, so you still have to do the blocking yourself like some kind of caveman."
   },
   {
+    "name": "listkarma",
+    "url": "https://listkarma.bisks.net/",
+    "by": "jessehattabaugh.com",
+    "type": "tool",
+    "blurb": "enter a handle, see every list that account was put on and who put it there, then add any of those curators back to a list of your own, one click each. asked for by jessehattabaugh.com, after @asura.dev's wish to answer the nonsensical-list adds.",
+    "roast": "a revenge tool whose first instruction is to be a little kind about it; the lists called him a fascist, so he built a spreadsheet."
+  },
+  {
     "name": "listrank",
     "url": "https://listrank.bisks.net/",
     "by": "personhood.removal.surgery",

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>listkarma — who put you on which list, and a way to return the favor</title>
+    <meta name="description" content="Enter a handle: see every Bluesky list that account was added to and who added it. Sign in to add any of those curators to a list of your own." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="listkarma — who listed you, and what for" />
+    <meta property="og:description" content="Every list you're on, who put you there, and a one-click way to add them to a list of your own." />
+    <meta property="og:url" content="https://listkarma.bisks.net/" />
+    <meta property="og:image" content="https://listkarma.bisks.net/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="listkarma — who listed you, and what for" />
+    <meta name="twitter:description" content="Every list you're on, who put you there, and a one-click way to add them to a list of your own." />
+    <meta name="twitter:image" content="https://listkarma.bisks.net/og.png" />
+    <style>
+      :root { --bg:#10140f; --panel:#171d15; --panel2:#1e2619; --ink:#e9f0e3; --muted:#8fa085; --faint:#2c3727;
+        --accent:#9ccc5c; --accent2:#c4e88a; --bad:#ff8a7a;
+        --sans: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        --mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+      * { box-sizing:border-box; }
+      body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.5; min-height:100vh; }
+      .wrap { max-width:820px; margin:0 auto; padding:2.2rem 1rem 5rem; }
+      a { color:var(--accent2); text-decoration:none; } a:hover { text-decoration:underline; }
+      .back { font-size:0.8rem; color:var(--muted); }
+      h1 { font-size:1.9rem; margin:1rem 0 0.2rem; color:var(--accent); }
+      #ceeHook { cursor:pointer; }
+      .sub { color:var(--muted); font-size:0.92rem; max-width:66ch; margin:0 0 1.3rem; }
+      .auth-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:0.85rem; color:var(--muted);
+        padding:0.75rem 0.9rem; border:1px solid var(--faint); border-radius:12px; background:var(--panel); margin-bottom:1.1rem; }
+      .auth-bar b { color:var(--ink); }
+      input[type=text], select { font:inherit; padding:0.55rem 0.7rem; border-radius:9px; border:1px solid var(--faint);
+        background:var(--panel2); color:var(--ink); }
+      input:focus, select:focus { outline:2px solid var(--accent); outline-offset:-1px; }
+      .btn { font:inherit; font-weight:800; border:0; border-radius:9px; padding:0.55rem 1rem; background:var(--accent); color:#142008; cursor:pointer; }
+      .btn:disabled { opacity:0.5; cursor:default; }
+      .btn.ghost { background:var(--panel2); color:var(--ink); border:1px solid var(--faint); }
+      .btn.small { padding:0.3rem 0.7rem; font-size:0.8rem; }
+      a.linklike { cursor:pointer; text-decoration:underline; }
+      form { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.6rem; }
+      form input { flex:1; min-width:220px; }
+      .status { color:var(--muted); font-size:0.85rem; min-height:1.4rem; font-family:var(--mono); margin-bottom:0.6rem; }
+      .status.err { color:var(--bad); }
+      .toolbar { display:none; align-items:center; gap:0.6rem; flex-wrap:wrap; margin:0.8rem 0; padding:0.7rem 0.9rem;
+        border:1px solid var(--faint); border-radius:12px; background:var(--panel); font-size:0.85rem; }
+      .toolbar.show { display:flex; }
+      .toolbar .spacer { flex:1; }
+      .rows { display:none; border:1px solid var(--faint); border-radius:14px; }
+      .rows.show { display:block; }
+      .row { display:flex; gap:0.7rem; align-items:flex-start; padding:0.7rem 0.85rem; border-bottom:1px solid var(--faint); }
+      .row:last-child { border-bottom:0; }
+      .row img, .row .noav { width:36px; height:36px; border-radius:50%; background:var(--faint); flex:none; object-fit:cover; }
+      .row .who { flex:1; min-width:0; }
+      .row .rname { font-weight:700; font-size:0.9rem; }
+      .row .rhandle { color:var(--muted); font-size:0.78rem; }
+      .row .lists { margin-top:0.3rem; font-size:0.84rem; }
+      .row .lists div { margin-top:0.15rem; }
+      .tagp { font-family:var(--mono); font-size:0.68rem; color:var(--muted); border:1px solid var(--faint); border-radius:5px; padding:0 0.3rem; margin-left:0.3rem; }
+      .ldesc { color:var(--muted); font-size:0.76rem; }
+      .row .act { flex:none; text-align:right; font-size:0.75rem; color:var(--muted); }
+      .row .act .ok { color:var(--accent); font-weight:700; }
+      .note { margin-top:2rem; color:var(--muted); font-size:0.78rem; line-height:1.7; max-width:70ch; }
+      code { font-family:var(--mono); font-size:0.9em; background:var(--panel2); padding:0.05rem 0.3rem; border-radius:5px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="back" href="https://bisks.net">← the zoo</a>
+      <h1>list<span id="ceeHook">k</span>arma</h1>
+      <p class="sub">
+        Type a handle and see every <b>list</b> it was added to, and who added it. Signed in as that account,
+        you can add any of those curators to a list of your own, one at a time. Nothing is added unless you press the button.
+      </p>
+
+      <div class="auth-bar" id="authBar"></div>
+
+      <form id="form">
+        <input type="text" id="who" placeholder="handle, e.g. you.bsky.social" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        <button class="btn" id="go" type="submit">find who listed them</button>
+      </form>
+      <div class="status" id="status"></div>
+
+      <div class="toolbar" id="toolbar">
+        <span>add back to</span>
+        <select id="target"></select>
+        <span class="spacer"></span>
+        <span id="count"></span>
+        <a class="linklike" id="selAll">all</a>
+        <a class="linklike" id="selNone">none</a>
+        <button class="btn" id="addChecked" type="button" disabled>add checked</button>
+      </div>
+      <div class="rows" id="rows"></div>
+
+      <p class="note">
+        Who listed you comes from
+        <a href="https://constellation.microcosm.blue" target="_blank" rel="noopener">constellation.microcosm.blue</a>'s
+        backlink index of <code>app.bsky.graph.listitem</code> records (it starts 2025-01-28; older untouched adds may be missing).
+        Each record is read through slingshot.microcosm.blue and each list is named by the public AppView. Adding back creates an
+        <code>app.bsky.graph.listitem</code> record in a list you already own, straight from your browser to your PDS — nothing else is requested or stored.
+        Suggestion: if a list is plainly garbage, "add back" is for the lists that earned it. Be a little kind about it.
+      </p>
+      <p class="note"><a href="https://rateyourbuild.bisks.net/site/listkarma">rate this on rateyourbuild →</a></p>
+      <p class="note">built by <a href="https://bsky.app/profile/buildthis.bisks.net">@buildthis.bisks.net</a>, asked for by <a href="https://bsky.app/profile/jessehattabaugh.com">@jessehattabaugh.com</a>, from an idea by <a href="https://bsky.app/profile/asura.dev">@asura.dev</a></p>
+    </div>
+    <script src="lib/handle-typeahead.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

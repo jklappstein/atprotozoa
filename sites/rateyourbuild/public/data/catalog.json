@@ -3960,6 +3960,17 @@
     "mentionUri": null
   },
   {
+    "name": "listkarma",
+    "url": "https://listkarma.bisks.net/",
+    "title": "listkarma",
+    "blurb": "enter a handle, see every list that account was put on and who put it there, then add any of those curators back to a list of your own, one click each. asked for by jessehattabaugh.com, after @asura.dev's wish to answer the nonsensical-list adds.",
+    "genre": "tool",
+    "subgenre": null,
+    "by": "jessehattabaugh.com",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "listrank",
     "url": "https://listrank.bisks.net/",
     "title": "listrank",
