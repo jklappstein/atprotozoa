@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NO LEGAL PAIN, NO FIDUCIARY GAIN — the gameshow</title>
+<meta name="description" content="A gameshow where you run a web-TV network: green-light wild pitches for cash, dodge the lawsuit meter, and try not to get cancelled." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="NO LEGAL PAIN, NO FIDUCIARY GAIN" />
+<meta property="og:description" content="Gameshow: green-light pitches for cash, dodge the lawsuit meter, survive the season." />
+<meta property="og:url" content="https://legalpain.bisks.net/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="NO LEGAL PAIN, NO FIDUCIARY GAIN" />
+<meta name="twitter:description" content="Gameshow: green-light pitches for cash, dodge the lawsuit meter, survive the season." />
+<link rel="stylesheet" href="style.css" />
+<style>
+.logo{font-size:clamp(1.6rem,7vw,3rem)}
+.meters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.meter{background:rgba(255,255,255,.12);border-radius:10px;padding:6px 8px;font-weight:900;font-size:.85rem}
+.meter .bar{height:10px;border-radius:99px;background:rgba(0,0,0,.4);overflow:hidden;margin-top:4px}
+.meter .bar i{display:block;height:100%;width:0;transition:width .4s}
+#gainbar{background:#7dff7d}#painbar{background:#ff4040}
+.opts{display:grid;gap:10px}
+.opt{border:0;border-radius:14px;padding:12px;font-weight:800;font-size:1rem;color:#fff;background:#0b6fb8;text-align:left;box-shadow:0 5px 0 rgba(0,0,0,.45)}
+.opt:nth-child(2){background:#a3125a}.opt:nth-child(3){background:#5b8a00}
+.opt:disabled{opacity:.55;cursor:default}.opt.picked{opacity:1;outline:4px solid var(--gold)}
+.opt:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
+.card{border-left-color:var(--pink)}
+</style>
+</head>
+<body>
+<div class="rays" aria-hidden="true"></div>
+<div class="bulbs top" aria-hidden="true"></div>
+<main>
+  <h1 class="logo"><span>NO LEGAL PAIN,</span> <span>NO FIDUCIARY</span> <span>GAIN</span></h1>
+  <p class="sub">the gameshow where you run the network</p>
+
+  <section id="intro" class="stage">
+    <p>Eight pitches land on your desk. Green-light them for cold hard cash, but every stunt has a legal bill attached. Hit <b>$1,000,000</b> before the lawsuit meter hits <b>10</b>, or the network gets cancelled mid-episode.</p>
+    <button id="start" class="big">START THE SHOW</button>
+    <label class="dim"><input type="checkbox" id="mute" /> mute the theme song</label>
+  </section>
+
+  <section id="play" class="stage" hidden>
+    <div class="hud"><span id="round">PITCH 1/8</span><span id="score"></span></div>
+    <div class="meters">
+      <div class="meter">FIDUCIARY GAIN <span id="gain">$0</span><div class="bar"><i id="gainbar"></i></div></div>
+      <div class="meter">LEGAL PAIN <span id="pain">0</span>/10<div class="bar"><i id="painbar"></i></div></div>
+    </div>
+    <p id="host" class="host" aria-live="polite"></p>
+    <blockquote id="pitch" class="card"></blockquote>
+    <div id="opts" class="opts"></div>
+    <div id="reveal" class="reveal" hidden aria-live="polite">
+      <p id="verdict"></p>
+      <button id="next" class="big small">NEXT PITCH</button>
+    </div>
+  </section>
+
+  <section id="end" class="stage" hidden>
+    <h2 id="endtitle"></h2>
+    <p id="endline"></p>
+    <div class="buttons">
+      <a id="share" class="big small" target="_blank" rel="noopener">post my season</a>
+      <button id="again" class="big small">PLAY AGAIN</button>
+    </div>
+  </section>
+</main>
+<footer>
+  <a href="https://rateyourbuild.bisks.net/site/legalpain">rate this on rateyourbuild →</a>
+</footer>
+<script type="module" src="lib/game.js"></script>
+<script src="lib/visits.js" data-site="legalpain" data-into="footer"></script>
+</body>
+</html>
