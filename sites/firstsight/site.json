@@ -1,0 +1,11 @@
+{
+  "name": "firstsight",
+  "url": "https://firstsight.bisks.net/",
+  "title": "firstsight",
+  "blurb": "enter a handle and it reads your whole repo to show, for every account you've crossed paths with, the first post of theirs you engaged with and the first one you liked, oldest first, plus what happened on this day in earlier years. asked for by @norvid-studies.bsky.social.",
+  "tag": "tool",
+  "type": "toy",
+  "by": "norvid-studies.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

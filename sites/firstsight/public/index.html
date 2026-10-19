@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>firstsight — the first post of theirs you saw — bisks.net</title>
+    <meta name="description" content="Enter a Bluesky handle and firstsight finds, for every account, the first post of theirs you ever engaged with and the first one you liked — plus what happened on this day, years ago." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="firstsight — the first post of theirs you saw" />
+    <meta property="og:description" content="For every account: the first post of theirs you engaged with, the first you liked, and your anniversaries." />
+    <meta property="og:url" content="https://firstsight.bisks.net/" />
+    <meta property="og:image" content="https://firstsight.bisks.net/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="firstsight — a timeline of dots, each one the first time you met an account." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="firstsight — the first post of theirs you saw" />
+    <meta name="twitter:description" content="First post you saw and first post you liked, for every account." />
+    <meta name="twitter:image" content="https://firstsight.bisks.net/og.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <span class="brand">firstsight</span>
+        <span class="brand-sub">the first p<span onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">o</span>st of theirs you saw</span>
+      </header>
+
+      <section id="gate" class="screen">
+        <div class="intro-card">
+          <p>
+            Your repo keeps every like, repost, reply and quote with a
+            timestamp. This reads all of it and, for every account you've
+            crossed paths with, shows the <b>first post of theirs you
+            engaged with</b> and the <b>first post of theirs you liked</b>,
+            oldest first, with the words that were in them. When a first
+            happened on today's date in an earlier year, it says so.
+          </p>
+          <p class="fine">
+            A repo records only what you acted on, so "saw" means the first
+            like, repost, reply or quote. Public reads only, nothing written.
+          </p>
+          <form id="goForm" autocomplete="off">
+            <label class="lbl" for="handle">your handle</label>
+            <div class="row">
+              <input type="text" id="handle" placeholder="e.g. you.bsky.social" spellcheck="false" />
+              <button id="goBtn" type="submit">find my firsts</button>
+            </div>
+          </form>
+          <p class="msg" id="goMsg"></p>
+        </div>
+      </section>
+
+      <section id="progress" class="screen hidden">
+        <div class="progress-card">
+          <div class="status" id="status">starting…</div>
+          <div class="meter"><i style="width:100%;animation:pulse 1.4s ease-in-out infinite"></i></div>
+          <div class="substat">big accounts take a minute.</div>
+        </div>
+      </section>
+
+      <section id="results" class="screen hidden">
+        <div class="summary-card" id="today"></div>
+        <div class="filter-card">
+          <div class="row">
+            <input type="text" id="filter" placeholder="filter by handle or name" spellcheck="false" />
+            <select id="order">
+              <option value="old">oldest first</option>
+              <option value="new">newest first</option>
+            </select>
+          </div>
+          <p class="msg" id="count"></p>
+          <div class="row">
+            <a id="share" class="sharelink" href="#" target="_blank" rel="noopener">post my oldest first to bluesky</a>
+            <button id="again" class="ghost small" type="button">another handle</button>
+          </div>
+        </div>
+        <ul id="list"></ul>
+        <button id="more" class="ghost hidden" type="button">show more</button>
+      </section>
+
+      <footer>
+        <a href="https://rateyourbuild.bisks.net/site/firstsight">rate this on rateyourbuild →</a>
+        · <a href="https://bisks.net/">bisks.net</a>
+      </footer>
+    </div>
+    <script src="lib/handle-typeahead.js"></script>
+    <script>if (window.attachHandleTypeahead) attachHandleTypeahead(document.getElementById("handle"));</script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

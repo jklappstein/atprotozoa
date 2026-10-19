@@ -1644,6 +1644,14 @@
     "blurb": "enter a handle and firstlikes reads every post that account has ever made, oldest first, to find exactly which post number first crossed 10 likes, 100 likes, and 1000 likes. @cee.wtf asked for a site that traces a user's whole climb from their very first post."
   },
   {
+    "name": "firstsight",
+    "url": "https://firstsight.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "toy",
+    "blurb": "enter a handle and it reads your whole repo to show, for every account you've crossed paths with, the first post of theirs you engaged with and the first one you liked, oldest first, plus what happened on this day in earlier years. asked for by @norvid-studies.bsky.social.",
+    "roast": "Asked for a Spotify Wrapped for the first post you ever saw of someone, which is the one thing your own follow list was already quietly doing."
+  },
+  {
     "name": "fitzcarraldo",
     "url": "https://fitzcarraldo.bisks.net/",
     "by": "ver.ooo",

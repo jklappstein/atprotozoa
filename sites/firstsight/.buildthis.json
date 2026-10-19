@@ -1,0 +1,9 @@
+{
+  "builtName": "firstsight",
+  "requestedBy": "bisks.net",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net lets have it\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@norvid-studies.bsky.social: did this get build @carbonadoks.com @minormobius.bsky.social @bisks.net\n  [quoting @norvid-studies.bsky.social: 'first tweet of someone's you ever saw' + (sometimes or maybe often separate) 'first tweet of theirs you liked' would be a nice little 'spotify wrapped esque' thing for the platform to algorithmically keep track of and reproduce 5 years later when you've exchanged 10000 messages]",
+  "note": "Built firstsight: enter a handle, get each account's first post you engaged with + first you liked (with text), oldest first, plus an 'on this day' anniversary panel.",
+  "mentionUri": "at://did:plc:f6n22z62adionrvb5s6n6vfk/app.bsky.feed.post/3my6xlndja22o",
+  "builtAt": "2026-10-19T01:28:02Z",
+  "builtBy": "@buildthis.bisks.net"
+}
