@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>snake, player 2</title>
+<meta name="description" content="You play the environment. The snake plays itself. Trap it before it grows to 20.">
+<meta property="og:title" content="snake, player 2">
+<meta property="og:description" content="You play the environment. The snake plays itself. Trap it before it grows to 20.">
+<meta name="twitter:card" content="summary">
+<style>
+  :root{color-scheme:dark}
+  body{margin:0;background:#06100e;color:#9fe8d6;font:14px ui-monospace,Menlo,monospace;display:flex;flex-direction:column;align-items:center;padding:12px}
+  h1{font-size:18px;letter-spacing:.2em;font-weight:400;margin:4px 0}
+  p.sub{margin:0 0 10px;opacity:.7;text-align:center;max-width:640px}
+  #wrap{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  canvas{background:#0a1a17;border:1px solid #1d4a40;max-width:94vw;touch-action:manipulation;cursor:crosshair}
+  #side{width:230px;border:1px solid #1d4a40;padding:8px;background:#08140f}
+  #opts div{padding:3px 6px;margin:2px 0;display:flex;justify-content:space-between;border:1px solid transparent}
+  #opts div.pick{border-color:#9fe8d6;background:#12382f;color:#fff}
+  .bar{height:3px;background:#2fbf9f;margin-top:2px}
+  button{background:#12382f;color:#9fe8d6;border:1px solid #2a7a67;padding:6px 10px;font:inherit;cursor:pointer;margin:2px}
+  button.on{background:#2fbf9f;color:#042}
+  #msg{min-height:20px;margin:8px 0;color:#ffd27a}
+  footer{margin-top:14px;opacity:.6;font-size:12px}
+  footer a{color:inherit}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<h1>SNAKE, PLAYER 2</h1>
+<p class="sub">you are the environment. the snake plays itself, choosing by ranked probability. drop food to lure it, walls to box it in. trap it (no legal move) before it reaches length 20.</p>
+<div id="wrap">
+  <canvas id="c" width="420" height="420"></canvas>
+  <div id="side">
+    <div>length <b id="len">3</b> / 20 · ink <b id="ink">10</b></div>
+    <div style="margin:6px 0">
+      <button id="mFood" class="on">food</button><button id="mWall">wall</button>
+    </div>
+    <div style="opacity:.6;margin-bottom:4px">options considered:</div>
+    <div id="opts"></div>
+    <div id="msg"></div>
+    <button id="restart">restart</button>
+    <button id="pause">pause</button>
+  </div>
+</div>
+<p class="sub">tap a cell: food (one at a time, replaces the last) or wall (costs 1 ink; ink refills every few steps).</p>
+<footer><a href="https://rateyourbuild.bisks.net/site/snakeenv">rate this on rateyourbuild →</a> · <a href="https://bisks.net/">bisks.net</a></footer>
+<script src="game.js"></script>
+</body>
+</html>

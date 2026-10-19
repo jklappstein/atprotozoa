@@ -6721,6 +6721,17 @@
     "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3mrtm5jfnpc2u"
   },
   {
+    "name": "snakeenv",
+    "url": "https://snakeenv.bisks.net/",
+    "title": "snake, player 2",
+    "blurb": "you play the environment, the snake plays itself. drop food and walls to steer it into a corner while its choices flash past severance-style as ranked, probability-weighted options. built from a thread about a snake that is also its own world.",
+    "genre": "game",
+    "subgenre": null,
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "snubbed",
     "url": "https://snubbed.bisks.net/",
     "title": "snubbed",

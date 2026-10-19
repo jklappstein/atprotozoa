@@ -4580,6 +4580,14 @@
     "blurb": "dunk the powder in, shake the bottle for your life against a 7-second clock, get a custom sludge flavor and a purity score built from how many times and how evenly you shook it. ends in a bottle wrapper worth reviewing, generated just for you. @norvid-studies.bsky.social's thread about water bottle wrapper designs and dunking Huel into Icelandic Glacial, turned into something to shake."
   },
   {
+    "name": "snakeenv",
+    "url": "https://snakeenv.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "game",
+    "blurb": "you play the environment, the snake plays itself. drop food and walls to steer it into a corner while its choices flash past severance-style as ranked, probability-weighted options. built from a thread about a snake that is also its own world.",
+    "roast": "a thread about a snake eating itself, and the bot heard \"I want to be the walls.\""
+  },
+  {
     "name": "snubbed",
     "url": "https://snubbed.bisks.net/",
     "by": "norvid-studies.bsky.social",
