@@ -140,6 +140,22 @@
       .ticker .who { color: var(--ink); }
       .ticker .meta { margin-left: auto; color: var(--muted); white-space: nowrap; }
 
+      .ticker .who a { color: inherit; text-decoration: none; }
+      .ticker .who a:hover { color: var(--accent); text-decoration: underline; }
+      .ticker .txt { color: var(--ink); overflow-wrap: anywhere; }
+      .ticker .did { color: var(--muted); font-size: 0.72rem; }
+      .ticker li.hi { color: var(--accent); }
+      .ticker .body { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+      body.hide-text .ticker .txt { display: none; }
+      .stat.p .n { color: var(--accent); }
+      .opts { display: flex; gap: 1.1rem; flex-wrap: wrap; margin: 0 0 1.25rem; font-size: 0.78rem; color: var(--muted); }
+      .opts label { display: inline-flex; align-items: center; gap: 0.4rem; }
+      .opts select, .opts input[type="range"] { accent-color: var(--accent); }
+      .opts select {
+        font-family: var(--mono); font-size: 0.78rem; color: var(--ink);
+        background: var(--panel); border: 1px solid var(--faint); border-radius: 4px; padding: 0.15rem 0.3rem;
+      }
+
       footer {
         margin-top: 3rem; color: var(--muted); font-size: 0.78rem;
       }
@@ -169,7 +185,10 @@
         <em>delete</em> event on the firehose carries no record, so we don't
         always know how big a deleted post was — when we do (because we saw
         it created recently), the pluck uses its real size; otherwise it
-        plays a neutral middle note and says so in the log below. Nothing is
+        plays a neutral middle note and says so in the log below. When someone
+        creates a profile on Bluesky, a
+        <b style="color: var(--accent); font-weight: 600">swell</b> of strings
+        announces them, like Hatnote's new-user chord. Nothing is
         recorded or sent anywhere; the whole thing runs live in your browser.
       </p>
 
@@ -188,8 +207,32 @@
         </label>
         <span class="stat g" title="bells rung this session">🔔 <span class="n" id="addCount">0</span></span>
         <span class="stat b" title="strings plucked this session">🪕 <span class="n" id="delCount">0</span></span>
+        <span class="stat p" title="profiles created this session (string swell)">👋 <span class="n" id="newCount">0</span></span>
         <span class="spacer"></span>
         <a id="shareLink" href="#" target="_blank" rel="noopener">share on bluesky</a>
+      </div>
+
+      <div class="opts">
+        <label title="how many notes may sound per second; the rest still count and still scroll by">
+          notes/sec
+          <input id="density" type="range" min="1" max="60" value="14" />
+          <span id="densityVal">14</span>
+        </label>
+        <label title="only play posts written in this language tag">
+          language
+          <select id="lang">
+            <option value="">all</option>
+            <option value="en">en</option>
+            <option value="ja">ja</option>
+            <option value="pt">pt</option>
+            <option value="es">es</option>
+            <option value="de">de</option>
+            <option value="fr">fr</option>
+            <option value="ko">ko</option>
+          </select>
+        </label>
+        <label><input id="hideText" type="checkbox" /> hide post text</label>
+        <label><input id="muteSwell" type="checkbox" /> mute swells</label>
       </div>
 
       <ul class="ticker" id="ticker"></ul>
@@ -198,13 +241,14 @@
         firehose via <a href="https://github.com/bluesky-social/jetstream">jetstream</a>
         · concept via <a href="http://listen.hatnote.com/" target="_blank" rel="noopener">Hatnote's Listen to Wikipedia</a>
         · a <a href="https://bisks.net">bisks.net</a> experiment
+        · <a href="https://rateyourbuild.bisks.net/site/chimehose">rate this on rateyourbuild →</a>
       </footer>
     </div>
 
     <script>
       // ---- config --------------------------------------------------------
       const JETSTREAM =
-        "wss://jetstream2.us-east.bsky.network/subscribe?wantedCollections=app.bsky.feed.post";
+        "wss://jetstream2.us-east.bsky.network/subscribe?wantedCollections=app.bsky.feed.post&wantedCollections=app.bsky.actor.profile";
       const MAX_TICKER = 40;
       // A record's approximate JSON byte size, capped — beyond this, edits
       // all sound "as deep as it gets" rather than needing an ever-bigger
@@ -231,6 +275,12 @@
       const delCountEl = document.getElementById("delCount");
       const ticker = document.getElementById("ticker");
       const shareLink = document.getElementById("shareLink");
+      const newCountEl = document.getElementById("newCount");
+      const densityInput = document.getElementById("density");
+      const densityVal = document.getElementById("densityVal");
+      const langSel = document.getElementById("lang");
+      const hideText = document.getElementById("hideText");
+      const muteSwell = document.getElementById("muteSwell");
       const canvas = document.getElementById("canvas");
       const ctx2d = canvas.getContext("2d");
 
@@ -405,6 +455,37 @@
         );
       }
 
+      // Swell: a soft string-pad chord (detuned saw pairs through a lowpass,
+      // slow attack and release) for a newly created profile.
+      function playSwell() {
+        if (!actx) return;
+        const t = actx.currentTime + 0.01;
+        const root = SCALE[8 + Math.floor(Math.random() * 3)];
+        const out = actx.createGain();
+        out.gain.setValueAtTime(0.0001, t);
+        out.gain.exponentialRampToValueAtTime(0.22, t + 0.6);
+        out.gain.exponentialRampToValueAtTime(0.0001, t + 2.6);
+        const lp = actx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.value = 1400;
+        lp.connect(out);
+        out.connect(masterGain);
+        for (const ratio of [1, 1.25, 1.5]) {
+          for (const detune of [-7, 7]) {
+            const o = actx.createOscillator();
+            o.type = "sawtooth";
+            o.frequency.value = root * ratio;
+            o.detune.value = detune;
+            const g = actx.createGain();
+            g.gain.value = 0.3;
+            o.connect(g);
+            g.connect(lp);
+            o.start(t);
+            o.stop(t + 2.7);
+          }
+        }
+      }
+
       // ---- ripple visual -----------------------------------------------------
       let ripples = [];
       let dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -423,7 +504,7 @@
           y: Math.random() * h,
           r: 0,
           maxR: 24 + magnitude01 * 90,
-          kind, // "add" | "del"
+          kind, // "add" | "del" | "new"
           born: performance.now(),
         });
         if (ripples.length > 200) ripples.shift();
@@ -451,7 +532,9 @@
           ctx2d.strokeStyle =
             r.kind === "add"
               ? `rgba(255, 209, 102, ${alpha})`
-              : `rgba(110, 200, 255, ${alpha})`;
+              : r.kind === "new"
+                ? `rgba(255, 122, 184, ${alpha})`
+                : `rgba(110, 200, 255, ${alpha})`;
           ctx2d.stroke();
         }
       }
@@ -459,15 +542,68 @@
       // ---- ticker + stats ---------------------------------------------------
       let addCount = 0;
       let delCount = 0;
+      let newCount = 0;
 
-      function pushTicker({ kind, did, sizeLabel }) {
-        const li = document.createElement("li");
-        const icon = kind === "add" ? "🔔" : "🪕";
-        const iconClass = kind === "add" ? "g" : "b";
-        li.innerHTML =
-          `<span class="icon ${iconClass}">${icon}</span>` +
-          `<span class="who">${did.slice(0, 24)}…</span>` +
-          `<span class="meta">${sizeLabel}</span>`;
+      // Note budget: the firehose carries far more posts per second than
+      // the ear can separate, and every note spins up Web Audio nodes. A
+      // token bucket (refilled at the "notes/sec" slider's rate, burst of
+      // one second's worth) keeps the sound a texture instead of a wall.
+      // Counters still tally every event; only the sound/ticker are sampled.
+      let notesPerSec = Number(densityInput.value);
+      let tokens = notesPerSec;
+      let lastRefill = performance.now();
+      function takeNote() {
+        const now = performance.now();
+        tokens = Math.min(notesPerSec, tokens + ((now - lastRefill) / 1000) * notesPerSec);
+        lastRefill = now;
+        if (tokens < 1) return false;
+        tokens -= 1;
+        return true;
+      }
+      densityInput.addEventListener("input", () => {
+        notesPerSec = Number(densityInput.value);
+        densityVal.textContent = notesPerSec;
+      });
+      hideText.addEventListener("change", () => {
+        document.body.classList.toggle("hide-text", hideText.checked);
+      });
+
+      // Rows are built with textContent only: post text is untrusted.
+      function el(tag, cls, text) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text != null) e.textContent = text;
+        return e;
+      }
+
+      function pushTicker({ kind, did, sizeLabel, rkey, text }) {
+        const li = el("li", kind === "new" ? "hi" : "");
+        const icon = kind === "add" ? "🔔" : kind === "del" ? "🪕" : "👋";
+        const iconClass = kind === "add" ? "g" : kind === "del" ? "b" : "";
+        li.appendChild(el("span", "icon " + iconClass, icon));
+        const body = el("span", "body");
+        const who = el("span", "who");
+        const short = did.slice(0, 24) + "…";
+        if (kind === "add" && rkey) {
+          const a = el("a", "", short);
+          a.href = `https://bsky.app/profile/${encodeURIComponent(did)}/post/${encodeURIComponent(rkey)}`;
+          a.target = "_blank";
+          a.rel = "noopener";
+          who.appendChild(a);
+        } else if (kind === "new") {
+          const a = el("a", "", short);
+          a.href = `https://bsky.app/profile/${encodeURIComponent(did)}`;
+          a.target = "_blank";
+          a.rel = "noopener";
+          who.appendChild(a);
+          who.appendChild(document.createTextNode(" joined"));
+        } else {
+          who.textContent = short;
+        }
+        body.appendChild(who);
+        if (text) body.appendChild(el("span", "txt", text.slice(0, 140)));
+        li.appendChild(body);
+        li.appendChild(el("span", "meta", sizeLabel));
         ticker.prepend(li);
         while (ticker.childElementCount > MAX_TICKER) {
           ticker.removeChild(ticker.lastElementChild);
@@ -478,29 +614,50 @@
       function handleCommit(evt) {
         const commit = evt.commit;
         if (!commit) return;
+        if (commit.collection === "app.bsky.actor.profile") {
+          // A profile record is created once, when an account first sets
+          // one up (edits arrive as "update").
+          if (commit.operation !== "create") return;
+          newCount++;
+          newCountEl.textContent = newCount;
+          if (!muteSwell.checked) {
+            playSwell();
+            spawnRipple("new", 1);
+          }
+          pushTicker({ kind: "new", did: evt.did, sizeLabel: "new profile" });
+          return;
+        }
+        if (commit.collection !== "app.bsky.feed.post") return;
         const uri = `at://${evt.did}/app.bsky.feed.post/${commit.rkey}`;
 
         if (commit.operation === "create") {
           const rec = commit.record;
           if (!rec) return;
+          const lang = langSel.value;
+          if (lang && !(Array.isArray(rec.langs) && rec.langs.some((l) => String(l).toLowerCase().startsWith(lang)))) return;
           const bytes = recordBytes(rec);
           rememberSize(uri, bytes);
+          addCount++;
+          addCountEl.textContent = addCount;
+          if (!takeNote()) return;
           const freq = pitchForSize(bytes);
           const vis = Math.min(bytes, SIZE_CAP) / SIZE_CAP;
           playBell(freq);
           spawnRipple("add", vis);
-          addCount++;
-          addCountEl.textContent = addCount;
-          pushTicker({ kind: "add", did: evt.did, sizeLabel: `+${bytes}B` });
+          pushTicker({
+            kind: "add", did: evt.did, sizeLabel: `+${bytes}B`,
+            rkey: commit.rkey, text: typeof rec.text === "string" ? rec.text : "",
+          });
         } else if (commit.operation === "delete") {
           const known = sizeCache.get(uri);
           sizeCache.delete(uri);
+          delCount++;
+          delCountEl.textContent = delCount;
+          if (!takeNote()) return;
           const freq = known != null ? pitchForSize(known) : NEUTRAL_FREQ;
           const vis = known != null ? Math.min(known, SIZE_CAP) / SIZE_CAP : 0.35;
           playPluck(freq);
           spawnRipple("del", vis);
-          delCount++;
-          delCountEl.textContent = delCount;
           pushTicker({
             kind: "del",
             did: evt.did,
