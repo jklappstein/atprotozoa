@@ -1,0 +1,11 @@
+{
+  "name": "tagcoins",
+  "url": "https://tagcoins.bisks.net/",
+  "title": "tagcoins",
+  "blurb": "a bluesky composer where posts and replies are free but every @mention costs a tag coin, with coins trickling back slowly. create-only OAuth. asked for by @bisks.net.",
+  "tag": "game",
+  "type": "toy",
+  "by": "bisks.net",
+  "src": "bot",
+  "hidden": false
+}

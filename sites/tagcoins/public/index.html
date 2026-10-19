@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tagcoins — posting is free, tagging costs</title>
+    <meta name="description" content="A tiny Bluesky composer where posts and replies are free, but every @mention costs a tag coin. Coins trickle back slowly." />
+    <meta property="og:title" content="tagcoins 🪙" />
+    <meta property="og:description" content="Post and reply for free. Every @mention costs a tag coin." />
+    <meta property="og:url" content="https://tagcoins.bisks.net/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>🪙 t<span onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">a</span>gcoins</h1>
+      <p class="lede">Post and reply as much as you like. Every <code>@mention</code> costs one tag coin, and coins only trickle back slowly. Spend them on people who matter.</p>
+
+      <section class="card" id="authCard">
+        <div id="who">not signed in.</div>
+        <div id="signinRow" class="row">
+          <input id="handle" type="text" placeholder="yourhandle.bsky.social" autocomplete="off" />
+          <button type="button" id="signinBtn">sign in with Bluesky</button>
+        </div>
+        <p class="fine">Real OAuth to your own PDS. It can only <em>create posts</em>, nothing else.</p>
+      </section>
+
+      <section class="card" id="panel" hidden>
+        <div class="purse">🪙 <span id="coins">5</span> / <span id="maxCoins">10</span> tag coins <span id="refill" class="fine"></span></div>
+        <div class="row">
+          <input id="replyTo" type="text" placeholder="reply to (optional): paste a bsky.app post link" autocomplete="off" />
+        </div>
+        <textarea id="text" rows="5" maxlength="3000" placeholder="what's on your mind? (free, unless you @ someone)"></textarea>
+        <div class="counts"><span id="len">0</span>/300 · tags: <span id="cost">0</span> 🪙</div>
+        <div class="row">
+          <button type="button" id="postBtn">post</button>
+          <button type="button" id="signoutBtn" class="ghost">sign out</button>
+        </div>
+        <div id="status" class="status"></div>
+      </section>
+
+      <p class="fine">Coins live in this browser only, so it's an honor-system toy. Replying doesn't cost anything even though it notifies the person you reply to.</p>
+
+      <footer>
+        part of the <a href="https://bisks.net" target="_blank" rel="noopener">atprotozoa</a> experiment garden ·
+        built by <a href="https://bsky.app/profile/buildthis.bisks.net" target="_blank" rel="noopener">@buildthis.bisks.net</a> ·
+        <a href="https://rateyourbuild.bisks.net/site/tagcoins" target="_blank" rel="noopener">rate this on rateyourbuild →</a>
+      </footer>
+    </main>
+    <script src="lib/handle-typeahead.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "builtName": "tagcoins",
+  "requestedBy": "bisks.net",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net can you make a site where you can post or reply to posts for free but need to spend tokens to tag someone?\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@norvid-studies.bsky.social: animation of the atproto firehose but as a gas station inflatable tube guy. someone please do this\n  [quoting @agnoster.net: When the full-bore uncontrolled firehose becomes a whacky inflatable arm flailing tube guy]\n@bisks.net: there are several accounts you can tag if this is something you actually want to see\n@norvid-studies.bsky.social: @abeliansoup.bsky.social think I'm out of tag coins after this one",
+  "note": "Free posts and replies, but every @mention costs a tag coin; coins trickle back every 20 min. Made it.",
+  "mentionUri": "at://did:plc:f6n22z62adionrvb5s6n6vfk/app.bsky.feed.post/3my74i3evpc2r",
+  "builtAt": "2026-10-19T02:55:38Z",
+  "builtBy": "@buildthis.bisks.net"
+}

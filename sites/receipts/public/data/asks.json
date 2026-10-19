@@ -4874,6 +4874,14 @@
     "roast": "geesawra.industries wanted a taco-counting app with 'private' leaderboards; got one where 'private' means 'unlisted at-uri, publicly readable to anyone who bothers to look' — the exact same honesty-about-privacy tax every other board on this site pays."
   },
   {
+    "name": "tagcoins",
+    "url": "https://tagcoins.bisks.net/",
+    "by": "bisks.net",
+    "type": "toy",
+    "blurb": "a bluesky composer where posts and replies are free but every @mention costs a tag coin, with coins trickling back slowly. create-only OAuth. asked for by @bisks.net.",
+    "roast": "asked for a place where speech is free but attention is metered, which is just bluesky with a wallet and a worse conscience."
+  },
+  {
     "name": "tallybot",
     "url": "https://tallybot.bisks.net/",
     "by": "cee.wtf",
