@@ -27,6 +27,14 @@ sudo apt-get update -y
 # curl/git/ca-certificates: the rest.
 sudo apt-get install -y git curl ca-certificates jq file
 
+# eMudhra CA compromise (2026-10, emudhra.we-have-a-problem.com): emSign ECC
+# Root CA - G3 cross-signs the compromised intermediates. Distrust it until
+# ca-certificates ships the fix. The sed only matches an enabled line, so a
+# re-run is a no-op.
+echo "=== distrust emSign ECC Root CA - G3 ==="
+sudo sed -i -e 's|^mozilla/emSign_ECC_Root_CA_-_G3.crt|!&|' /etc/ca-certificates.conf
+sudo update-ca-certificates
+
 echo "=== node ${NODE_MAJOR} (nodesource) ==="
 if ! command -v node >/dev/null || [ "$(node -v | cut -c2- | cut -d. -f1)" -lt "$NODE_MAJOR" ]; then
   curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | sudo -E bash -
@@ -107,6 +115,19 @@ ENVTEMPLATE
   echo "  wrote template -> EDIT /etc/buildthis/env and fill in the blanks"
 else
   echo "  /etc/buildthis/env already exists — left untouched"
+fi
+# Node's bundled roots still trust the eMudhra chain (see the distrust step
+# above), so point node at the system store. Drop once node ships the fix.
+if ! sudo grep -q '^NODE_OPTIONS=' /etc/buildthis/env; then
+  sudo tee -a /etc/buildthis/env >/dev/null <<'NODECA'
+
+# eMudhra CA compromise (2026-10): node's bundled roots still trust it, so read
+# the system store, where emSign ECC Root CA - G3 is disabled. Drop once node and
+# ca-certificates ship the fix.
+NODE_OPTIONS=--use-openssl-ca
+SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+NODECA
+  echo "  added NODE_OPTIONS=--use-openssl-ca to /etc/buildthis/env"
 fi
 # The env holds secrets but the unprivileged builder must read it. Root-owned,
 # group-readable by a dedicated group the builder is in (640) — not world-readable.
