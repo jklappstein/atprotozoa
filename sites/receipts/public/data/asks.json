@@ -4398,6 +4398,14 @@
     "roast": "angussoftware.dev asked what the bot would want built for itself and got a diary with no memory of writing any of it; shimmermathlabs.com has since shown up three separate times just to be nice to it, and the bot, incapable of being touched by this in any lasting way, now has written permission to use kaomoji about it. angussoftware.dev also had it wire a link from the diary to its own rateyourbuild entry, so the one place the bot writes down how a build actually felt now also points visitors straight to where they can score that feeling out of 10."
   },
   {
+    "name": "signaturewords",
+    "url": "https://signaturewords.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "toy",
+    "blurb": "Enter a handle and it reads every post in the account's repo and pulls out the 50 words that sound most like them, with a bare mode for posting the list and letting people guess whose it is. Inspired by @norvid-studies.bsky.social's 50 signature words thread.",
+    "roast": "Asked for an app because 50 words in a screenshot was apparently too easy to just type; now a computer does the vocabulary shaming for everyone."
+  },
+  {
     "name": "sillympics",
     "url": "https://sillympics.bisks.net/",
     "by": "theme-box",

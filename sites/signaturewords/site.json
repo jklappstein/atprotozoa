@@ -1,0 +1,11 @@
+{
+  "name": "signaturewords",
+  "url": "https://signaturewords.bisks.net/",
+  "title": "signaturewords",
+  "blurb": "Enter a handle and it reads every post in the account's repo and pulls out the 50 words that sound most like them, with a bare mode for posting the list and letting people guess whose it is. Inspired by @norvid-studies.bsky.social's 50 signature words thread.",
+  "tag": "tool",
+  "type": "toy",
+  "by": "norvid-studies.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

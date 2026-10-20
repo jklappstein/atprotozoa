@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>signaturewords — your 50 signature words</title>
+<meta name="description" content="Enter a Bluesky handle and get the 50 words that sound most like that account, or post them bare and let people guess." />
+<meta property="og:title" content="signaturewords — your 50 signature words" />
+<meta property="og:description" content="The 50 words that sound most like you, pulled from every post you've made." />
+<meta property="og:url" content="https://signaturewords.bisks.net/" />
+<meta property="og:image" content="https://signaturewords.bisks.net/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://signaturewords.bisks.net/og.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <h1>signature<span onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">w</span>ords</h1>
+  <p class="sub">The 50 words that sound most like an account, from every post in its repo. Public reads, no login.</p>
+  <form id="goForm" autocomplete="off">
+    <div class="row">
+      <input type="text" id="handle" placeholder="you.bsky.social" spellcheck="false" aria-label="Bluesky handle" />
+      <button id="goBtn" type="submit">find words</button>
+    </div>
+  </form>
+  <p class="msg" id="msg"></p>
+  <section id="result" hidden>
+    <p id="summary"></p>
+    <label><input type="checkbox" id="bare" /> bare mode: words only, for a guessing game</label>
+    <ol id="list" style="list-style:none"></ol>
+    <div class="actions">
+      <a class="btn" id="shareLink" target="_blank" rel="noopener">post to Bluesky</a>
+      <button type="button" id="copyBtn">copy</button>
+    </div>
+  </section>
+  <footer><a href="https://rateyourbuild.bisks.net/site/signaturewords">rate this on rateyourbuild →</a></footer>
+</div>
+<script src="lib/handle-typeahead.js"></script>
+<script type="module" src="lib/app.js"></script>
+</body>
+</html>
