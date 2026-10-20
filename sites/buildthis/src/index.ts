@@ -535,6 +535,21 @@ This is not a user request and does not need to be interpreted narrowly. You hav
   }
 }
 
+// The `handled:` marker expires, but a tag can stay in the discovery windows
+// (the latest 40 notifications, the latest 25 search hits) for longer than
+// that on a quiet week. When the marker expired, the next tick saw the tag as
+// new and built it again: every tag from 2026-10-08 on was answered a second
+// time exactly 7 days later. So a tag older than MAX_MENTION_AGE_MS is never
+// acted on, whatever its marker says. The cutoff has to stay well under
+// HANDLED_TTL; the gap is how long a watcher outage can be and still catch up.
+const HANDLED_TTL = 60 * 60 * 24 * 7;
+const MAX_MENTION_AGE_MS = 3 * 24 * 60 * 60 * 1000;
+
+function isStaleMention(m: Mention, now = Date.now()): boolean {
+  const at = Date.parse(m.indexedAt ?? "");
+  return Number.isFinite(at) && now - at > MAX_MENTION_AGE_MS;
+}
+
 async function runWatcher(env: Env): Promise<void> {
   const session = await login(env);
 
@@ -574,6 +589,8 @@ async function runWatcher(env: Env): Promise<void> {
   if (mentions.length === 0) return;
 
   for (const m of mentions) {
+    if (isStaleMention(m)) continue;
+
     // Dedup: skip anything we've already acted on. Keyed by the notification's
     // own uri so a re-list can't re-trigger a build.
     const handledKey = `handled:${m.uri}`;
@@ -630,7 +647,7 @@ async function runWatcher(env: Env): Promise<void> {
         // got an answer at all.
         await recordEvent(env, m.uri, { gateReply });
       }
-      await env.STATE.put(handledKey, "1", { expirationTtl: 60 * 60 * 24 * 7 });
+      await env.STATE.put(handledKey, "1", { expirationTtl: HANDLED_TTL });
       continue;
     }
 
@@ -709,7 +726,7 @@ async function runWatcher(env: Env): Promise<void> {
 
       // Only mark handled if the handoff actually left. A failed one stays
       // un-handled so the next tick retries it.
-      await env.STATE.put(handledKey, "1", { expirationTtl: 60 * 60 * 24 * 7 });
+      await env.STATE.put(handledKey, "1", { expirationTtl: HANDLED_TTL });
     }
   }
 }
@@ -2086,6 +2103,9 @@ interface Mention {
   // a reply to some other post ("@buildthis build this ☝️"). When set, we fetch
   // the ancestor posts so the brief includes what "this" refers to.
   isReply: boolean;
+  // When the AppView indexed the post. Used to drop tags older than
+  // MAX_MENTION_AGE_MS; see runWatcher.
+  indexedAt?: string;
 }
 
 async function recentMentions(session: Session): Promise<Mention[]> {
@@ -2132,6 +2152,7 @@ async function recentMentions(session: Session): Promise<Mention[]> {
         rootUri: root?.uri ?? n.uri,
         rootCid: root?.cid ?? n.cid,
         isReply: Boolean(rec.reply),
+        indexedAt: n.indexedAt,
       };
     });
 }
@@ -2166,6 +2187,7 @@ interface RawSearchPost {
   cid: string;
   author: { did: string; handle: string };
   record?: unknown;
+  indexedAt?: string;
 }
 
 // Finds mentions via full-text/mention search instead of the notification
@@ -2199,6 +2221,7 @@ async function searchMentionSweep(session: Session, env: Env): Promise<Mention[]
       rootUri: root?.uri ?? p.uri,
       rootCid: root?.cid ?? p.cid,
       isReply: Boolean(rec.reply),
+      indexedAt: p.indexedAt,
     };
   });
 }
@@ -2890,6 +2913,7 @@ interface RawNotif {
   reason: string;
   author: { did: string; handle: string };
   record?: unknown;
+  indexedAt?: string;
 }
 interface PostRecord {
   text?: string;

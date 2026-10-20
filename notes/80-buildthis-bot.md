@@ -97,8 +97,16 @@ Each tick:
 6. Record the mention as handled (KV) so it can't re-trigger.
 
 Cron-polling rather than Jetstream because `listNotifications` gives mentions
-pre-filtered and naturally deduped by cursor, and the bot is authed anyway to
-reply.
+pre-filtered, and the bot is authed anyway to reply.
+
+There is no cursor. Every tick reads the latest 40 notifications (and every 5th
+tick the latest 25 search hits), so the same tag shows up tick after tick, and
+the `handled:` marker is the only thing that stops a second build. That marker
+expires after 7 days, and on a quiet week a tag is still in those windows when
+it does. From 2026-10-08 to 10-20 every tag was built and answered a second time
+exactly 7 days later. The watcher now skips any tag the AppView indexed more
+than 3 days ago (`MAX_MENTION_AGE_MS`), whatever its marker says. Keep that
+cutoff well under the marker's TTL.
 
 ### 3. The builder
 
