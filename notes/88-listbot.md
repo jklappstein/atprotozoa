@@ -137,6 +137,15 @@ own post arrives as `reason: "reply"`, not `"mention"`; and Bluesky once dropped
 an author's mentions from every recipient's notifications account-wide while the
 posts stayed live and searchable). Every 5th tick runs the sweep.
 
+Neither rail has a cursor: each tick reads the latest 40 notifications and the
+latest 25 search hits, so a tag is seen over and over, and the `handled:` marker
+(14-day TTL) is what stops it running twice. On a bot this quiet, a tag is still
+in those windows when the marker expires. Rob's tags from 2026-09-18 were run
+again on 10-02 and again on 10-16, writing to his lists each time ("qt reads"
+was deleted, then made again). The watcher now skips any tag the AppView indexed
+more than 3 days ago (`MAX_MENTION_AGE_MS`), whatever its marker says. DMs don't
+have this problem, because only unread conversations are read.
+
 ## Two doorways: tags and DMs
 
 A request reaches listbot two ways, and everything after discovery is shared —

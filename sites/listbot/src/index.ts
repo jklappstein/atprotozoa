@@ -835,6 +835,21 @@ function mentionedDids(rec: PostRecord, botDid: string): string[] {
 const HANDLED_PREFIX = "handled:";
 const HANDLED_TTL = 60 * 60 * 24 * 14;
 
+// The `handled:` marker expires, but on a quiet bot a tag stays in the
+// discovery windows (the latest 40 notifications, the latest 25 search hits)
+// far longer than that. When the marker expired, the next tick ran the tag
+// again: Rob's tags from 2026-09-18 were re-run on 10-02 and again on 10-16,
+// re-creating a list he had since deleted. So a tag older than
+// MAX_MENTION_AGE_MS is never acted on, whatever its marker says. The cutoff has
+// to stay well under HANDLED_TTL; the gap is how long a watcher outage can be
+// and still catch up. DMs don't need this: only unread conversations are read.
+const MAX_MENTION_AGE_MS = 3 * 24 * 60 * 60 * 1000;
+
+function isStaleMention(m: Mention, now = Date.now()): boolean {
+  const at = Date.parse(m.indexedAt ?? "");
+  return Number.isFinite(at) && now - at > MAX_MENTION_AGE_MS;
+}
+
 // The subject of a tag is the author of the post being replied to. Fetched from
 // the AppView rather than trusted from the tag text, so "@listbot bots" under
 // someone's post can only ever add THAT person.
@@ -880,6 +895,7 @@ async function runWatcher(env: Env): Promise<void> {
   }
 
   for (const m of mentions) {
+    if (isStaleMention(m)) continue;
     const handledKey = HANDLED_PREFIX + m.uri;
     if (await env.STATE.get(handledKey)) continue;
     // Mark handled BEFORE acting. A tag that half-fails is better than one that
