@@ -13,8 +13,18 @@ let session = 0;         // bumped per search so stale async work from a previou
 let handleShown = "";
 let did = "";
 
+// Accepts what people actually paste: "@alice", "alice" (-> alice.bsky.social),
+// a bsky.app profile URL, a did:, and handles carrying invisible bidi/zero-width
+// marks (copied from the app). getProfile answers 400 to anything else.
 function normHandle(s) {
-  return String(s || "").trim().replace(/^@+/, "").toLowerCase();
+  let h = String(s || "").replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g, "").trim();
+  const m = h.match(/bsky\.app\/profile\/([^/?#\s]+)/i);
+  if (m) h = m[1];
+  h = h.replace(/^at:\/\//, "").replace(/^@+/, "").replace(/[/?#].*$/, "").trim().toLowerCase();
+  if (h.startsWith("did:")) return h;
+  h = h.replace(/\.+$/, "");
+  if (h && !h.includes(".")) h += ".bsky.social";
+  return h;
 }
 
 // Tiny semaphore: likers and avatars are many small requests, so run a few at
@@ -234,7 +244,13 @@ async function go(e) {
   $("goBtn").disabled = true;
   try {
     msg.textContent = "resolving…";
-    const prof = await api("app.bsky.actor.getProfile", { actor: h });
+    let prof;
+    try {
+      prof = await api("app.bsky.actor.getProfile", { actor: h });
+    } catch (err) {
+      if (!/\(400\)/.test(err.message)) throw err;
+      throw new Error(`"${h}" isn't a valid handle — try something like alice.bsky.social`);
+    }
     session++;
     did = prof.did; handleShown = prof.handle;
     posts = []; cursor = null; done = false; selected = null;

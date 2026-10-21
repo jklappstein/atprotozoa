@@ -408,5 +408,10 @@
     "subject": "likehue",
     "fixedAt": "2026-10-21T00:20:00Z",
     "note": "pfps now load through a same-origin proxy, since cdn.bsky.app sends no CORS headers and every avatar read failed"
+  },
+  {
+    "subject": "likehue",
+    "fixedAt": "2026-10-21T00:17:40Z",
+    "note": "handle input now accepts bare names, profile URLs, dids and pasted invisible marks instead of failing getProfile with a 400"
   }
 ]
