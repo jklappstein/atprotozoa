@@ -1,0 +1,16 @@
+name = "atprotozoa-likehue"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# @norvid-studies.bsky.social asked for a timeline drawn as the pfp colors of
+# whoever liked each post. Public AppView reads only; all color work happens in
+# the browser. See public/lib/colors.js.
+
+routes = [
+  { pattern = "likehue.bisks.net/*", zone_name = "bisks.net" },
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true

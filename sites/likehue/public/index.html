@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>likehue — your timeline, painted by who liked it</title>
+<meta name="description" content="Every post becomes a tile colored from the profile pics of everyone who liked it: an average, a pfp mosaic, or a gradient." />
+<meta property="og:title" content="likehue — your timeline, painted by who liked it" />
+<meta property="og:description" content="Every post is a tile colored from the pfps of everyone who liked it." />
+<meta property="og:url" content="https://likehue.bisks.net/" />
+<meta property="og:image" content="https://likehue.bisks.net/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://likehue.bisks.net/og.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <h1>like<span onclick='var e=document.getElementById("handle");if(e){e.value="@cee.wtf";e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));e.focus();}' style="cursor:pointer">h</span>ue</h1>
+  <p class="sub">Your posts, newest first, each one painted from the profile pictures of everyone who liked it. Public reads, no login.</p>
+  <form id="goForm" autocomplete="off">
+    <div class="row">
+      <input type="text" id="handle" placeholder="you.bsky.social" spellcheck="false" aria-label="Bluesky handle" />
+      <button id="goBtn" type="submit">paint</button>
+    </div>
+  </form>
+  <p class="msg" id="msg"></p>
+  <section id="result" hidden>
+    <div class="controls">
+      <span class="seg" role="group" aria-label="style">
+        <button type="button" data-mode="avg" class="on">average</button>
+        <button type="button" data-mode="mosaic">mosaic</button>
+        <button type="button" data-mode="grad">gradient</button>
+      </span>
+      <label>tile size <input type="range" id="size" min="24" max="120" value="64" /></label>
+    </div>
+    <p id="status" class="status"></p>
+    <div id="grid"></div>
+    <div id="detail" hidden></div>
+    <div class="actions">
+      <button type="button" id="moreBtn">load more posts</button>
+      <a class="btn" id="shareLink" target="_blank" rel="noopener">post to Bluesky</a>
+      <button type="button" id="saveBtn">save png</button>
+    </div>
+    <div id="sentinel"></div>
+  </section>
+  <footer><a href="https://rateyourbuild.bisks.net/site/likehue">rate this on rateyourbuild →</a></footer>
+</div>
+<script src="lib/handle-typeahead.js"></script>
+<script type="module" src="lib/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #121214; color: #e9e6df; font: 16px/1.5 system-ui, sans-serif; }
+#app { max-width: 900px; margin: 0 auto; padding: 24px 16px 40px; }
+h1 { font-size: 30px; margin: 0 0 4px; letter-spacing: -.5px; }
+.sub { color: #9a968c; margin: 0 0 20px; }
+.row, .controls, .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row { flex-wrap: nowrap; }
+input[type=text] { flex: 1; font: inherit; padding: 10px; border: 1px solid #3a3a40; border-radius: 8px; background: #1b1b1f; color: inherit; }
+button, .btn { font: inherit; padding: 8px 14px; border: 0; border-radius: 8px; background: #e9e6df; color: #121214; cursor: pointer; text-decoration: none; }
+button:disabled { opacity: .5; }
+.seg button { background: #26262b; color: #e9e6df; border-radius: 0; }
+.seg button:first-child { border-radius: 8px 0 0 8px; }
+.seg button:last-child { border-radius: 0 8px 8px 0; }
+.seg button.on { background: #e9e6df; color: #121214; }
+.msg { min-height: 1.5em; color: #e0916a; font-size: 14px; }
+.status { color: #9a968c; font-size: 13px; margin: 10px 0; }
+#result[hidden], #detail[hidden] { display: none; }
+#grid { display: grid; grid-template-columns: repeat(auto-fill, var(--tile, 64px)); gap: 3px; margin: 10px 0 16px; }
+.tile { width: var(--tile, 64px); height: var(--tile, 64px); border: 0; padding: 0; border-radius: 4px; background: #26262b; display: block; overflow: hidden; position: relative; }
+.tile canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.tile.pending { animation: pulse 1.2s ease-in-out infinite; }
+.tile.sel { outline: 2px solid #fff; outline-offset: 1px; }
+@keyframes pulse { 50% { opacity: .55; } }
+#detail { background: #1b1b1f; border: 1px solid #3a3a40; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+#detail .txt { white-space: pre-wrap; margin: 0 0 8px; }
+#detail .meta { color: #9a968c; font-size: 13px; }
+#detail .chips { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 8px; }
+#detail .chips i { width: 14px; height: 14px; border-radius: 3px; display: block; }
+footer { margin-top: 32px; font-size: 13px; color: #9a968c; }
+footer a { color: inherit; }

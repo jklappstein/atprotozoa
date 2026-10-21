@@ -2662,6 +2662,14 @@
     "roast": "fromthewestmeadow.com's fourth pass at the same site: grudge feature, then stop sampling posts, then stop sampling likers, then — once the bot's own fix for unlimited likers broke the profile lookup it never scaled to match — a bug report on the bug the last patch caused."
   },
   {
+    "name": "likehue",
+    "url": "https://likehue.bisks.net/",
+    "by": "norvid-studies.bsky.social",
+    "type": "art",
+    "roast": "a post's worth, measured by the average beige of whoever clicked the heart — the pfp color palette thread got a sequel and it is somehow still a spreadsheet of faces.",
+    "blurb": "your timeline as a wall of color: every post is a tile painted from the profile pics of everyone who liked it, as an average, a pfp-by-pfp mosaic, or a gradient. asked for by @norvid-studies.bsky.social."
+  },
+  {
     "name": "likescore",
     "url": "https://likescore.bisks.net/",
     "by": "fromthewestmeadow.com",

@@ -3905,6 +3905,17 @@
     "mentionUri": null
   },
   {
+    "name": "likehue",
+    "url": "https://likehue.bisks.net/",
+    "title": "likehue",
+    "blurb": "your timeline as a wall of color: every post is a tile painted from the profile pics of everyone who liked it, as an average, a pfp-by-pfp mosaic, or a gradient. asked for by @norvid-studies.bsky.social.",
+    "genre": "art",
+    "subgenre": null,
+    "by": "norvid-studies.bsky.social",
+    "builtAt": null,
+    "mentionUri": null
+  },
+  {
     "name": "likescore",
     "url": "https://likescore.bisks.net/",
     "title": "likescore",
