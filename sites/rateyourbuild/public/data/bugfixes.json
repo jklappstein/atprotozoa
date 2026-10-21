@@ -403,5 +403,10 @@
     "subject": "claudlish",
     "fixedAt": "2026-10-07T12:29:27Z",
     "note": "wrong-answer choices now come from the same unit, so refusals no longer get Yes/Sure/OK as decoys"
+  },
+  {
+    "subject": "likehue",
+    "fixedAt": "2026-10-21T00:20:00Z",
+    "note": "pfps now load through a same-origin proxy, since cdn.bsky.app sends no CORS headers and every avatar read failed"
   }
 ]

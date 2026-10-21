@@ -52,7 +52,6 @@ function avatarColor(url) {
   if (colorCache.has(url)) return colorCache.get(url);
   const p = imgSlot(() => new Promise((ok) => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
     img.onload = () => {
       try {
         const c = document.createElement("canvas");
@@ -66,7 +65,7 @@ function avatarColor(url) {
       } catch { ok(null); }
     };
     img.onerror = () => ok(null);
-    img.src = thumbUrl(url);
+    img.src = "/api/avatar?u=" + encodeURIComponent(thumbUrl(url)); // same-origin proxy: cdn.bsky.app has no CORS headers
   }));
   colorCache.set(url, p);
   return p;
