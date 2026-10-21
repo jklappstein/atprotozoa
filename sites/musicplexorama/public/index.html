@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>musicplexorama — every genre on a melody / harmony / rhythm triangle</title>
+<meta name="description" content="A ternary plot of 107 music genres by how much of each is melody, harmony, and rhythm. Hover, filter, and drop your own dot in.">
+<meta property="og:title" content="musicplexorama">
+<meta property="og:description" content="Every music genre on a melody / harmony / rhythm triangle.">
+<meta property="og:image" content="https://musicplexorama.bisks.net/og.png">
+<meta property="og:url" content="https://musicplexorama.bisks.net/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://musicplexorama.bisks.net/og.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>music<span class="s">p</span>lexorama</h1>
+  <p class="sub">107 genres, each split between <b class="cm">melody</b>, <b class="ch">harmony</b> and <b class="cr">rhythm</b>. Placements are one opinionated listener's estimates — click the plot to add your own.</p>
+</header>
+<main>
+  <section class="plotwrap">
+    <svg id="plot" viewBox="-0.16 -0.1 1.32 1.07" role="img" aria-label="Ternary plot of music genres"></svg>
+    <div id="tip" class="tip" hidden></div>
+  </section>
+  <aside>
+    <input id="q" type="search" placeholder="find a genre…" autocomplete="off">
+    <div id="legend" class="legend"></div>
+    <div id="detail" class="detail"><p class="hint">Hover or tap a dot. Click empty triangle to drop your own marker and see the nearest genres.</p></div>
+    <div class="share"><a id="share" target="_blank" rel="noopener" href="#">post this to Bluesky</a></div>
+  </aside>
+</main>
+<footer>
+  <span>asked for by @moultano.bsky.social via @norvid-studies.bsky.social</span> ·
+  <a href="https://rateyourbuild.bisks.net/site/musicplexorama">rate this on rateyourbuild →</a>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

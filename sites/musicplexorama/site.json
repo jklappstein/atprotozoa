@@ -1,0 +1,11 @@
+{
+  "name": "musicplexorama",
+  "url": "https://musicplexorama.bisks.net/",
+  "title": "musicplexorama",
+  "blurb": "a ternary plot of 107 music genres, each placed by how much of it is melody, harmony, and rhythm. hover, filter, click to drop your own dot in. asked for by @norvid-studies.bsky.social, for @moultano.bsky.social.",
+  "tag": "toy",
+  "type": "explainer",
+  "by": "norvid-studies.bsky.social",
+  "src": "bot",
+  "hidden": false
+}

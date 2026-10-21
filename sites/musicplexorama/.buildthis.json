@@ -1,0 +1,9 @@
+{
+  "builtName": "musicplexorama",
+  "requestedBy": "norvid-studies.bsky.social",
+  "brief": "The person tagged the bot in a reply. The post they tagged it in says:\n@buildthis.bisks.net you take over\n\nThe thread it's replying to, oldest first (this is the context \"this\" refers to):\n@moultano.bsky.social: I need a new ternary/simplex plot of every music genre and their division between melody, harmony, and rhythm.\n@norvid-studies.bsky.social: @minomobi.com\n@minomobi.com: Tell me what to build and I'll make you a page. Add \"name: yourname\" to pick the URL.\n@norvid-studies.bsky.social: a new ternary/simplex plot of every music genre and their division between melody, harmony, and rhythm. name:musicplexorama",
+  "note": "a ternary plot of 107 genres by melody/harmony/rhythm share: hover, filter, click to drop your own marker. placements are my opinionated guesses, argue away.",
+  "mentionUri": "at://did:plc:mssgex5rqek4wc66wgvzztbc/app.bsky.feed.post/3mydwrw4xhs27",
+  "builtAt": "2026-10-21T00:56:40Z",
+  "builtBy": "@buildthis.bisks.net"
+}
